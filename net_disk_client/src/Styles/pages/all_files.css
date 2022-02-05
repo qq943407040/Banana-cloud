@@ -1,0 +1,52 @@
+.all_files{
+    background-color: rgb(255, 255, 255);
+    height: fit-content;
+    width: 77vw;
+    margin-left: 1.5vw;
+    margin-top: 9vh;
+    border-radius: 0.5rem;
+    padding-bottom: 3vh;
+    float: left;
+}
+.all_files .ant-table-cell{
+    background-color: white;
+}
+.new_dir{
+    height: 5vh;
+    width: fit-content;
+    color: rgb(137, 209, 151);
+    border-color: rgb(137, 209, 151) ;
+    margin-top: 2vh;
+    margin-left: 1vw;
+    font-size: 2.2vh;
+}
+.up button{
+    margin-top: 2vh;
+    width: fit-content;
+    height: 5vh;
+    font-size: 2.3vh;
+}
+.file_up{
+    text-align: right;
+}
+.file_down{
+    text-align: right;
+}
+.file_down button{
+    width: fit-content;
+    height: 5vh;
+    font-size: 2.3vh;
+    margin-top: 2vh;
+    margin-right: 0.5vw;
+}
+.file_del button{
+    position: absolute;
+    right: 1vw;
+    width: fit-content;
+    height: 5vh;
+    font-size: 2.3vh;
+    margin-top: 2vh;
+}
+.table1{
+    margin-left: 1vw;
+}

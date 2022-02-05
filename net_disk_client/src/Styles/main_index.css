@@ -1,0 +1,78 @@
+.sider{
+    background-color: rgb(230, 215, 153);
+    height: 100vh;
+}
+.sider_menu{
+    background-color: rgb(230, 215, 153);
+    margin-top: 10vh;
+
+}
+.sider_menu div{
+    font-size: 2.5vh;
+    color: lightslategray;
+    text-align: left;
+    padding-right: 4vw;
+    padding-left: 2.5vw;
+
+}
+
+/* menu_item样式 */
+.span2{
+    padding-left: 1vw;
+    
+}
+/* 网盘名称样式 */
+.logo span{
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+/* 预览和所有文件文字样式 */
+.span1{
+    display: block;
+    font-size: 1rem;
+    color: rgb(156, 170, 194);
+    padding-left: 1vw;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+.logo{
+    text-align: center;
+    margin-top: 3vh;
+}
+
+.header{
+    background-color: rgb(240, 242, 245);
+    position: relative;
+    height: 14vh;
+}
+/* header中个人信息样式 */
+.person_data{
+    text-align: left;
+}
+.person_data span{
+    color:rgba(0, 0, 0, 0.863);
+    font-size: 2.2vh;
+    cursor: pointer;
+}
+/* 通知样式 */
+.infor{
+    text-align: right;
+    padding-top: 0.55vh;
+    padding-right: 1vw;
+    color: rgb(255, 255, 255);
+}
+
+/* 退出登录button样式 */
+.button{
+    margin-top: 4vh;
+    text-align: center;
+}
+.button .button_out{
+    width: 16vw;
+    height: 6vh;
+}
+.button_out span{
+    font-size: 2.7vh;
+}
+

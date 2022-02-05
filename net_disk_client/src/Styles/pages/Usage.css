@@ -1,0 +1,22 @@
+#d1{
+    background-color: rgb(255, 255, 255);
+    height: 55vh;
+    width: 30vw;
+    margin-left: 1.5vw;
+    margin-top: 9vh;
+    border-radius: 0.5rem;
+    padding-bottom: 3vh;
+    padding-top: 1vh;
+    float: left;
+}
+#d2{
+    background-color: rgb(255, 255, 255);
+    height: 55vh;
+    width: 45vw;
+    margin-top: 9vh;
+    margin-left: 2vw;
+    padding-bottom: 3vh;
+    padding-top: 1vh;
+    border-radius: 0.5rem;
+    float: left;
+}

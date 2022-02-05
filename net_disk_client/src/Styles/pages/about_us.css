@@ -1,0 +1,52 @@
+#list_div{
+    background-color: rgb(255, 255, 255);
+    height: 55vh;
+    width: 50vw;
+    margin-left: 1.5vw;
+    margin-top: 9vh;
+    border-radius: 0.5rem;
+    padding-bottom: 3vh;
+    /* padding-top: 1vh; */
+    float: left;
+}
+#suggest{
+    background-color: rgb(255, 255, 255);
+    height: 55vh;
+    width: 25vw;
+    margin-top: 9vh;
+    margin-left: 2vw;
+    padding-bottom: 3vh;
+    padding-top: 5vh;
+    text-align: center;
+    border-radius: 0.5rem;
+    float: left;
+}
+.list{
+    width: 45vw;
+    height: 5vh;
+    font-size: 2.5vh;
+    padding-left: 1.5vw;
+    background-color: aliceblue;
+    margin-left: 3vw;
+    margin-top: 1vh;
+}
+.list_span{
+    margin-left: 1vw;
+    font-size: 2vh;
+}
+.list_title a{
+    color: black;
+}
+.button_suggest{
+    margin-top: 5vh;
+}
+.button_suggest span{
+    font-size: 3vh;
+    
+}
+.button_suggest Button{
+    width: 20vw;
+    height: 7vh;
+    font-size: 3vh;
+    margin-top: 2vh;
+}

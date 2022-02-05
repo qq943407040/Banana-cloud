@@ -1,0 +1,51 @@
+.sider{
+    background-color: rgb(255, 255, 255);
+}
+.sider_menu div{
+    font-size: 1.1rem;
+    color: lightslategray;
+    text-align: center;
+    padding-right: 4vw;
+
+}
+.span2{
+    padding-left: 1vw;
+}
+.logo span{
+    color: rgb(22, 16, 16);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+.span1{
+    display: block;
+    font-size: 1rem;
+    color: rgb(156, 170, 194);
+    padding-left: 1vw;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}
+.logo{
+    text-align: center;
+    margin-top: 3vh;
+}
+.header{
+    background-color: rgb(81, 18, 145);
+}
+.infor{
+    text-align: right;
+}
+.infor span{
+    color:rgba(238, 238, 238, 0.863);
+    font-size: 1rem;
+}
+.button{
+    margin-top: 4vh;
+    text-align: center;
+}
+.button .button_out{
+    width: 16vw;
+    height: 6vh;
+}
+.button_out span{
+    font-size: 1.2rem;
+}
