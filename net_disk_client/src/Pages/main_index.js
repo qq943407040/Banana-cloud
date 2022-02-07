@@ -27,58 +27,57 @@ import Test from './Test'
 // 整体布局
 const Main_index = (props) => {
 
-const { Header, Footer, Sider, Content } = Layout;
-const [username,setusername]=useState('请先登录')
-// 读取cookie查找用户是否存在
+  const { Header, Footer, Sider, Content } = Layout;
+  const [username, setusername] = useState('请先登录')
+  // 读取cookie查找用户是否存在
   useEffect(() => {
     // todo:后端改完返回值后修改此处
-    if(cookie.load("username")!=null){
-      setusername("你好，"+cookie.load("username"))
+    if (cookie.load("username") != null) {
+      setusername("你好，" + cookie.load("username"))
       var btn1 = document.getElementById('bt1')
-      btn1.style.display="none"
+      btn1.style.display = "none"
     }
-    else{
+    else {
       var btn = document.getElementById('bt')
-      btn.style.display="none"
+      btn.style.display = "none"
     }
-    
-}, [])
+
+  }, [])
   // 跳转登录页面
-  const toLogin=()=>{
+  const toLogin = () => {
     props.history.push('/login')
   }
   // 登出功能
-  const Login_out=()=>{
+  const Login_out = () => {
     cookie.remove("id");
     cookie.remove("username");
     props.history.push('/login')
   }
   // 判断左侧item跳转页面
   const handclick = e => {
-    if(sessionStorage.getItem("login_statu")){
+    if (sessionStorage.getItem("login_statu")) {
       if (e.key == "all") {
-      props.history.push('/index/allfiles')
+        props.history.push('/index/allfiles')
 
+      }
+      if (e.key == 'usage') {
+        props.history.push('/index/usage')
+      }
+      if (e.key == "upload") {
+        props.history.push('/index/upload')
+      }
+      if (e.key == 'aboutus') {
+        props.history.push('/index/aboutus')
+      }
     }
-    if (e.key == 'usage') {
-      props.history.push('/index/usage')
-    }
-    if (e.key == "upload") {
-      props.history.push('/index/upload')
-    }
-    if (e.key == 'aboutus') {
-      props.history.push('/index/aboutus')
-    }
-    }
-    
+
   }
   // 跳转个人信息页面
-  const toIndividual=()=>{
-    if(username=='请先登录')
-    {
+  const toIndividual = () => {
+    if (username == '请先登录') {
 
     }
-    else{
+    else {
       props.history.push('/index/individual')
     }
   }
@@ -91,8 +90,8 @@ const [username,setusername]=useState('请先登录')
             <div className='logo'>
               <span >香蕉快传</span>
             </div>
-            <div className='logo'> 
-            <Avatar size={150} src="https://octodex.github.com/images/minion.png" /></div>
+            <div className='logo'>
+              <Avatar size={150} src="https://octodex.github.com/images/minion.png" /></div>
             {/* <span className='span1'> 预览</span> */}
             <Menu defaultSelectedKeys={['1']} mode="inline" className='sider_menu' onClick={handclick}>
               <Menu.Item key="usage" style={{ height: '7vh' }}>
@@ -127,16 +126,16 @@ const [username,setusername]=useState('请先登录')
               </Menu.Item>
             </Menu>
             <div className='button'>
-              <Button id='bt' className='button_out' 
-              type="primary" shape="round" icon={<LogoutOutlined />} danger
-              onClick={Login_out}>
-              <span>退出登录</span>
-            </Button>
-            <Button id='bt1' className='button_out' 
-            type="primary" shape="round" icon={<LoginOutlined />} 
-            onClick={toLogin}>
-              <span>请先登录</span>
-            </Button>
+              <Button id='bt' className='button_out'
+                type="primary" shape="round" icon={<LogoutOutlined />} danger
+                onClick={Login_out}>
+                <span>退出登录</span>
+              </Button>
+              <Button id='bt1' className='button_out'
+                type="primary" shape="round" icon={<LoginOutlined />}
+                onClick={toLogin}>
+                <span>请先登录</span>
+              </Button>
             </div>
 
           </Sider>
@@ -149,14 +148,14 @@ const [username,setusername]=useState('请先登录')
                 <MenuOutlined style={{ color: 'rgba(0, 0, 0, 0.863)', fontSize: '3vh' }} />
               </Col>
               <Col offset={0} className='infor' xs={8} sm={8} md={8} lg={13} xl={13}>
-                  <Infor></Infor>
+                <Infor></Infor>
               </Col>
               <Col offset={0} className='person_data' xs={8} sm={8} md={8} lg={3} xl={3}>
                 <span onClick={toIndividual}>{username}</span>
               </Col>
             </Row>
           </Header>
-          <Content  style={{ margin: '0 16px' }}>
+          <Content style={{ margin: '0 16px' }}>
             <div>
               {/* <Redirect path="/index/" to="/index/usage" /> */}
               <Route path="/index/usage" component={Usage} />

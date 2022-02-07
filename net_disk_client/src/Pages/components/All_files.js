@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Table, Radio, Breadcrumb, Button, Row, Col, Upload,Space } from 'antd';
+import { Table, Radio, Breadcrumb, Button, Row, Col, Upload, Space } from 'antd';
 import '../../Styles/pages/all_files.css'
 import '../../Styles/header.css'
 import axios from 'axios'
@@ -35,7 +35,7 @@ const All_files = () => {
     }, [])
     const props = {
         showUploadList: 'false'
-      };
+    };
     // 展示文件列表项
     const columns = [
         {
@@ -71,10 +71,10 @@ const All_files = () => {
             key: 'option',
             render: (text, record) => (
                 <Space size="middle">
-                 <a style={{color:'black'}}><DownloadOutlined style={{ fontSize: '2.4vh' }} /></a>
-                 <a style={{color:'black'}}><DeleteOutlined style={{ fontSize: '2.4vh' }} /></a>
+                    <a style={{ color: 'black' }}><DownloadOutlined style={{ fontSize: '2.4vh' }} /></a>
+                    <a style={{ color: 'black' }}><DeleteOutlined style={{ fontSize: '2.4vh' }} /></a>
                 </Space>
-              ),
+            ),
         }
     ]
     // 选择项更换时执行
@@ -103,13 +103,13 @@ const All_files = () => {
                 </div>
                 <div>
                     {/* <Row type="flex" justify="center"> */}
-                        {/* <Col xs={6} sm={6} md={8} lg={15} xl={15}> */}
-                            <Button className='new_dir' icon={<PlusOutlined />} size='large'>
-                                创建文件夹
-                            </Button>
-                        {/* </Col> */}
+                    {/* <Col xs={6} sm={6} md={8} lg={15} xl={15}> */}
+                    <Button className='new_dir' icon={<PlusOutlined />} size='large'>
+                        创建文件夹
+                    </Button>
+                    {/* </Col> */}
 
-                        {/* <Col offset={0} className='file_up' xs={8} sm={8} md={8} lg={3} xl={3}>
+                    {/* <Col offset={0} className='file_up' xs={8} sm={8} md={8} lg={3} xl={3}>
                             <Upload className='up' {...props}>
                                 <Button type='primary'>上传文件</Button>
                             </Upload>
@@ -125,7 +125,7 @@ const All_files = () => {
 
                 </div>
                 <Table
-                className='table1'
+                    className='table1'
                     rowSelection={rowSelection}
                     dataSource={data}
                     pagination={{

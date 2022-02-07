@@ -20,9 +20,9 @@ const Individual_infor = (props) => {
     const [repassword, setRepassword] = useState('qq123456')
 
     // 会员信息
-    const [vip,setVip]=useState('普通会员')
-    const [expirationTime,setExpirationTime] = useState('无')
-    const [useSize,setUseSize] = useState('1G')
+    const [vip, setVip] = useState('普通会员')
+    const [expirationTime, setExpirationTime] = useState('无')
+    const [useSize, setUseSize] = useState('1G')
 
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -41,7 +41,7 @@ const Individual_infor = (props) => {
     return (
         <div >
             <div className='d1'>
-            <UserOutlined style={{ fontSize: '3vh' }} />
+                <UserOutlined style={{ fontSize: '3vh' }} />
                 <span className='s1'>个人信息</span>
             </div>
             <div id="changeInfor_div" >

@@ -6,7 +6,7 @@ import Path from '../config/api'
 import axios from 'axios'
 import cookie from "react-cookies";
 import 'animate.css'
-import { PlusOutlined, CloseCircleOutlined,CloseOutlined,LeftCircleTwoTone } from '@ant-design/icons'
+import { PlusOutlined, CloseCircleOutlined, CloseOutlined, LeftCircleTwoTone } from '@ant-design/icons'
 // import { Animated } from "react-animated-css";
 
 
@@ -23,32 +23,32 @@ const Login1 = (props) => {
     const [isLoading, setIsLoading] = useState(false)
 
     // 登录注册页面是否可见
-    const [isLoginshow, setIsLoginshow] = useState(false)
-    const [isUpshow, setIsUpshow] = useState(true)
+    const [isLoginshow, setIsLoginshow] = useState(true)
+    const [isUpshow, setIsUpshow] = useState(false)
     const [isReshow, setIsReshow] = useState(true)
     const [isForgetshow, setIsForgetshow] = useState(true)
     // 找回密码逻辑
-    const [emailOfforget,setEmailOfforget] = useState('')
-    const [passwordFind,setPasswordFind] = useState('')
-    const [repasswordFind,setRepasswordFind] = useState('')
-    
-    // 注册所需信息
-    const [emailCode,setEmailCode] =useState('')
-    const [trueEmailcode,setTrueEmailcode] = useState('')
-    const [isCodeRight,setIsCodeRight] = useState(false)
+    const [emailOfforget, setEmailOfforget] = useState('')
+    const [passwordFind, setPasswordFind] = useState('')
+    const [repasswordFind, setRepasswordFind] = useState('')
+
+    // 注册所需信息 
+    const [emailCode, setEmailCode] = useState('')
+    const [trueEmailcode, setTrueEmailcode] = useState('')
+    const [isCodeRight, setIsCodeRight] = useState(false)
     const [userNameRegister, setUserNameRegister] = useState('')
     const [passwordRegister, setPasswordRegister] = useState('')
     const [repasswordRegister, setRepasswordRegister] = useState('')
-    const [registerEmail,setRegisterEmail]=useState('')
+    const [registerEmail, setRegisterEmail] = useState('')
     const [isLoading1, setIsLoading1] = useState(false)
 
     // 修改密码验证码是否通过
-    const [isEmailCheck,setIsEmailCheck] = useState(false)
-    const [isCodeCheck,setIsCodeCheck]=useState(false)
+    const [isEmailCheck, setIsEmailCheck] = useState(false)
+    const [isCodeCheck, setIsCodeCheck] = useState(false)
     // 检测登录信息
     function getHeaderTime() {
         console.log(this.getResponseHeader("Set-cookie"));
-      }
+    }
     const checkLogin = () => {
         setIsLoading(true)
         console.log(userName)
@@ -77,17 +77,19 @@ const Login1 = (props) => {
                 // 'http://47.107.95.82/tf/upload-static',
                 // 'http://47.107.108.95:7001/admin/checkLogin',
                 '/banana/account-center/common/login',
-                // 'http://47.107.95.82/banana/account-center/common/register',
-                // 'http://47.107.95.82/banana/account-center/e-validate',
-                // '/banana/account-center/account/info/9',
+            // 'http://47.107.95.82/banana/account-center/common/register',
+            // 'http://47.107.95.82/banana/account-center/e-validate',
+            // '/banana/account-center/account/info/9',
             data: dataProps,
-            header: { 'Access-Control-Allow-Origin': '*',
-            'Access-Control-Expose-Headers':'set-cookie' },
+            header: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Expose-Headers': 'set-cookie'
+            },
 
         }).then(
             res => {
                 setIsLoading(false)
-                if (res.data.id !=null) {
+                if (res.data.msg != '登录密码错误') {
                     // localStorage.setItem('openId', res.data.openId)
                     // let cookieTime = new Date(new Date().getTime + 24 * 3600 * 1000);
                     // cookie.save("id", res.data.list[0].id, { expires: cookieTime });
@@ -98,7 +100,6 @@ const Login1 = (props) => {
                 } else {
                     message.error('用户名密码错误')
                     console.log(res)
-
                     props.history.push('/')
                 }
             }
@@ -109,20 +110,30 @@ const Login1 = (props) => {
         }, 1000)
     }
     // 发送验证码
-    const sendcode = ()=>{
+    const sendcode = () => {
         setIsLoading(true)
         let dataProps = {
-            'email':registerEmail,
-            'type':1
+            'email': registerEmail,
+            'type': 1
         }
         axios({
-            method:'post',
-            url: 
-             '/banana/account-center/e-validate',
+            method: 'post',
+            url:
+                '/banana/account-center/e-validate',
             data: dataProps,
             // header: { 'Access-Control-Allow-Origin': '*' },
-        }).then(res=>{
+        }).then(res => {
             setIsLoading(false)
+            if (res.data.msg == '该邮箱已注册绑定') {
+                message.error('该邮箱已注册绑定')
+            }
+            else if (res.data.msg == '请正确填写邮箱') {
+                message.error('请正确填写邮箱')
+            }
+            else {
+                message.success('验证码发送成功')
+
+            }
             console.log(res.data)
 
         })
@@ -169,36 +180,36 @@ const Login1 = (props) => {
             }, 500)
             return false
         }
-        else if(registerEmail.indexOf('@')=='-1'){
+        else if (registerEmail.indexOf('@') == '-1') {
             message.error('邮箱格式错误')
             setTimeout(() => {
                 setIsLoading(false)
             }, 500)
             return false
         }
-        else{
+        else {
             let dataProps = {
                 'username': userNameRegister,
                 'password': passwordRegister,
-                'email':registerEmail,
-                'invite_code':emailCode
+                'email': registerEmail,
+                'invite_code': emailCode
             }
             axios({
                 method: 'post',
-                url: 
-                // servicePath.checkuserRegister,
-                '/banana/account-center/common/register',
+                url:
+                    // servicePath.checkuserRegister,
+                    '/banana/account-center/common/register',
                 data: dataProps,
                 header: { 'Access-Control-Allow-Origin': '*' },
 
-    
+
             }).then(
                 res => {
                     setIsLoading(false)
                     if (res.data.isSuccess) {
                         console.log(res.data)
                         message.success('注册成功')
-    
+
                     } else {
                         console.log(res.data)
                         message.error('注册失败')
@@ -206,7 +217,7 @@ const Login1 = (props) => {
                 }
             )
         }
-        
+
         setTimeout(() => {
             setIsLoading(false)
         }, 1000)
@@ -289,17 +300,17 @@ const Login1 = (props) => {
         console.log('Failed:', errorInfo);
     };
     // 修改密码方法
-    const checkChange = ()=>{
-        if(!isEmailCheck){
+    const checkChange = () => {
+        if (!isEmailCheck) {
             message.error('邮箱输入错误')
         }
-        else if(isCodeCheck){
+        else if (isCodeCheck) {
             message.error('验证码错误')
         }
-        else{
+        else {
 
         }
-       
+
     }
     const showLogin = () => {
         if (!isForgetshow) {
@@ -339,7 +350,6 @@ const Login1 = (props) => {
                             </span>
                         </div>
                     </Col>
-
                     <Col offset={0} className='person_data' xs={8} sm={8} md={12} lg={12} xl={12}>
                         <div className='loginButton'>
                             <Button onClick={showLogin}>注册/登录</Button>
@@ -359,10 +369,7 @@ const Login1 = (props) => {
                     <Col offset={0} xs={8} sm={8} md={8} lg={8} xl={8}>
                         <Button onClick={receiveFiles} className='bt2'>接受文件</Button>
                     </Col>
-
                 </Row>
-
-
             </div>
             {/* 接受文件测试 */}
             <div className='uploadFiles animated animate__bounceInLeft'
@@ -372,20 +379,18 @@ const Login1 = (props) => {
                     <input onKeyDown={enterDown} bordered='false' placeholder='请输入接受文件口令' className='receive_input'></input>
                     <CloseCircleOutlined onClick={toUpload} className='closeBtn' style={{ fontSize: '1.7rem', marginLeft: '1rem' }} />
                 </div>
-
-
             </div>
             <div hidden={isForgetshow} className='forget_div animated animate__fadeInUp'>
                 <h2 className='forgetTitle'>
                     <Row>
                         <Col span="3">
-                        <LeftCircleTwoTone onClick={showLogin} className='returntoLogin'/>
+                            <LeftCircleTwoTone onClick={showLogin} className='returntoLogin' />
                         </Col>
                         <Col id='title' span="18">
-                        Forgot password
+                            Forgot password
                         </Col>
                     </Row>
-                   </h2>
+                </h2>
                 <Form
                     name="basic"
                     labelCol={{
@@ -403,7 +408,7 @@ const Login1 = (props) => {
                     className='form2'
                     layout='horizontal'
                 >
-                    
+
                     <Form.Item
                         label="邮箱"
                         name="email"
@@ -432,7 +437,7 @@ const Login1 = (props) => {
                         ]}
                     >
                         <Input
-                        allowClear/>
+                            allowClear />
                     </Form.Item>
                     <Form.Item
                         label="密码"
@@ -444,8 +449,8 @@ const Login1 = (props) => {
                             },
                         ]}
                     >
-                        <Input.Password 
-                        allowClear/>
+                        <Input.Password
+                            allowClear />
                     </Form.Item>
                     <Form.Item
                         label="确认密码"
@@ -457,8 +462,8 @@ const Login1 = (props) => {
                             },
                         ]}
                     >
-                        <Input.Password 
-                        allowClear/>
+                        <Input.Password
+                            allowClear />
                     </Form.Item>
                     <Form.Item
                         wrapperCol={{
@@ -470,7 +475,7 @@ const Login1 = (props) => {
                     </Form.Item>
                 </Form>
             </div>
-            
+
 
             <Spin tip="Loading..." spinning={isLoading}>
                 <div hidden={isLoginshow} className="container right-panel-active animated animate__fadeInDown">
@@ -479,17 +484,17 @@ const Login1 = (props) => {
                             <h2 className="form_tiitle animated fadeInDown">
                                 <CloseOutlined onClick={showLogin} className='closeSignUp' />
                                 Sign Up</h2>
-                          <div className='dddd'>
-                            <input type="text" onChange={(e) => { setUserNameRegister(e.target.value) }} placeholder="输入用户名" className="input" />
-                            <input type="password" onChange={(e) => { setPasswordRegister(e.target.value) }} placeholder="输入密码" className="input" />
-                            <input  onChange={(e) => { setRegisterEmail(e.target.value) }} placeholder="请输入邮箱" className="input" />
-                            <Input.Group compact>
+                            <div className='dddd'>
+                                <input type="text" onChange={(e) => { setUserNameRegister(e.target.value) }} placeholder="输入用户名" className="input" />
+                                <input type="password" onChange={(e) => { setPasswordRegister(e.target.value) }} placeholder="输入密码" className="input" />
+                                <input onChange={(e) => { setRegisterEmail(e.target.value) }} placeholder="请输入邮箱" className="input" />
+                                <Input.Group compact>
 
-    <input  onChange={(e) => { setEmailCode(e.target.value) }} placeholder="请输入验证码" className="input1" />
-    <Button onClick={sendcode} className='bt_sendcode' type="primary">发送</Button>
+                                    <input onChange={(e) => { setEmailCode(e.target.value) }} placeholder="请输入验证码" className="input1" />
+                                    <Button onClick={sendcode} className='bt_sendcode' type="primary">发送</Button>
 
-    </Input.Group>
-    </div>
+                                </Input.Group>
+                            </div>
 
                             <button onClick={checkRegister} className="btn">Sign Up</button>
                         </form>
@@ -497,7 +502,7 @@ const Login1 = (props) => {
 
 
                     <div className="container__form container--signin ">
-                    <CloseOutlined onClick={showLogin} className='closeSignIn' />
+                        <CloseOutlined onClick={showLogin} className='closeSignIn' />
 
                         <form action="#" className="form" id="form2">
                             <h2 className="form_title">

@@ -17,9 +17,9 @@ import {
     QuestionCircleOutlined
 } from '@ant-design/icons';
 // 帮助点进后的细节页
-const Detailed  = (props)=> {
+const Detailed = (props) => {
     // 不要加this
-    const id =props.match.params.id
+    const id = props.match.params.id
     const [articleTitle, setArticleTitle] = useState('')   //文章标题
     const [articleContent, setArticleContent] = useState('')  //markdown的编辑内容
     marked.setOptions({
@@ -38,7 +38,7 @@ const Detailed  = (props)=> {
     const getArticleById = () => {
         axios({
             method: 'get',
-            url: servicePath.getArticleById+id,
+            url: servicePath.getArticleById + id,
             // withCredentials: true,
             // header: { 'Access-Control-Allow-Origin': '*' }
         }).then(
@@ -61,19 +61,19 @@ const Detailed  = (props)=> {
             </div>
             <div id="detailed_div" >
                 <div className='bread'>
-                <Breadcrumb separator=">">
-                <Breadcrumb.Item ><Link to='/index/aboutus'>关于我们</Link></Breadcrumb.Item>
-                <Breadcrumb.Item>{articleTitle}</Breadcrumb.Item>
-              </Breadcrumb>
+                    <Breadcrumb separator=">">
+                        <Breadcrumb.Item ><Link to='/index/aboutus'>关于我们</Link></Breadcrumb.Item>
+                        <Breadcrumb.Item>{articleTitle}</Breadcrumb.Item>
+                    </Breadcrumb>
                 </div>
-            
+
                 <div>
                     <div className="detailed-title">
                         {articleTitle}
                     </div>
 
                     <div className="detailed-content"
-                        dangerouslySetInnerHTML={{ __html: html }}   
+                        dangerouslySetInnerHTML={{ __html: html }}
                     >
                     </div>
 
