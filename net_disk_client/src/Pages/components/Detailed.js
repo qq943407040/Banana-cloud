@@ -34,6 +34,7 @@ const Detailed  = (props)=> {
             return hljs.highlightAuto(code).value
         }
     })
+    // 通过id获取文章内容
     const getArticleById = () => {
         axios({
             method: 'get',

@@ -36,6 +36,7 @@ const All_files = () => {
     const props = {
         showUploadList: 'false'
       };
+    // 展示文件列表项
     const columns = [
         {
             title: '名称',
@@ -76,10 +77,12 @@ const All_files = () => {
               ),
         }
     ]
+    // 选择项更换时执行
     const onSelectChange = selectedRowKeys => {
         console.log('selectedRowKeys changed: ', selectedRowKeys);
         setSelectRowKeys(selectedRowKeys);
     };
+    // 表格行是否可以选择
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,

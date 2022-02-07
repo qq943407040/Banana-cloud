@@ -31,6 +31,7 @@ const { Header, Footer, Sider, Content } = Layout;
 const [username,setusername]=useState('请先登录')
 // 读取cookie查找用户是否存在
   useEffect(() => {
+    // todo:后端改完返回值后修改此处
     if(cookie.load("username")!=null){
       setusername("你好，"+cookie.load("username"))
       var btn1 = document.getElementById('bt1')
@@ -42,16 +43,20 @@ const [username,setusername]=useState('请先登录')
     }
     
 }, [])
+  // 跳转登录页面
   const toLogin=()=>{
     props.history.push('/login')
   }
+  // 登出功能
   const Login_out=()=>{
     cookie.remove("id");
     cookie.remove("username");
     props.history.push('/login')
   }
+  // 判断左侧item跳转页面
   const handclick = e => {
-    if (e.key == "all") {
+    if(sessionStorage.getItem("login_statu")){
+      if (e.key == "all") {
       props.history.push('/index/allfiles')
 
     }
@@ -64,7 +69,10 @@ const [username,setusername]=useState('请先登录')
     if (e.key == 'aboutus') {
       props.history.push('/index/aboutus')
     }
+    }
+    
   }
+  // 跳转个人信息页面
   const toIndividual=()=>{
     if(username=='请先登录')
     {
@@ -76,7 +84,7 @@ const [username,setusername]=useState('请先登录')
   }
 
   return (
-    <>
+    <div className='main_index'>
       <Layout style={{ minHeight: '100vh' }}>
         <Affix>
           <Sider width={'18vw'} className='sider'>
@@ -84,7 +92,7 @@ const [username,setusername]=useState('请先登录')
               <span >香蕉快传</span>
             </div>
             <div className='logo'> 
-            <Avatar size={160} src="https://octodex.github.com/images/minion.png" /></div>
+            <Avatar size={150} src="https://octodex.github.com/images/minion.png" /></div>
             {/* <span className='span1'> 预览</span> */}
             <Menu defaultSelectedKeys={['1']} mode="inline" className='sider_menu' onClick={handclick}>
               <Menu.Item key="usage" style={{ height: '7vh' }}>
@@ -134,7 +142,7 @@ const [username,setusername]=useState('请先登录')
           </Sider>
         </Affix>
 
-        <Layout className="site-layout">
+        <Layout className="site_layout">
           <Header className='header'  >
             <Row type="flex" justify="center">
               <Col xs={6} sm={6} md={8} lg={8} xl={8}>
@@ -165,7 +173,7 @@ const [username,setusername]=useState('请先登录')
           <Footer style={{ textAlign: 'center' }}>Bpan ©2021 Created by Bnuzer</Footer>
         </Layout>
       </Layout>
-    </>
+    </div>
   )
 }
 export default Main_index;

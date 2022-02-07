@@ -10,7 +10,7 @@ import {
 const Infor = () => {
     const [show, setshow] = useState('true')
     const [list, setList] = useState([])
-
+    // 获取通知列表
     const getList = () => {
         axios({
             method: 'get',

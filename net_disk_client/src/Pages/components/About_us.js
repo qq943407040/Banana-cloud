@@ -9,7 +9,7 @@ import axios from 'axios'
 import {
     QuestionCircleOutlined
 } from '@ant-design/icons';
-// 关于我们
+    // 关于我们
 const About_us = (props) => {
     const [list, setList] = useState([])
     // 获取帮助列表
@@ -26,10 +26,11 @@ const About_us = (props) => {
             }
         )
     }
+    // 初始化执行
     useEffect(() => {
         getList()
     }, [])
-
+    
     return (
         <div >
             <div className='d1'>

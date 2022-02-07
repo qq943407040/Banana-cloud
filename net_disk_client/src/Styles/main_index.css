@@ -1,9 +1,11 @@
+.main_index{
+}
 .sider{
-    background-color: rgb(230, 215, 153);
+    background-color: rgb(245, 223, 77);
     height: 100vh;
 }
 .sider_menu{
-    background-color: rgb(230, 215, 153);
+    background-color: rgb(245, 223, 77);
     margin-top: 10vh;
 
 }
@@ -40,9 +42,14 @@
     text-align: center;
     margin-top: 3vh;
 }
+.site_layout{
+    /* background-color: rgb(147, 149, 151); */
 
+}
 .header{
     background-color: rgb(240, 242, 245);
+    /* background-color: rgb(147, 149, 151); */
+
     position: relative;
     height: 14vh;
 }

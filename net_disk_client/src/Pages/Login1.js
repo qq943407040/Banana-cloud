@@ -6,7 +6,7 @@ import Path from '../config/api'
 import axios from 'axios'
 import cookie from "react-cookies";
 import 'animate.css'
-import { PlusOutlined, CloseCircleOutlined } from '@ant-design/icons'
+import { PlusOutlined, CloseCircleOutlined,CloseOutlined,LeftCircleTwoTone } from '@ant-design/icons'
 // import { Animated } from "react-animated-css";
 
 
@@ -17,7 +17,7 @@ const Login1 = (props) => {
     const { Search } = Input;
 
 
-
+    // 登录用户名密码
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -32,7 +32,7 @@ const Login1 = (props) => {
     const [passwordFind,setPasswordFind] = useState('')
     const [repasswordFind,setRepasswordFind] = useState('')
     
-// 注册
+    // 注册所需信息
     const [emailCode,setEmailCode] =useState('')
     const [trueEmailcode,setTrueEmailcode] = useState('')
     const [isCodeRight,setIsCodeRight] = useState(false)
@@ -45,7 +45,10 @@ const Login1 = (props) => {
     // 修改密码验证码是否通过
     const [isEmailCheck,setIsEmailCheck] = useState(false)
     const [isCodeCheck,setIsCodeCheck]=useState(false)
-
+    // 检测登录信息
+    function getHeaderTime() {
+        console.log(this.getResponseHeader("set-cookie"));
+      }
     const checkLogin = () => {
         setIsLoading(true)
         console.log(userName)
@@ -63,7 +66,7 @@ const Login1 = (props) => {
             return false
         }
         let dataProps = {
-            'userName': userName,
+            'email': userName,
             'password': password
         }
         axios({
@@ -73,24 +76,25 @@ const Login1 = (props) => {
                 // servicePath.checkuserLogin,
                 // 'http://47.107.95.82/tf/upload-static',
                 // 'http://47.107.108.95:7001/admin/checkLogin',
-                // 'http://47.107.95.82/banana/account-center/common/login',
+                '/banana/account-center/common/login',
                 // 'http://47.107.95.82/banana/account-center/common/register',
-                'http://47.107.95.82/banana/account-center/e-validate',
+                // 'http://47.107.95.82/banana/account-center/e-validate',
+                // '/banana/account-center/account/info/9',
             data: dataProps,
-            // header: { 'Access-Control-Allow-Origin': '*' },
+            header: { 'Access-Control-Allow-Origin': '*',
+            'Access-Control-Expose-Headers':'set-cookie' },
 
         }).then(
             res => {
                 setIsLoading(false)
-                if (res.data.data == '登录成功') {
-                    localStorage.setItem('openId', res.data.openId)
-                    let cookieTime = new Date(new Date().getTime + 24 * 3600 * 1000);
-                    cookie.save("id", res.data.list[0].id, { expires: cookieTime });
-                    cookie.save("username", res.data.list[0].userName, { expires: cookieTime });
-                    sessionStorage.setItem("data", "登陆成功")
+                if (res.data.id !=null) {
+                    // localStorage.setItem('openId', res.data.openId)
+                    // let cookieTime = new Date(new Date().getTime + 24 * 3600 * 1000);
+                    // cookie.save("id", res.data.list[0].id, { expires: cookieTime });
+                    // cookie.save("username", res.data.list[0].userName, { expires: cookieTime });
+                    sessionStorage.setItem("login_statu", "登陆成功")
                     props.history.push('/index')
-                    console.log(res.data)
-
+                    console.log(res)
                 } else {
                     message.error('用户名密码错误')
                     console.log(res.data)
@@ -114,7 +118,7 @@ const Login1 = (props) => {
         axios({
             method:'post',
             url: 
-             'http://47.107.95.82/banana/account-center/e-validate',
+             '/banana/account-center/e-validate',
             data: dataProps,
             // header: { 'Access-Control-Allow-Origin': '*' },
         }).then(res=>{
@@ -183,7 +187,7 @@ const Login1 = (props) => {
                 method: 'post',
                 url: 
                 // servicePath.checkuserRegister,
-                'http://47.107.95.82/banana/account-center/common/register',
+                '/banana/account-center/common/register',
                 data: dataProps,
                 header: { 'Access-Control-Allow-Origin': '*' },
 
@@ -207,6 +211,7 @@ const Login1 = (props) => {
             setIsLoading(false)
         }, 1000)
     }
+    // 初始化登录注册功能
     useEffect(() => {
         const signInBtn = document.getElementById("signIn");
         const signUpBtn = document.getElementById("signUp");
@@ -238,21 +243,24 @@ const Login1 = (props) => {
         }
 
     }
+    // 从接受文件组件转到上传组件
     const toUpload = () => {
         setIsUpshow(!isUpshow)
         setIsReshow(!isReshow)
 
     }
+    // 接受文件处回车执行功能
     function enterDown(e) {
         var evt = window.event || e;
         if (evt.keyCode == 13) {
             console.log('www')
         }
     }
+    // antd上传组件所需信息
     const propss = {
         name: 'file',
-        action: 'http://47.107.95.82/tf/upload-static',
-        header: { 'Access-Control-Allow-Origin': 'http://localhost:3000/' },
+        action: '/banana/tf/upload-static',
+        header: { 'Access-Control-Allow-Origin': '*' },
 
 
         onChange(info) {
@@ -266,15 +274,17 @@ const Login1 = (props) => {
             }
         },
     };
+    // 设置忘记密码处的视图逻辑
     const forgotPass = () => {
         setIsLoginshow(true)
         setIsForgetshow(false)
         setIsUpshow(true)
     }
+    // 上传成功
     const onFinish = (values) => {
         console.log('Success:', values);
     };
-
+    // 上传失败
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
@@ -290,6 +300,28 @@ const Login1 = (props) => {
 
         }
        
+    }
+    const showLogin = () => {
+        if (!isForgetshow) {
+            setIsUpshow(true)
+            setIsLoginshow(false)
+            setIsReshow(true)
+            setIsForgetshow(true)
+        }
+        else if (!isReshow) {
+            setIsLoginshow(false)
+            setIsUpshow(true)
+            setIsReshow(!isReshow)
+        }
+        else {
+            setIsLoginshow(!isLoginshow)
+            setIsUpshow(!isUpshow)
+            setIsReshow(true)
+            setIsForgetshow(true)
+        }
+
+
+
     }
     return (
         <div className='main_index'>
@@ -310,28 +342,7 @@ const Login1 = (props) => {
 
                     <Col offset={0} className='person_data' xs={8} sm={8} md={12} lg={12} xl={12}>
                         <div className='loginButton'>
-                            <Button onClick={() => {
-                                if (!isForgetshow) {
-                                    setIsUpshow(true)
-                                    setIsLoginshow(false)
-                                    setIsReshow(true)
-                                    setIsForgetshow(true)
-                                }
-                                else if (!isReshow) {
-                                    setIsLoginshow(false)
-                                    setIsUpshow(true)
-                                    setIsReshow(!isReshow)
-                                }
-                                else {
-                                    setIsLoginshow(!isLoginshow)
-                                    setIsUpshow(!isUpshow)
-                                    setIsReshow(true)
-                                    setIsForgetshow(true)
-                                }
-
-
-
-                            }}>注册/登录</Button>
+                            <Button onClick={showLogin}>注册/登录</Button>
                         </div>
                     </Col>
                 </Row>
@@ -365,7 +376,16 @@ const Login1 = (props) => {
 
             </div>
             <div hidden={isForgetshow} className='forget_div animated animate__fadeInUp'>
-                <h2 className='forgetTitle'>Forgot password</h2>
+                <h2 className='forgetTitle'>
+                    <Row>
+                        <Col span="3">
+                        <LeftCircleTwoTone onClick={showLogin} className='returntoLogin'/>
+                        </Col>
+                        <Col id='title' span="18">
+                        Forgot password
+                        </Col>
+                    </Row>
+                   </h2>
                 <Form
                     name="basic"
                     labelCol={{
@@ -440,9 +460,6 @@ const Login1 = (props) => {
                         <Input.Password 
                         allowClear/>
                     </Form.Item>
-
-
-
                     <Form.Item
                         wrapperCol={{
                             offset: 7,
@@ -459,7 +476,9 @@ const Login1 = (props) => {
                 <div hidden={isLoginshow} className="container right-panel-active animated animate__fadeInDown">
                     <div className="container__form container--signup">
                         <form action="#" className="form" id="form1">
-                            <h2 className="form_tiitle animated fadeInDown">Sign Up</h2>
+                            <h2 className="form_tiitle animated fadeInDown">
+                                <CloseOutlined onClick={showLogin} className='closeSignUp' />
+                                Sign Up</h2>
                           <div className='dddd'>
                             <input type="text" onChange={(e) => { setUserNameRegister(e.target.value) }} placeholder="输入用户名" className="input" />
                             <input type="password" onChange={(e) => { setPasswordRegister(e.target.value) }} placeholder="输入密码" className="input" />
@@ -478,8 +497,11 @@ const Login1 = (props) => {
 
 
                     <div className="container__form container--signin ">
+                    <CloseOutlined onClick={showLogin} className='closeSignIn' />
+
                         <form action="#" className="form" id="form2">
-                            <h2 className="form_title">Sign In</h2>
+                            <h2 className="form_title">
+                                Sign In</h2>
                             <input id='userName' onChange={(e) => { setUserName(e.target.value) }} placeholder="Username" className="input" />
                             <input id='password' type="password" onChange={(e) => { setPassword(e.target.value) }
                             } placeholder="Password" className="input" />

@@ -7,7 +7,7 @@ import { Breadcrumb } from 'antd';
 import {
     CloudUploadOutlined
   } from '@ant-design/icons';
-// 上传文件
+// 回收站
 const Upload_files = () => {
 
     return (

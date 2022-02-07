@@ -11,7 +11,7 @@ import {
     PlusOutlined,
     UserOutlined
 } from '@ant-design/icons';
-// 关于我们
+
 const Individual_infor = (props) => {
     // 个人信息
     const [username, setUsername] = useState('llxxyyy')
