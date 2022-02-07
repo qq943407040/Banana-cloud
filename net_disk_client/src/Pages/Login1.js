@@ -47,7 +47,7 @@ const Login1 = (props) => {
     const [isCodeCheck,setIsCodeCheck]=useState(false)
     // 检测登录信息
     function getHeaderTime() {
-        console.log(this.getResponseHeader("set-cookie"));
+        console.log(this.getResponseHeader("Set-cookie"));
       }
     const checkLogin = () => {
         setIsLoading(true)
@@ -97,7 +97,7 @@ const Login1 = (props) => {
                     console.log(res)
                 } else {
                     message.error('用户名密码错误')
-                    console.log(res.data)
+                    console.log(res)
 
                     props.history.push('/')
                 }
