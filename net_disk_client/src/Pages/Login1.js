@@ -23,8 +23,8 @@ const Login1 = (props) => {
     const [isLoading, setIsLoading] = useState(false)
 
     // 登录注册页面是否可见
-    const [isLoginshow, setIsLoginshow] = useState(true)
-    const [isUpshow, setIsUpshow] = useState(false)
+    const [isLoginshow, setIsLoginshow] = useState(false)
+    const [isUpshow, setIsUpshow] = useState(true)
     const [isReshow, setIsReshow] = useState(true)
     const [isForgetshow, setIsForgetshow] = useState(true)
     // 找回密码逻辑
@@ -45,6 +45,10 @@ const Login1 = (props) => {
     // 修改密码验证码是否通过
     const [isEmailCheck, setIsEmailCheck] = useState(false)
     const [isCodeCheck, setIsCodeCheck] = useState(false)
+
+    // 发送验证码按钮逻辑
+    const [btndisable, setBtndisable] = useState(false)
+    const [content, setContent] = useState('发送')
     // 检测登录信息
     function getHeaderTime() {
         console.log(this.getResponseHeader("Set-cookie"));
@@ -91,14 +95,14 @@ const Login1 = (props) => {
                 setIsLoading(false)
                 if (res.data.msg != '登录密码错误') {
                     var token = res.data.data.set_cookie.split(";")
-                    var token1 = token[0].replace(/p-token=/i,"")
-                    var expire = token[2].replace(/_expires=/i,"")  
-                    let cookieTime = new Date(new Date().getTime +expire);
-                    cookie.save("token",token1,{expires:cookieTime})
+                    var token1 = token[0].replace(/p-token=/i, "")
+                    var expire = token[2].replace(/_expires=/i, "")
+                    let cookieTime = new Date(new Date().getTime + expire);
+                    cookie.save("token", token1, { expires: cookieTime })
                     // console.log(cookie.load("token"))
                     // console.log(expire)
-                    cookie.save("user_id",res.data.data.id,cookieTime)
-                    axios.defaults.headers.common['Authorization'] = token1 ;
+                    cookie.save("user_id", res.data.data.id, cookieTime)
+                    axios.defaults.headers.common['Authorization'] = token1;
                     // sessionStorage.setItem("login_statu", "登陆成功")
                     props.history.push('/index')
                     console.log(res)
@@ -116,6 +120,8 @@ const Login1 = (props) => {
     }
     // 发送验证码
     const sendcode = () => {
+        let time = 60
+
         setIsLoading(true)
         let dataProps = {
             'email': registerEmail,
@@ -137,7 +143,20 @@ const Login1 = (props) => {
             }
             else {
                 message.success('验证码发送成功')
+                setInterval(() => {
+                    if (time > 0) {
+                        --time
+                        setContent(time)
+                        setBtndisable(true)
+                        console.log(time)
+                    }
+                    else {
+                        setContent('发送')
+                        setBtndisable(false)
+                        console.log(time)
 
+                    }
+                }, 1000)
             }
             console.log(res.data)
 
@@ -147,6 +166,8 @@ const Login1 = (props) => {
         setTimeout(() => {
             setIsLoading(false)
         }, 1000)
+
+
     }
     // 注册按钮
     const checkRegister = () => {
@@ -396,92 +417,92 @@ const Login1 = (props) => {
                         </Col>
                     </Row>
                 </h2>
-                <div                     className='form2'
->
-                <Form
-                    name="basic"
-                    labelCol={{
-                        span: 5,
-                    }}
-                    wrapperCol={{
-                        span: 16,
-                    }}
-                    initialValues={{
-                        remember: true,
-                    }}
-                    onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
-                    autoComplete="off"
-                    layout='horizontal'
+                <div className='form2'
                 >
-
-                    <Form.Item
-                        label="邮箱"
-                        name="email"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your email!',
-                            },
-                        ]}>
-                        <Search
-                            enterButton="发送"
-                            placeholder="input email text"
-                            allowClear
-                            onSearch={onSearch}
-                        />
-                    </Form.Item>
-
-                    <Form.Item
-                        label="验证码"
-                        name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your !',
-                            },
-                        ]}
-                    >
-                        <Input
-                            allowClear />
-                    </Form.Item>
-                    <Form.Item
-                        label="密码"
-                        name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your !',
-                            },
-                        ]}
-                    >
-                        <Input.Password
-                            allowClear />
-                    </Form.Item>
-                    <Form.Item
-                        label="确认密码"
-                        name="password"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your !',
-                            },
-                        ]}
-                    >
-                        <Input.Password
-                            allowClear />
-                    </Form.Item>
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 7,
-                            span: 10,
+                    <Form
+                        name="basic"
+                        labelCol={{
+                            span: 5,
                         }}
+                        wrapperCol={{
+                            span: 16,
+                        }}
+                        initialValues={{
+                            remember: true,
+                        }}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
+                        autoComplete="off"
+                        layout='horizontal'
                     >
-                        <button className='btn1' onClick={checkChange}>修改</button>
-                    </Form.Item>
-                </Form>
+
+                        <Form.Item
+                            label="邮箱"
+                            name="email"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your email!',
+                                },
+                            ]}>
+                            <Search
+                                enterButton="发送"
+                                placeholder="input email text"
+                                allowClear
+                                onSearch={onSearch}
+                            />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="验证码"
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your !',
+                                },
+                            ]}
+                        >
+                            <Input
+                                allowClear />
+                        </Form.Item>
+                        <Form.Item
+                            label="密码"
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your !',
+                                },
+                            ]}
+                        >
+                            <Input.Password
+                                allowClear />
+                        </Form.Item>
+                        <Form.Item
+                            label="确认密码"
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your !',
+                                },
+                            ]}
+                        >
+                            <Input.Password
+                                allowClear />
+                        </Form.Item>
+                        <Form.Item
+                            wrapperCol={{
+                                offset: 7,
+                                span: 10,
+                            }}
+                        >
+                            <button className='btn1' onClick={checkChange}>修改</button>
+                        </Form.Item>
+                    </Form>
                 </div>
-                
+
             </div>
 
 
@@ -492,15 +513,15 @@ const Login1 = (props) => {
                             <h2 className="form_title">
                                 <CloseOutlined onClick={showLogin} className='closeSignUp' />
                                 Sign Up</h2>
-                                <input type="text" onChange={(e) => { setUserNameRegister(e.target.value) }} placeholder="输入用户名" className="input" />
-                                <input type="password" onChange={(e) => { setPasswordRegister(e.target.value) }} placeholder="输入密码" className="input" />
-                                <input onChange={(e) => { setRegisterEmail(e.target.value) }} placeholder="请输入邮箱" className="input" />
-                                <Input.Group compact>
+                            <input type="text" onChange={(e) => { setUserNameRegister(e.target.value) }} placeholder="输入用户名" className="input" />
+                            <input type="password" onChange={(e) => { setPasswordRegister(e.target.value) }} placeholder="输入密码" className="input" />
+                            <input onChange={(e) => { setRegisterEmail(e.target.value) }} placeholder="请输入邮箱" className="input" />
+                            <Input.Group compact>
 
-                                    <input onChange={(e) => { setEmailCode(e.target.value) }} placeholder="请输入验证码" className="input1" />
-                                    <Button onClick={sendcode} className='bt_sendcode' type="primary">发送</Button>
+                                <input onChange={(e) => { setEmailCode(e.target.value) }} placeholder="请输入验证码" className="input1" />
+                                <Button onClick={sendcode} disabled={btndisable} className='bt_sendcode' type="primary">{content}</Button>
 
-                                </Input.Group>
+                            </Input.Group>
 
                             <button onClick={checkRegister} className="btn">Sign Up</button>
                         </form>
@@ -514,13 +535,13 @@ const Login1 = (props) => {
                             <h2 className="form_title">
                                 Sign In</h2>
                             <div className='input2'>
-                            <input id='userName' onChange={(e) => { setUserName(e.target.value) }} placeholder="Username" className="input" />
-                            <input id='password' type="password" onChange={(e) => { setPassword(e.target.value) }
-                            } placeholder="Password" className="input" />
-                            <p onClick={forgotPass}>Forgot your password?</p>
-                            <button onClick={checkLogin} className="btn">Sign In</button>
+                                <input id='userName' onChange={(e) => { setUserName(e.target.value) }} placeholder="Username" className="input" />
+                                <input id='password' type="password" onChange={(e) => { setPassword(e.target.value) }
+                                } placeholder="Password" className="input" />
+                                <p onClick={forgotPass}>Forgot your password?</p>
+                                <button onClick={checkLogin} className="btn">Sign In</button>
                             </div>
-                            
+
                         </form>
                     </div>
 
