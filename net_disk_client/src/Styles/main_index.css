@@ -1,4 +1,6 @@
+
 .main_index{
+    overflow: hidden;
 }
 .sider{
     background-color: rgb(245, 223, 77);
@@ -56,10 +58,11 @@
 /* header中个人信息样式 */
 .person_data{
     text-align: left;
+    
 }
 .person_data span{
     color:rgba(0, 0, 0, 0.863);
-    font-size: 2.2vh;
+    font-size: 2vh;
     cursor: pointer;
 }
 /* 通知样式 */
