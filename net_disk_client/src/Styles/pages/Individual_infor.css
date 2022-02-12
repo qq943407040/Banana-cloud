@@ -54,9 +54,10 @@
     width: 23vw;
     height: 5vh;
 }
-.form1{
+/* 修改信息表格 */
+.form11{
   margin-left: 1vw;
-  margin-top: 3vh;
+  margin-top: 5vh;
 }
 .pre_div{
     text-align: center;

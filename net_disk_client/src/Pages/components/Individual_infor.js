@@ -11,13 +11,15 @@ import {
     PlusOutlined,
     UserOutlined
 } from '@ant-design/icons';
+import cookie from "react-cookies";
+
 
 const Individual_infor = (props) => {
     // 个人信息
-    const [username, setUsername] = useState('llxxyyy')
-    const [email, setEmail] = useState('943407040@qq.com')
-    const [password, setPassword] = useState('qq123456')
-    const [repassword, setRepassword] = useState('qq123456')
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [repassword, setRepassword] = useState('')
 
     // 会员信息
     const [vip, setVip] = useState('普通会员')
@@ -38,18 +40,49 @@ const Individual_infor = (props) => {
             <div style={{ marginTop: 8 }}>Upload</div>
         </div>
     );
+    useEffect(() => {
+        // todo:后端改完返回值后修改此处
+        axios.defaults.headers.common['Authorization'] = cookie.load("token");
+        axios({
+            method: 'get',
+            url: '/banana/account-center/account/info/' + cookie.load("user_id"),
+        }).then(
+            res => {
+                console.log(res)
+                setUsername(res.data.data.name)
+                setEmail(res.data.data.email)
+            }
+        )
+      
+    }, [])
+    const get = ()=>{
+        axios.defaults.headers.common['Authorization'] = cookie.load("token");
+        axios({
+            method: 'get',
+            url: '/banana/account-center/account/info/' + cookie.load("user_id"),
+        }).then(
+            res => {
+                console.log(res)
+                setUsername(res.data.data.name)
+                setEmail(res.data.data.email)
+                console.log(username)
+                console.log(email)
+            }
+        )
+      
+    }
     return (
         <div >
             <div className='d1'>
                 <UserOutlined style={{ fontSize: '3vh' }} />
-                <span className='s1'>个人信息</span>
+                <span className='s1' onClick={get}>个人信息</span>
             </div>
             <div id="changeInfor_div" >
                 <div className='changeInfor'>
                     <span >修改个人信息</span>
                 </div>
                 <div>
-                    <div className='form1'>
+                    <div className='form11'>
                         <Form
                             name="basic"
                             labelCol={{
@@ -87,7 +120,7 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Input value={username} />
                             </Form.Item>
                             <Form.Item
                                 label="email"
@@ -99,7 +132,7 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input defaultValue={email} type='email' />
+                                <Input value={email} type='email' />
                             </Form.Item>
                             <Form.Item
                                 label="Password"
@@ -111,7 +144,7 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input.Password />
+                                <Input.Password value='' />
                             </Form.Item>
                             <Form.Item
                                 label="rePassword"

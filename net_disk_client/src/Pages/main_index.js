@@ -22,6 +22,7 @@ import Infor from './components/infor';
 import cookie from "react-cookies";
 import Individual_infor from './components/Individual_infor';
 import Test from './Test'
+import axios from 'axios';
 
 
 // 整体布局
@@ -32,8 +33,19 @@ const Main_index = (props) => {
   // 读取cookie查找用户是否存在
   useEffect(() => {
     // todo:后端改完返回值后修改此处
-    if (cookie.load("username") != null) {
-      setusername("你好，" + cookie.load("username"))
+    if (cookie.load("token") != null) {
+      axios.defaults.headers.common['Authorization'] = cookie.load("token");
+      axios({
+        method:'get',
+        url:'/banana/account-center/account/info/'+cookie.load("user_id"),
+
+      }).then(
+        res=>{
+          console.log(res)
+          setusername("你好，" + res.data.data.name)
+
+        }
+      )
       var btn1 = document.getElementById('bt1')
       btn1.style.display = "none"
     }
@@ -49,13 +61,19 @@ const Main_index = (props) => {
   }
   // 登出功能
   const Login_out = () => {
-    cookie.remove("id");
-    cookie.remove("username");
+    cookie.remove("user_id");
+    cookie.remove("token");
     props.history.push('/login')
+    axios({
+      method:'get',
+      url:'/banana/account-center/logout'
+    }).then(res=>{
+      console.log(res)
+    })
   }
   // 判断左侧item跳转页面
   const handclick = e => {
-    if (sessionStorage.getItem("login_statu")) {
+    if (cookie.load("token")!=null) {
       if (e.key == "all") {
         props.history.push('/index/allfiles')
 
@@ -147,10 +165,10 @@ const Main_index = (props) => {
               <Col xs={6} sm={6} md={8} lg={8} xl={8}>
                 <MenuOutlined style={{ color: 'rgba(0, 0, 0, 0.863)', fontSize: '3vh' }} />
               </Col>
-              <Col offset={0} className='infor' xs={8} sm={8} md={8} lg={13} xl={13}>
+              <Col offset={0} className='infor' xs={8} sm={8} md={8} lg={11} xl={11}>
                 <Infor></Infor>
               </Col>
-              <Col offset={0} className='person_data' xs={8} sm={8} md={8} lg={3} xl={3}>
+              <Col offset={0} className='person_data' xs={8} sm={8} md={8} lg={5} xl={5}>
                 <span onClick={toIndividual}>{username}</span>
               </Col>
             </Row>

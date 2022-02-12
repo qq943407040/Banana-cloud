@@ -83,18 +83,23 @@ const Login1 = (props) => {
             data: dataProps,
             header: {
                 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Expose-Headers': 'set-cookie'
+                // 'Access-Control-Expose-Headers': 'set-cookie'
             },
 
         }).then(
             res => {
                 setIsLoading(false)
                 if (res.data.msg != '登录密码错误') {
-                    // localStorage.setItem('openId', res.data.openId)
-                    // let cookieTime = new Date(new Date().getTime + 24 * 3600 * 1000);
-                    // cookie.save("id", res.data.list[0].id, { expires: cookieTime });
-                    // cookie.save("username", res.data.list[0].userName, { expires: cookieTime });
-                    sessionStorage.setItem("login_statu", "登陆成功")
+                    var token = res.data.data.set_cookie.split(";")
+                    var token1 = token[0].replace(/p-token=/i,"")
+                    var expire = token[2].replace(/_expires=/i,"")  
+                    let cookieTime = new Date(new Date().getTime +expire);
+                    cookie.save("token",token1,{expires:cookieTime})
+                    // console.log(cookie.load("token"))
+                    // console.log(expire)
+                    cookie.save("user_id",res.data.data.id,cookieTime)
+                    axios.defaults.headers.common['Authorization'] = token1 ;
+                    // sessionStorage.setItem("login_statu", "登陆成功")
                     props.history.push('/index')
                     console.log(res)
                 } else {
@@ -391,6 +396,8 @@ const Login1 = (props) => {
                         </Col>
                     </Row>
                 </h2>
+                <div                     className='form2'
+>
                 <Form
                     name="basic"
                     labelCol={{
@@ -405,7 +412,6 @@ const Login1 = (props) => {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
-                    className='form2'
                     layout='horizontal'
                 >
 
@@ -474,6 +480,8 @@ const Login1 = (props) => {
                         <button className='btn1' onClick={checkChange}>修改</button>
                     </Form.Item>
                 </Form>
+                </div>
+                
             </div>
 
 
@@ -481,10 +489,9 @@ const Login1 = (props) => {
                 <div hidden={isLoginshow} className="container right-panel-active animated animate__fadeInDown">
                     <div className="container__form container--signup">
                         <form action="#" className="form" id="form1">
-                            <h2 className="form_tiitle animated fadeInDown">
+                            <h2 className="form_title">
                                 <CloseOutlined onClick={showLogin} className='closeSignUp' />
                                 Sign Up</h2>
-                            <div className='dddd'>
                                 <input type="text" onChange={(e) => { setUserNameRegister(e.target.value) }} placeholder="输入用户名" className="input" />
                                 <input type="password" onChange={(e) => { setPasswordRegister(e.target.value) }} placeholder="输入密码" className="input" />
                                 <input onChange={(e) => { setRegisterEmail(e.target.value) }} placeholder="请输入邮箱" className="input" />
@@ -494,7 +501,6 @@ const Login1 = (props) => {
                                     <Button onClick={sendcode} className='bt_sendcode' type="primary">发送</Button>
 
                                 </Input.Group>
-                            </div>
 
                             <button onClick={checkRegister} className="btn">Sign Up</button>
                         </form>
@@ -504,14 +510,17 @@ const Login1 = (props) => {
                     <div className="container__form container--signin ">
                         <CloseOutlined onClick={showLogin} className='closeSignIn' />
 
-                        <form action="#" className="form" id="form2">
+                        <form action="#" className="form1" id="form2">
                             <h2 className="form_title">
                                 Sign In</h2>
+                            <div className='input2'>
                             <input id='userName' onChange={(e) => { setUserName(e.target.value) }} placeholder="Username" className="input" />
                             <input id='password' type="password" onChange={(e) => { setPassword(e.target.value) }
                             } placeholder="Password" className="input" />
-                            <span onClick={forgotPass}>Forgot your password?</span>
+                            <p onClick={forgotPass}>Forgot your password?</p>
                             <button onClick={checkLogin} className="btn">Sign In</button>
+                            </div>
+                            
                         </form>
                     </div>
 

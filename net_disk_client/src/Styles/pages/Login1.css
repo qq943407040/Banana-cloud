@@ -31,11 +31,7 @@ body {
 
 }
 
-.form__title {
-	font-weight: 300;
-	margin: 0;
-	margin-bottom: 1.25rem;
-}
+
 
 .link {
 	color: var(--gray);
@@ -173,6 +169,9 @@ body {
 .form>.btn {
 	margin-top: 1.5rem;
 }
+.input2>.btn {
+	margin-top: 1.5rem;
+}
 
 .btn:active {
 	transform: scale(0.95);
@@ -188,9 +187,21 @@ body {
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
+	/* padding: 0 3rem; */
+	height: 100%;
+	text-align: center;
+	/* margin-bottom: 10vh; */
+}
+.form1 {
+	background-color: var(--white);
+	display: flex;
+	align-items: center;
+	/* justify-content: center; */
+		flex-direction: column;
 	padding: 0 3rem;
 	height: 100%;
-	text-align: left;
+	text-align: center;
+	/* margin-top: 10vh;	 */
 	/* margin-bottom: 10vh; */
 }
 
@@ -209,11 +220,16 @@ body {
 	height: 8vh;
 	margin: 0.5rem 0;
 	width: 18vw;
-	padding-left: 1vw;
+	/* padding-left: 1vw; */
 	font-size: 1rem;
 }
+.input2{
+	margin-top: 6vh;
+	align-items: center;
+
+}
 .bt_sendcode{
-	background-color: var(--blue);
+	 background-color: var(--blue);
 	background-image: linear-gradient(90deg, var(--blue) 0%, var(--lightblue) 74%);
 	border-radius: 10px;
 	border: 1px solid var(--blue);
@@ -223,12 +239,12 @@ body {
 	font-weight: bold;
 	letter-spacing: 0.1rem;
 	text-transform: uppercase;
-	transition: transform 80ms ease-in;
-	height: 8vh;
+	transition: transform 80ms ease-in; 
 	margin-top: 0.5rem;
-	width: 5vw;
+	height: 8vh;
+	width:5vw;
 	margin-left:2vw;
-
+	margin-left: 2vw;
 }
 
 
@@ -409,9 +425,7 @@ body {
 .forget_div input{
 	/* margin-top: 3vh; */
 }
-.form2{
-	margin-top: 8vh;
-}
+
 .forget_div .btn1{
 	background-color: var(--blue);
 	background-image: linear-gradient(90deg, var(--blue) 0%, var(--lightblue) 74%);
@@ -430,7 +444,7 @@ body {
 .closeSignUp{
 	position: relative;
 	left: 16vw;
-	bottom: 5vh;
+	bottom: 7vh;
 	cursor: pointer;
 	/* margin-left: 20vw; */
 	font-size: 1.4rem;
@@ -450,4 +464,8 @@ body {
 	/* font-size: 1.4rem;
 	cursor: pointer; */
 	/* margin-right: 1vw; */
+}
+/* 修改页 */
+.form2{
+	margin-top: 8vh;
 }
