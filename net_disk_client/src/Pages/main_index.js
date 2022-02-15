@@ -47,6 +47,7 @@ const Main_index = (props) => {
           setusername("你好，" + res.data.data.name)
           cookie.save("email", res.data.data.email, { expires: cookieTime })
           cookie.save("user_name", res.data.data.name, cookieTime)
+          cookie.save("telephone",res.data.data.telephone,cookieTime)
         }
       )
       var btn1 = document.getElementById('bt1')

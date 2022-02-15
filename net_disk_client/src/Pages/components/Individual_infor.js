@@ -57,6 +57,7 @@ const Individual_infor = (props) => {
                 cookie.save('email',email)
                 setAvatar(res.data.data.avatar)
                 setId(res.data.data.id)
+                setPhone(res.data.data.telephone)
             }
         )
       
@@ -92,6 +93,7 @@ const Individual_infor = (props) => {
           'telephone':phone,
           'id':id,
           'avatar':avatar,
+          'signature':sign
       }
       axios({
           method:'post',
@@ -174,7 +176,7 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input defaultValue={cookie.load('user_id')} onChange={(e)=>{setPhone(e.target.value)}} />
+                                <Input defaultValue={cookie.load('telephone')} onChange={(e)=>{setPhone(e.target.value)}} />
                             </Form.Item>
                             <Form.Item
                                 label="sign"
