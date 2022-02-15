@@ -18,14 +18,17 @@ const Individual_infor = (props) => {
     // 个人信息
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [repassword, setRepassword] = useState('')
+    const [phone,setPhone] = useState('')
+    const [avatar,setAvatar] = useState('')
+    const [sign,setSign] =useState('')
+    const [id,setId] = useState(0)
 
     // 会员信息
     const [vip, setVip] = useState('普通会员')
     const [expirationTime, setExpirationTime] = useState('无')
     const [useSize, setUseSize] = useState('1G')
 
+    
     const onFinish = (values) => {
         console.log('Success:', values);
     };
@@ -51,31 +54,58 @@ const Individual_infor = (props) => {
                 console.log(res)
                 setUsername(res.data.data.name)
                 setEmail(res.data.data.email)
+                cookie.save('email',email)
+                setAvatar(res.data.data.avatar)
+                setId(res.data.data.id)
             }
         )
       
     }, [])
-    const get = ()=>{
-        axios.defaults.headers.common['Authorization'] = cookie.load("token");
-        axios({
-            method: 'get',
-            url: '/banana/account-center/account/info/' + cookie.load("user_id"),
-        }).then(
-            res => {
-                console.log(res)
-                setUsername(res.data.data.name)
-                setEmail(res.data.data.email)
-                console.log(username)
-                console.log(email)
+    // 上传头像地址
+    const propss = {
+        name: 'file',
+        action: '/banana/tf/upload-static',
+        header: { 'Access-Control-Allow-Origin': '*' },
+        maxCount:1,
+
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
             }
-        )
-      
-    }
+            if (info.file.status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully`);
+                setAvatar(info.file.response.data.file_str)
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        }
+        
+        
+    };
+  const get = ()=>{
+    console.log(avatar,username,phone,sign)
+
+  }
+  const submit = ()=>{
+      const dataProps = {
+          'name':username,
+          'telephone':phone,
+          'id':id,
+          'avatar':avatar,
+      }
+      axios({
+          method:'post',
+          url:'/banana/account-center/update',
+          data:dataProps
+      }).then(res=>{
+        console.log(res)
+      })
+  }
     return (
         <div >
             <div className='d1'>
                 <UserOutlined style={{ fontSize: '3vh' }} />
-                <span className='s1' onClick={get}>个人信息</span>
+                <span className='s1'onClick={get} >个人信息</span>
             </div>
             <div id="changeInfor_div" >
                 <div className='changeInfor'>
@@ -105,8 +135,8 @@ const Individual_infor = (props) => {
                                     name="avatar"
                                     listType="picture-card"
                                     className="avatar_uploader"
-                                    showUploadList={false}
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                                    showUploadList={true}
+                                    {...propss}
                                 >{imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
                                 </Upload>
                             </Form.Item>
@@ -120,7 +150,7 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input value={username} />
+                                <Input defaultValue={cookie.load('user_name')} onChange={(e)=>{setUsername(e.target.value)}}/>
                             </Form.Item>
                             <Form.Item
                                 label="email"
@@ -132,31 +162,31 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input value={email} type='email' />
+                                <Input defaultValue={cookie.load('email')} disabled={true} value={email} type='email' />
                             </Form.Item>
                             <Form.Item
-                                label="Password"
-                                name="password"
+                                label="phone"
+                                name="phone"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please input your password!',
+                                        message: 'Please input your phone!',
                                     },
                                 ]}
                             >
-                                <Input.Password value='' />
+                                <Input defaultValue={cookie.load('user_id')} onChange={(e)=>{setPhone(e.target.value)}} />
                             </Form.Item>
                             <Form.Item
-                                label="rePassword"
-                                name="repassword"
+                                label="sign"
+                                name="sign"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please re input your password!',
+                                        message: 'Please re input your sign!',
                                     },
                                 ]}
                             >
-                                <Input.Password defaultValue={repassword} />
+                                <Input onChange={(e)=>{setSign(e.target.value)}} />
                             </Form.Item>
                             <Form.Item
                                 wrapperCol={{
@@ -164,7 +194,7 @@ const Individual_infor = (props) => {
                                     span: 10,
                                 }}
                             >
-                                <Button className='bt_sub' type="primary" htmlType="submit">
+                                <Button className='bt_sub' type="primary" htmlType="submit" onClick={submit}>
                                     Submit
                                 </Button>
                             </Form.Item>

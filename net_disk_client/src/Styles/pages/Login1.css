@@ -51,7 +51,7 @@ body {
 	position: fixed;
 	width: 100%;
 	margin-left: 20vw;
-	margin-top: 0vh;
+	margin-top: -10vh;
 	text-align: left;
 }
 
@@ -285,6 +285,9 @@ body {
 
 .loginLogo {
 	margin-left: 3vw;
+	position: relative;
+	bottom: 8vh;
+	display: inline;
 }
 
 .loginLogo span {
@@ -303,7 +306,7 @@ body {
 	height: 5rem;
 	background-color: rgb(255, 255, 255);
 	border-radius: 5rem;
-	margin-top: 33vh;
+	margin-top: 23vh;
 	margin-left: 10vw;
 	line-height: 5rem;
 	/* white-space:nowrap; */

@@ -27,8 +27,9 @@ import axios from 'axios';
 
 // 整体布局
 const Main_index = (props) => {
-
   const { Header, Footer, Sider, Content } = Layout;
+  // 头像
+  const [avatar,setAvatar] = useState("https://octodex.github.com/images/minion.png")
   const [username, setusername] = useState('请先登录')
   // 读取cookie查找用户是否存在
   useEffect(() => {
@@ -36,14 +37,16 @@ const Main_index = (props) => {
     if (cookie.load("token") != null) {
       axios.defaults.headers.common['Authorization'] = cookie.load("token");
       axios({
-        method:'get',
-        url:'/banana/account-center/account/info/'+cookie.load("user_id"),
+        method: 'get',
+        url: '/banana/account-center/account/info/' + cookie.load("user_id"),
 
       }).then(
-        res=>{
+        res => {
           console.log(res)
+          let cookieTime = new Date(new Date().getTime + 3600*24*7);
           setusername("你好，" + res.data.data.name)
-
+          cookie.save("email", res.data.data.email, { expires: cookieTime })
+          cookie.save("user_name", res.data.data.name, cookieTime)
         }
       )
       var btn1 = document.getElementById('bt1')
@@ -65,15 +68,15 @@ const Main_index = (props) => {
     cookie.remove("token");
     props.history.push('/login')
     axios({
-      method:'get',
-      url:'/banana/account-center/logout'
-    }).then(res=>{
+      method: 'get',
+      url: '/banana/account-center/logout'
+    }).then(res => {
       console.log(res)
     })
   }
   // 判断左侧item跳转页面
   const handclick = e => {
-    if (cookie.load("token")!=null) {
+    if (cookie.load("token") != null) {
       if (e.key == "all") {
         props.history.push('/index/allfiles')
 
@@ -109,7 +112,7 @@ const Main_index = (props) => {
               <span >香蕉快传</span>
             </div>
             <div className='logo'>
-              <Avatar size={150} src="https://octodex.github.com/images/minion.png" /></div>
+              <Avatar size={150} src={avatar} /></div>
             {/* <span className='span1'> 预览</span> */}
             <Menu defaultSelectedKeys={['1']} mode="inline" className='sider_menu' onClick={handclick}>
               <Menu.Item key="usage" style={{ height: '7vh' }}>

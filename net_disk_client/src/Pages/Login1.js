@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Form, Checkbox, Card, Input, Icon, Button, Row, Col, Spin, message, Upload } from 'antd';
+import { Form, Checkbox, Card, Input, Icon, Button, Image, Row, Col, Spin, message, Upload } from 'antd';
 import '../Styles/pages/Login1.css'
 import servicePath from '../config/apiUrl';
 import Path from '../config/api'
@@ -50,9 +50,6 @@ const Login1 = (props) => {
     const [btndisable, setBtndisable] = useState(false)
     const [content, setContent] = useState('发送')
     // 检测登录信息
-    function getHeaderTime() {
-        console.log(this.getResponseHeader("Set-cookie"));
-    }
     const checkLogin = () => {
         setIsLoading(true)
         console.log(userName)
@@ -98,9 +95,10 @@ const Login1 = (props) => {
                     var token1 = token[0].replace(/p-token=/i, "")
                     var expire = token[2].replace(/_expires=/i, "")
                     let cookieTime = new Date(new Date().getTime + expire);
+                    if(cookie.load('token')!=null){
+                        cookie.remove('token')
+                    }
                     cookie.save("token", token1, { expires: cookieTime })
-                    // console.log(cookie.load("token"))
-                    // console.log(expire)
                     cookie.save("user_id", res.data.data.id, cookieTime)
                     axios.defaults.headers.common['Authorization'] = token1;
                     // sessionStorage.setItem("login_statu", "登陆成功")
@@ -369,12 +367,12 @@ const Login1 = (props) => {
             <div className='loginToptip'>
                 <Row type="flex" justify="center">
                     <Col xs={6} sm={6} md={12} lg={12} xl={12}>
-
-                        <div className='loginLogo '>
-                            <span key='sss' className='animated fadeInLeftBig'>
-                                香蕉快传
-                            </span>
-                        </div>
+                        <Image
+                            className='loginLogo'
+                            width={250}
+                            preview={false}
+                            src="http://47.107.95.82:9000/peach-static/香蕉_画板 1.png"
+                        />
                     </Col>
                     <Col offset={0} className='person_data' xs={8} sm={8} md={12} lg={12} xl={12}>
                         <div className='loginButton'>
@@ -472,7 +470,7 @@ const Login1 = (props) => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your !',
+                                    message: 'Please input your password!',
                                 },
                             ]}
                         >
@@ -485,7 +483,7 @@ const Login1 = (props) => {
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your !',
+                                    message: 'Please input your repassword !',
                                 },
                             ]}
                         >
