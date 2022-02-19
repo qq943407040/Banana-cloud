@@ -8,6 +8,10 @@ import servicePath from '../../config/apiUrl'
 import {
     DownloadOutlined
 } from '@ant-design/icons';
+import cookie from "react-cookies";
+import moment from 'moment';
+
+
 
 import {
     DesktopOutlined,
@@ -19,101 +23,162 @@ const All_files = () => {
     const [selectedRowKeys, setSelectRowKeys] = useState([])
     const [data, setData] = useState([])
     const getAllfiles = () => {
+        axios.defaults.headers.common['Authorization'] = cookie.load("token");
+        let dataprops = {
+            'sort_object': 1,
+            'sort_type': 2
+        }
         axios({
             method: 'get',
-            url: servicePath.getallfiles,
+            url:
+                '/banana/transfer/file-list',
+            // 'http://127.0.0.1:4523/mock/546121/allfiles',
+            params:
+                dataprops,
             withCredentials: true,
             header: { 'Access-Control-Allow-Origin': '*' }
         }).then(
             res => {
-                setData(res.data.data)
+                setData(res.data.data.file_object)
             }
         )
     }
     useEffect(() => {
         getAllfiles()
     }, [])
+
     const props = {
         showUploadList: 'false'
     };
-    // 展示文件列表项
-    const columns = [
-        {
-            title: '名称',
-            className: 'c1',
-            dataIndex: 'name',
-            key: 'name'
-        },
-        {
-            title: '类型',
-            className: 'c1',
-            dataIndex: 'type',
-            key: 'type'
-        },
+    
 
-        {
-            title: '大小',
-            className: 'c1',
-            dataIndex: 'size',
-            key: 'size',
-            sorter: (a, b) => a.size - b.size,
-        },
-        {
-            title: '上传时间',
-            className: 'c1',
-            dataIndex: 'upload_time',
-            key: 'upload_time'
-        },
-        {
-            title: '操作',
-            className: 'c1',
-            dataIndex: 'option',
-            key: 'option',
-            render: (text, record) => (
-                <Space size="middle">
-                    <a style={{ color: 'black' }}><DownloadOutlined style={{ fontSize: '2.4vh' }} /></a>
-                    <a style={{ color: 'black' }}><DeleteOutlined style={{ fontSize: '2.4vh' }} /></a>
-                </Space>
-            ),
+    const getfiles = () => {
+        console.log(data)
+
+        axios({
+            method: 'get',
+            url: '/banana/transfer/download',
+            params: {
+                fid: 3
+            },
+            responseType: 'blob'
+        })
+            .then(res => {
+                // 创建下载的链接
+             const url = window.URL.createObjectURL(new Blob([res.data],
+                 // 设置该文件的mime类型，这里对应的mime类型对应为.xlsx格式                          
+               {type: 'image/gif'}));               
+             const link = document.createElement('a');
+             link.href = url;
+             // 从header中获取服务端命名的文件名
+             const fileName = decodeURI(res.headers['filename']);
+             link.setAttribute('download', fileName);
+             document.body.appendChild(link);
+             link.click();
+           }).catch((error) => {
+                console.log(error)
+                alert('文件下载失败');
+    
+            });
+    
+            
+    }
+// 展示文件列表项
+const columns = [
+    {
+        title: '名称',
+        className: 'cc1',
+        dataIndex: 'file_name',
+        key: 'file_name',
+        render: (text, record) => {
+            return (
+                <>
+                    <a onClick={
+                        getfiles
+                        }>{text}</a>
+                </>
+            )
         }
-    ]
-    // 选择项更换时执行
-    const onSelectChange = selectedRowKeys => {
-        console.log('selectedRowKeys changed: ', selectedRowKeys);
-        setSelectRowKeys(selectedRowKeys);
-    };
-    // 表格行是否可以选择
-    const rowSelection = {
-        selectedRowKeys,
-        onChange: onSelectChange,
-    };
-    const hasSelected = selectedRowKeys.length > 0;
-    return (
-        <div >
-            <div className='d1'>
-                <DesktopOutlined style={{ fontSize: '3vh' }} />
-                <span className='s1'>全部文件</span>
+    },
+    {
+        title: '类型',
+        className: 'c1',
+        dataIndex: 'file_type',
+        key: 'file_type'
+    },
+
+    {
+        title: '大小',
+        className: 'c1',
+        dataIndex: 'size',
+        key: 'size',
+
+    },
+    {
+        title: '最后修改时间',
+        className: 'c1',
+        dataIndex: 'last_modified',
+        key: 'last_modified',
+        render: (text, record) => {
+
+            return (
+                <>
+                    {moment(text * 1000).format("YYYY-MM-DD HH:mm:ss")}
+                </>
+            )
+        }
+    },
+    {
+        title: '操作',
+        className: 'c1',
+        dataIndex: 'option',
+        key: 'option',
+        render: (text, record) => (
+            <Space size="middle">
+                <a style={{ color: 'black' }}><DownloadOutlined onClick={getfiles} style={{ fontSize: '2.4vh' }} /></a>
+                <a style={{ color: 'black' }}><DeleteOutlined style={{ fontSize: '2.4vh' }} /></a>
+            </Space>
+        ),
+    }
+]
+// 选择项更换时执行
+const onSelectChange = selectedRowKeys => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    setSelectRowKeys(selectedRowKeys);
+};
+// 表格行是否可以选择
+const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+};
+const hasSelected = selectedRowKeys.length > 0;
+return (
+    <div >
+        <div className='d1'>
+            <DesktopOutlined style={{ fontSize: '3vh' }} />
+            <span className='s1'>全部文件</span>
+        </div>
+
+        <div className='all_files'>
+            <div className='bread'>
+                <Breadcrumb >
+                    <Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item>
+                </Breadcrumb>
             </div>
+            <div>
+                <Row type="flex" justify="center">
+                    <Col xs={6} sm={6} md={12} lg={12} xl={12}>
+                        <Button className='new_dir' icon={<PlusOutlined />} size='large'>
+                            创建文件夹
+                        </Button>
+                    </Col>
 
-            <div className='all_files'>
-                <div className='bread'>
-                    <Breadcrumb >
-                        <Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item>
-                    </Breadcrumb>
-                </div>
-                <div>
-                    {/* <Row type="flex" justify="center"> */}
-                    {/* <Col xs={6} sm={6} md={8} lg={15} xl={15}> */}
-                    <Button className='new_dir' icon={<PlusOutlined />} size='large'>
-                        创建文件夹
-                    </Button>
-                    {/* </Col> */}
-
-                    {/* <Col offset={0} className='file_up' xs={8} sm={8} md={8} lg={3} xl={3}>
-                            <Upload className='up' {...props}>
-                                <Button type='primary'>上传文件</Button>
-                            </Upload>
-                        </Col>
+                    <Col offset={0} className='file_up' xs={8} sm={8} md={12} lg={12} xl={12}>
+                        <Upload className='up' {...props}>
+                            <Button type='primary'>上传文件</Button>
+                        </Upload>
+                    </Col>
+                    {/*
                         <Col offset={0} className='file_down' xs={8} sm={8} md={8} lg={3} xl={3}>
                             <Button type='primary'>下载文件</Button>
                         </Col>
@@ -121,24 +186,25 @@ const All_files = () => {
 
                             <Button type='primary'danger>删除文件</Button>
                         </Col> */}
-                    {/* </Row> */}
+                </Row>
 
-                </div>
-                <Table
-                    className='table1'
-                    rowSelection={rowSelection}
-                    dataSource={data}
-                    pagination={{
-                        onChange: page => {
-                            console.log(page);
-                        },
-                        pageSize: 6,
-                    }}
-                    columns={columns} />
             </div>
+            <Table
+                className='table1'
+                rowSelection={rowSelection}
+                dataSource={data}
+                ellipsis={true}
+                pagination={{
+                    onChange: page => {
+                        console.log(page);
+                    },
+                    pageSize: 6,
+                }}
+                columns={columns} />
         </div>
+    </div>
 
 
-    )
+)
 }
 export default All_files

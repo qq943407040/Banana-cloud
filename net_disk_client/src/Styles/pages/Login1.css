@@ -409,7 +409,7 @@ body {
 	height: 60vh;
 	background-color: #ffffff;
 	margin-left: 35vw;
-	margin-top: 12vh;
+	margin-top: 0vh;
 	text-align: center;
 	border-radius: 1vh;
 	padding-top: 1vh;
@@ -442,12 +442,13 @@ body {
 	padding: 0.9rem 4rem;
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
+	margin-top: 6vh;
 	/* margin-top: 3vh; */
 }
 .closeSignUp{
 	position: relative;
 	left: 16vw;
-	bottom: 7vh;
+	bottom: 6vh;
 	cursor: pointer;
 	/* margin-left: 20vw; */
 	font-size: 1.4rem;

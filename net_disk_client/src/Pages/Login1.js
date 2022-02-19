@@ -107,7 +107,6 @@ const Login1 = (props) => {
                 } else {
                     message.error('用户名密码错误')
                     console.log(res)
-                    props.history.push('/')
                 }
             }
         )

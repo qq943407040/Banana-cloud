@@ -157,14 +157,9 @@ const Individual_infor = (props) => {
                             <Form.Item
                                 label="email"
                                 name="email"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your email!',
-                                    },
-                                ]}
+                                
                             >
-                                <Input defaultValue={cookie.load('email')} disabled={true} value={email} type='email' />
+                                <Input defaultValue={cookie.load('email')}  disabled={true} value={email} type='email' />
                             </Form.Item>
                             <Form.Item
                                 label="phone"
@@ -210,7 +205,7 @@ const Individual_infor = (props) => {
                     <span >个人信息</span>
                 </div>
                 <div className='pre_div'>
-                    <Avatar size={100} src="https://octodex.github.com/images/minion.png" />
+                    <Avatar size={100} src={avatar} />
                     <p>{username}</p>
                     <p>{email}</p>
                 </div>

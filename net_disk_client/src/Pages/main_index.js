@@ -48,6 +48,7 @@ const Main_index = (props) => {
           cookie.save("email", res.data.data.email, { expires: cookieTime })
           cookie.save("user_name", res.data.data.name, cookieTime)
           cookie.save("telephone",res.data.data.telephone,cookieTime)
+          setAvatar(res.data.data.avatar)
         }
       )
       var btn1 = document.getElementById('bt1')
@@ -67,6 +68,9 @@ const Main_index = (props) => {
   const Login_out = () => {
     cookie.remove("user_id");
     cookie.remove("token");
+    cookie.remove("telephone");
+    cookie.remove("email");
+    cookie.remove("user_name");
     props.history.push('/login')
     axios({
       method: 'get',
