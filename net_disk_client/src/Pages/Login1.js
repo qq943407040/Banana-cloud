@@ -73,19 +73,8 @@ const Login1 = (props) => {
         axios({
             method: 'post',
             url:
-                // Path.checkuserLogin,
-                // servicePath.checkuserLogin,
-                // 'http://47.107.95.82/tf/upload-static',
-                // 'http://47.107.108.95:7001/admin/checkLogin',
                 '/banana/account-center/common/login',
-            // 'http://47.107.95.82/banana/account-center/common/register',
-            // 'http://47.107.95.82/banana/account-center/e-validate',
-            // '/banana/account-center/account/info/9',
             data: dataProps,
-            header: {
-                'Access-Control-Allow-Origin': '*',
-                // 'Access-Control-Expose-Headers': 'set-cookie'
-            },
 
         }).then(
             res => {
@@ -95,7 +84,7 @@ const Login1 = (props) => {
                     var token1 = token[0].replace(/p-token=/i, "")
                     var expire = token[2].replace(/_expires=/i, "")
                     let cookieTime = new Date(new Date().getTime + expire);
-                    if(cookie.load('token')!=null){
+                    if (cookie.load('token') != null) {
                         cookie.remove('token')
                     }
                     cookie.save("token", token1, { expires: cookieTime })

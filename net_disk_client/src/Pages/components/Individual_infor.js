@@ -58,6 +58,7 @@ const Individual_infor = (props) => {
                 setAvatar(res.data.data.avatar)
                 setId(res.data.data.id)
                 setPhone(res.data.data.telephone)
+                setSign(res.data.data.signature)
             }
         )
       
@@ -183,7 +184,7 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input onChange={(e)=>{setSign(e.target.value)}} />
+                                <Input defaultValue={cookie.load('signature')} onChange={(e)=>{setSign(e.target.value)}} />
                             </Form.Item>
                             <Form.Item
                                 wrapperCol={{
@@ -207,7 +208,7 @@ const Individual_infor = (props) => {
                 <div className='pre_div'>
                     <Avatar size={100} src={avatar} />
                     <p>{username}</p>
-                    <p>{email}</p>
+                    <p style={{fontSize:'1.1rem'}}>{sign}</p>
                 </div>
             </div>
             <div id='vip_div'>

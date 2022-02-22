@@ -48,6 +48,7 @@ const Main_index = (props) => {
           cookie.save("email", res.data.data.email, { expires: cookieTime })
           cookie.save("user_name", res.data.data.name, cookieTime)
           cookie.save("telephone",res.data.data.telephone,cookieTime)
+          cookie.save("signature",res.data.data.signature,cookieTime)
           setAvatar(res.data.data.avatar)
         }
       )

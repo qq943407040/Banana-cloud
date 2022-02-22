@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Table, Radio, Breadcrumb, Button, Row, Col, Upload, Space } from 'antd';
+import { Table,message, Radio, Breadcrumb, Button, Row, Col, Upload, Space } from 'antd';
 import '../../Styles/pages/all_files.css'
 import '../../Styles/header.css'
 import axios from 'axios'
@@ -23,7 +23,6 @@ const All_files = () => {
     const [selectedRowKeys, setSelectRowKeys] = useState([])
     const [data, setData] = useState([])
     const getAllfiles = () => {
-        axios.defaults.headers.common['Authorization'] = cookie.load("token");
         let dataprops = {
             'sort_object': 1,
             'sort_type': 2
@@ -39,15 +38,34 @@ const All_files = () => {
             header: { 'Access-Control-Allow-Origin': '*' }
         }).then(
             res => {
-                setData(res.data.data.file_object)
+                console.log(res)
+                setData(res.data.data.file_object,res.data.data.dir_object)
             }
         )
     }
     useEffect(() => {
+        axios.defaults.headers.common['Authorization'] = cookie.load("token");
+
         getAllfiles()
     }, [])
 
     const props = {
+        name: 'file',
+        action: '/banana/tf/upload',
+        headers:{"Authorization":cookie.load('token')},
+        maxCount:1,
+
+        onChange(info) {
+            if (info.file.status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (info.file.status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully`);
+            } else if (info.file.status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        
         showUploadList: 'false'
     };
     
@@ -59,7 +77,7 @@ const All_files = () => {
             method: 'get',
             url: '/banana/transfer/download',
             params: {
-                fid: 3
+                fid: 9
             },
             responseType: 'blob'
         })
@@ -67,7 +85,7 @@ const All_files = () => {
                 // 创建下载的链接
              const url = window.URL.createObjectURL(new Blob([res.data],
                  // 设置该文件的mime类型，这里对应的mime类型对应为.xlsx格式                          
-               {type: 'image/gif'}));               
+               {type: 'application/zip'}));               
              const link = document.createElement('a');
              link.href = url;
              // 从header中获取服务端命名的文件名
