@@ -26,7 +26,7 @@ const Individual_infor = (props) => {
     // 会员信息
     const [vip, setVip] = useState('普通会员')
     const [expirationTime, setExpirationTime] = useState('无')
-    const [useSize, setUseSize] = useState('1G')
+    const [useSize, setUseSize] = useState('')
 
     
     const onFinish = (values) => {
@@ -61,7 +61,15 @@ const Individual_infor = (props) => {
                 setSign(res.data.data.signature)
             }
         )
-      
+        axios({
+            method: 'get',
+            url: '/banana/transfer/census/',
+        }).then(
+            res => {
+                console.log(res)
+                setUseSize(res.data.data.usage.use_str)
+            }
+        )
     }, [])
     // 上传头像地址
     const propss = {
@@ -153,14 +161,14 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input defaultValue={cookie.load('user_name')} onChange={(e)=>{setUsername(e.target.value)}}/>
+                                <Input value={cookie.load('user_name')} defaultValue={cookie.load('user_name')} onChange={(e)=>{setUsername(e.target.value)}}/>
                             </Form.Item>
                             <Form.Item
                                 label="email"
                                 name="email"
                                 
                             >
-                                <Input defaultValue={cookie.load('email')}  disabled={true} value={email} type='email' />
+                                <Input   defaultValue={cookie.load('email')}  disabled={true} value={email} type='email' />
                             </Form.Item>
                             <Form.Item
                                 label="phone"
@@ -172,7 +180,7 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input defaultValue={cookie.load('telephone')} onChange={(e)=>{setPhone(e.target.value)}} />
+                                <Input value={cookie.load('telephone')} defaultValue={cookie.load('telephone')} onChange={(e)=>{setPhone(e.target.value)}} />
                             </Form.Item>
                             <Form.Item
                                 label="sign"
@@ -184,7 +192,7 @@ const Individual_infor = (props) => {
                                     },
                                 ]}
                             >
-                                <Input defaultValue={cookie.load('signature')} onChange={(e)=>{setSign(e.target.value)}} />
+                                <Input value={cookie.load('signature')} defaultValue={cookie.load('signature')} onChange={(e)=>{setSign(e.target.value)}} />
                             </Form.Item>
                             <Form.Item
                                 wrapperCol={{
@@ -219,7 +227,7 @@ const Individual_infor = (props) => {
                     <Card bordered={false}>
                         <p>会员信息:{vip}</p>
                         <p>到期时间:{expirationTime}</p>
-                        <p>我的容量:{useSize}/10G</p>
+                        <p>我的容量:{useSize}</p>
                     </Card>
                 </div>
             </div>

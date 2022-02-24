@@ -87,8 +87,9 @@ const Login1 = (props) => {
                     if (cookie.load('token') != null) {
                         cookie.remove('token')
                     }
-                    cookie.save("token", token1, { expires: cookieTime })
-                    cookie.save("user_id", res.data.data.id, cookieTime)
+                    // sessionStorage.setItem("token",token1)
+                    cookie.save("token", token1, { expires: cookieTime,path:'/' })
+                    cookie.save("user_id", res.data.data.id,  { expires: cookieTime,path:'/' })
                     axios.defaults.headers.common['Authorization'] = token1;
                     // sessionStorage.setItem("login_statu", "登陆成功")
                     props.history.push('/index')
@@ -525,7 +526,7 @@ const Login1 = (props) => {
                                 <input id='password' type="password" onChange={(e) => { setPassword(e.target.value) }
                                 } placeholder="Password" className="input" />
                                 <p onClick={forgotPass}>Forgot your password?</p>
-                                <button onClick={checkLogin} className="btn">Sign In</button>
+                                <button onClick={()=>checkLogin()} className="btn">Sign In</button>
                             </div>
 
                         </form>

@@ -1,38 +1,52 @@
-import React, { Component, useState,useEffect,useMemo } from 'react'
+import React, { Component, useState, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import '../../Styles/pages/Usage.css'
 import '../../Styles/header.css'
 import * as echarts from 'echarts';
 import axios from 'axios'
+import cookie from "react-cookies";
 
 import {
     PieChartOutlined
 } from '@ant-design/icons';
 // 使用情况页面
 const Usage = (props) => {
-    
+
     const [list, setList] = useState([])
     const [list1, setList1] = useState([])
+    const [list2,setList2] = useState([])
     useEffect(()=>{
-        // 需要在 componentDidMount 执行的内容
         getList();
-      }, [])
-    const getList = ()=>{
-            axios({
-                method: 'get',
-                url: 'http://rap2api.taobao.org/app/mock/296818/infor',
-            }).then(
-                res => {    
-                    setList(res.data.file_type)
-                    setList1(res.data.data1)
-                }
-            )     
-        }
-          useEffect(() => {
-            getchart();
-          },[list1])
-    const getchart=()=>{
+    },[])
+    const getList = () => {
+        axios.defaults.headers.common['Authorization'] = cookie.load("token");
+
+        axios({
+            method: 'get',
+            url:
+            '/banana/transfer/census/'
+            // 'http://rap2api.taobao.org/app/mock/296818/infor',
+        }).then(
+            res => {
+                console.log(res)
+                setList(res.data.data.file_ratio)
+                // setList(res.data.file_type)
+                setList1(res.data.data.top_ten.name)
+                setList2(res.data.data.top_ten.value)
+            }
+        )
+    }
+    useEffect(() => {
+       
+        getchart();
+    }, [list1,list2])
+    const aaa = () => {
+        console.log(list, list1)
+    }
+    const getchart = () => {
         
+
+
         var option = {
             title: {
                 text: '文件使用情况',
@@ -49,14 +63,14 @@ const Usage = (props) => {
                 {
                     type: 'pie',
                     radius: '60%',
-                     data: 
-                    //     {
-                    //         value: 50, name: '文档'
-                    //     },
-                    //     {
-                    //         value: 15, name: '文s'
-                    //     }
-                    // ]
+                    data:
+                        // [
+                        //     { name: 'img', value: 1 },
+                        //     { name: 'audio', value: 1 },
+                        //     { name: 'video', value: 1 },
+                        //     { name: 'doc', value: 4 },
+                        //     { name: 'other', value: 10 }
+                        // ]
                     list
                     ,
                     emphasis: {
@@ -77,7 +91,7 @@ const Usage = (props) => {
         // 柱状图，文件下载量top5   
         var option1 = {
             title: {
-                text: '文件下载量top5',
+                text: '文件下载量top10',
                 left: 'center',
 
             },
@@ -85,13 +99,14 @@ const Usage = (props) => {
                 trigger: 'item'
             },
             xAxis: {
-                data: ['文件1', '文件2', '文件3', '文件4', '文件5']
+                type: 'category',
+                data: list1
             },
             yAxis: {},
             series: [
                 {
                     type: 'bar',
-                    data: list1,
+                    data: list2,
                     itemStyle: {
                         borderType: 'solid',
 
@@ -105,15 +120,15 @@ const Usage = (props) => {
         window.onresize = function () {
             mychart1.resize();
         };
-        
+
     }
-    
-  
+
+
     return (
         <div >
-            <div  className='d1'>
+            <div className='d1'>
                 <PieChartOutlined style={{ fontSize: '3vh' }} />
-                <span className='s1'>使用情况</span>
+                <span className='s1' onClick={aaa}>使用情况</span>
             </div>
 
             <div id="d1" >

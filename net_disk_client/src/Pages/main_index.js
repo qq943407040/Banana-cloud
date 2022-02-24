@@ -15,7 +15,8 @@ import {
 } from '@ant-design/icons';
 import Usage from './components/Usage';
 import All_files from './components/All_files';
-import Upload_files from './components/Upload_files';
+import All_file from './components/All_file';
+import recycle_bin from './components/recycle_bin';
 import About_us from './components/About_us';
 import Detailed from './components/Detailed';
 import Infor from './components/infor';
@@ -34,8 +35,15 @@ const Main_index = (props) => {
   // 读取cookie查找用户是否存在
   useEffect(() => {
     // todo:后端改完返回值后修改此处
-    if (cookie.load("token") != null) {
-      axios.defaults.headers.common['Authorization'] = cookie.load("token");
+    if (
+      cookie.load("token") != null
+      // sessionStorage.getItem("token")
+    ) {
+      axios.defaults.headers.common['Authorization'] = 
+      cookie.load("token")
+      // sessionStorage.getItem("token")
+
+      ;
       axios({
         method: 'get',
         url: '/banana/account-center/account/info/' + cookie.load("user_id"),
@@ -45,10 +53,10 @@ const Main_index = (props) => {
           console.log(res)
           let cookieTime = new Date(new Date().getTime + 3600*24*7);
           setusername("你好，" + res.data.data.name)
-          cookie.save("email", res.data.data.email, { expires: cookieTime })
-          cookie.save("user_name", res.data.data.name, cookieTime)
-          cookie.save("telephone",res.data.data.telephone,cookieTime)
-          cookie.save("signature",res.data.data.signature,cookieTime)
+          cookie.save("email", res.data.data.email, { expires: cookieTime,path:'/' })
+          cookie.save("user_name", res.data.data.name, { expires: cookieTime,path:'/' })
+          cookie.save("telephone",res.data.data.telephone,{ expires: cookieTime,path:'/' })
+          cookie.save("signature",res.data.data.signature,{ expires: cookieTime,path:'/' })
           setAvatar(res.data.data.avatar)
         }
       )
@@ -67,11 +75,13 @@ const Main_index = (props) => {
   }
   // 登出功能
   const Login_out = () => {
-    cookie.remove("user_id");
-    cookie.remove("token");
-    cookie.remove("telephone");
-    cookie.remove("email");
-    cookie.remove("user_name");
+    cookie.remove("user_id",{path:'/'});
+    cookie.remove("token",{path:'/'})
+    cookie.remove("telephone",{path:'/'});
+    cookie.remove("email",{path:'/'});
+    cookie.remove("user_name",{path:'/'});
+    cookie.remove("signature",{path:'/'});
+    // sessionStorage.removeItem("token")
     props.history.push('/login')
     axios({
       method: 'get',
@@ -155,7 +165,7 @@ const Main_index = (props) => {
             <div className='button'>
               <Button id='bt' className='button_out'
                 type="primary" shape="round" icon={<LogoutOutlined />} danger
-                onClick={Login_out}>
+                onClick={()=>Login_out()}>
                 <span>退出登录</span>
               </Button>
               <Button id='bt1' className='button_out'
@@ -186,8 +196,8 @@ const Main_index = (props) => {
             <div>
               {/* <Redirect path="/index/" to="/index/usage" /> */}
               <Route path="/index/usage" component={Usage} />
-              <Route path="/index/allfiles" component={All_files} />
-              <Route path="/index/upload" component={Upload_files} />
+              <Route path="/index/allfiles" component={All_file} />
+              <Route path="/index/upload" component={recycle_bin} />
               <Route path="/index/aboutus" component={About_us} />
               <Route path="/index/detailed/:id" component={Detailed} />
               <Route path="/index/individual" component={Individual_infor} />
