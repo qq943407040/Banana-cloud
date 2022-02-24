@@ -4,6 +4,6 @@
 登录页
 ![image](https://user-images.githubusercontent.com/58356486/155509979-00fd2fd4-c3a0-44ea-b7bb-8bbe9e02ea9a.png)
 使用情况页
-![image](https://user-images.githubusercontent.com/58356486/155510246-85c810c5-58ce-49ce-87b3-880ad753242a.png)
+![image](https://user-images.githubusercontent.com/58356486/155510366-0f410024-fd67-4ccd-a78c-3e93bb659b74.png)
 文件页
-![Uploading image.png…]()
+![image](https://user-images.githubusercontent.com/58356486/155510480-8d805cfe-9bce-4546-b613-93828646a53e.png)
