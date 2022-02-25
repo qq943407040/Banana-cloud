@@ -1,4 +1,5 @@
 # Banana-cloud
+香蕉网盘的前端部分，使用了react框架
 主页
 ![image](https://user-images.githubusercontent.com/58356486/155509802-d0a31f10-f7fe-4a13-8a77-2ef52ec412f1.png)
 登录页
