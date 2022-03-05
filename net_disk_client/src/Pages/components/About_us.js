@@ -16,8 +16,7 @@ const About_us = (props) => {
     const getList = () => {
         axios({
             method: 'get',
-            url: servicePath.getArticleList,
-            withCredentials: true,
+            url: 'http://127.0.0.1:7001/admin/getArticleList',
             header: { 'Access-Control-Allow-Origin': '*' }
         }).then(
             res => {

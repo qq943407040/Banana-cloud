@@ -12,6 +12,7 @@ import {
     UserOutlined
 } from '@ant-design/icons';
 import cookie from "react-cookies";
+import GoEasy from 'goeasy';
 
 
 const Individual_infor = (props) => {
@@ -43,6 +44,21 @@ const Individual_infor = (props) => {
             <div style={{ marginTop: 8 }}>Upload</div>
         </div>
     );
+    var goeasy = new GoEasy({
+        host: 'hangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
+        appkey: "BC-3a285b6a743a4b46a98ca45ede3cce13", //替换为您的应用appkey
+        modules: ['pubsub'],
+        onConnected: function () {
+            console.log('连接成功！')
+        },
+        onDisconnected: function () {
+            console.log('连接断开！')
+        },
+        onConnectFailed: function (error) {
+            console.log('连接失败或错误！')
+        }
+    });
+    var pubsub = goeasy.pubsub;
     useEffect(() => {
         // todo:后端改完返回值后修改此处
         axios.defaults.headers.common['Authorization'] = cookie.load("token");
@@ -54,7 +70,6 @@ const Individual_infor = (props) => {
                 console.log(res)
                 setUsername(res.data.data.name)
                 setEmail(res.data.data.email)
-                cookie.save('email',email)
                 setAvatar(res.data.data.avatar)
                 setId(res.data.data.id)
                 setPhone(res.data.data.telephone)
@@ -93,7 +108,31 @@ const Individual_infor = (props) => {
         
     };
   const get = ()=>{
-    console.log(avatar,username,phone,sign)
+    goeasy.connect({
+        id: "001", //pubsub选填，im必填，最大长度60字符
+        data: { "avatar": "/www/xxx.png", "nickname": "Neo" }, //必须是一个对象，pubsub选填，im必填，最大长度300字符，用于上下线提醒和查询在线用户列表时，扩展更多的属性
+        onSuccess: function () {  //连接成功
+            console.log("GoEasy connect successfully.") //连接成功
+        },
+        onFailed: function (error) { //连接失败
+            console.log("Failed to connect GoEasy, code:" + error.code + ",error:" + error.content);
+        },
+        onProgress: function (attempts) { //连接或自动重连中
+            console.log("GoEasy is connecting", attempts);
+        }
+    })
+   
+    pubsub.publish({
+        channel: "my_channel",//替换为您自己的channel
+        message: "Hello GoEasy!",//替换为您想要发送的消息内容
+        onSuccess:function(){
+            console.log("消息发布成功。");
+        },
+        onFailed: function (error) {
+            console.log("消息发送失败，错误编码："+error.code+" 错误信息："+error.content);
+        }
+    });
+    
 
   }
   const submit = ()=>{
@@ -109,6 +148,12 @@ const Individual_infor = (props) => {
           url:'/banana/account-center/update',
           data:dataProps
       }).then(res=>{
+        if(res.data.msg=='ok'){
+            message.success('修改成功')
+        }
+        else{
+            message.error('修改失败')
+        }
         console.log(res)
       })
   }
@@ -168,7 +213,7 @@ const Individual_infor = (props) => {
                                 name="email"
                                 
                             >
-                                <Input   defaultValue={cookie.load('email')}  disabled={true} value={email} type='email' />
+                                <Input   defaultValue={cookie.load('email',{path:'/'})}  disabled={true}  type='email' />
                             </Form.Item>
                             <Form.Item
                                 label="phone"

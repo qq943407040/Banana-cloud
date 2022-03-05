@@ -10,6 +10,10 @@ import {
     PieChartOutlined
 } from '@ant-design/icons';
 // 使用情况页面
+
+
+
+
 const Usage = (props) => {
 
     const [list, setList] = useState([])
@@ -25,7 +29,6 @@ const Usage = (props) => {
             method: 'get',
             url:
             '/banana/transfer/census/'
-            // 'http://rap2api.taobao.org/app/mock/296818/infor',
         }).then(
             res => {
                 console.log(res)
@@ -45,8 +48,6 @@ const Usage = (props) => {
     }
     const getchart = () => {
         
-
-
         var option = {
             title: {
                 text: '文件使用情况',

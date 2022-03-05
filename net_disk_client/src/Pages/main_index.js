@@ -14,7 +14,6 @@ import {
   QuestionCircleOutlined
 } from '@ant-design/icons';
 import Usage from './components/Usage';
-import All_files from './components/All_files';
 import All_file from './components/All_file';
 import recycle_bin from './components/recycle_bin';
 import About_us from './components/About_us';
@@ -39,10 +38,7 @@ const Main_index = (props) => {
       cookie.load("token") != null
       // sessionStorage.getItem("token")
     ) {
-      axios.defaults.headers.common['Authorization'] = 
-      cookie.load("token")
-      // sessionStorage.getItem("token")
-
+      axios.defaults.headers.common['Authorization'] = cookie.load("token")
       ;
       axios({
         method: 'get',
@@ -100,8 +96,8 @@ const Main_index = (props) => {
       if (e.key == 'usage') {
         props.history.push('/index/usage')
       }
-      if (e.key == "upload") {
-        props.history.push('/index/upload')
+      if (e.key == "recycle_bin") {
+        props.history.push('/index/recycle_bin')
       }
       if (e.key == 'aboutus') {
         props.history.push('/index/aboutus')
@@ -144,7 +140,7 @@ const Main_index = (props) => {
                     全部文件
                   </span></div>
               </Menu.Item>
-              <Menu.Item key="upload" style={{ height: '7vh' }}>
+              <Menu.Item key="recycle_bin" style={{ height: '7vh' }}>
                 <div><CloudUploadOutlined style={{ fontSize: '3vh' }} />
                   <span className='span2'>回收站</span>
                 </div>
@@ -184,10 +180,10 @@ const Main_index = (props) => {
               <Col xs={6} sm={6} md={8} lg={8} xl={8}>
                 <MenuOutlined style={{ color: 'rgba(0, 0, 0, 0.863)', fontSize: '3vh' }} />
               </Col>
-              <Col offset={0} className='infor' xs={8} sm={8} md={8} lg={11} xl={11}>
+              <Col offset={0} className='infor' xs={8} sm={8} md={8} lg={12} xl={12}>
                 <Infor></Infor>
               </Col>
-              <Col offset={0} className='person_data' xs={8} sm={8} md={8} lg={5} xl={5}>
+              <Col offset={0} className='person_data' xs={8} sm={8} md={8} lg={4} xl={4}>
                 <span onClick={toIndividual}>{username}</span>
               </Col>
             </Row>
@@ -197,7 +193,7 @@ const Main_index = (props) => {
               {/* <Redirect path="/index/" to="/index/usage" /> */}
               <Route path="/index/usage" component={Usage} />
               <Route path="/index/allfiles" component={All_file} />
-              <Route path="/index/upload" component={recycle_bin} />
+              <Route path="/index/recycle_bin" component={recycle_bin} />
               <Route path="/index/aboutus" component={About_us} />
               <Route path="/index/detailed/:id" component={Detailed} />
               <Route path="/index/individual" component={Individual_infor} />

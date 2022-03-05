@@ -1,12 +1,14 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Form, Checkbox, Card, Input, Icon, Button, Image, Row, Col, Spin, message, Upload } from 'antd';
+import { Menu,Tooltip,Dropdown, Form, Checkbox,Result, Card, Input, Icon, Select, Button, Image, Row, Col, Modal, Spin, Progress, message, Upload } from 'antd';
 import '../Styles/pages/Login1.css'
 import servicePath from '../config/apiUrl';
 import Path from '../config/api'
 import axios from 'axios'
 import cookie from "react-cookies";
 import 'animate.css'
-import { PlusOutlined, CloseCircleOutlined, CloseOutlined, LeftCircleTwoTone } from '@ant-design/icons'
+import { PlusOutlined, EditOutlined, CloseCircleOutlined, CloseOutlined, LeftCircleTwoTone } from '@ant-design/icons'
+import copy from 'copy-to-clipboard';
+import moment from 'moment';
 // import { Animated } from "react-animated-css";
 
 
@@ -23,10 +25,12 @@ const Login1 = (props) => {
     const [isLoading, setIsLoading] = useState(false)
 
     // 登录注册页面是否可见
-    const [isLoginshow, setIsLoginshow] = useState(false)
-    const [isUpshow, setIsUpshow] = useState(true)
+    const [isLoginshow, setIsLoginshow] = useState(true)
+    const [isUpshow, setIsUpshow] = useState(false)
     const [isReshow, setIsReshow] = useState(true)
     const [isForgetshow, setIsForgetshow] = useState(true)
+    const [isUpInforShow, setIsUpInforShow] = useState(false)
+
     // 找回密码逻辑
     const [emailOfforget, setEmailOfforget] = useState('')
     const [passwordFind, setPasswordFind] = useState('')
@@ -49,6 +53,30 @@ const Login1 = (props) => {
     // 发送验证码按钮逻辑
     const [btndisable, setBtndisable] = useState(false)
     const [content, setContent] = useState('发送')
+
+    // 上传信息界面
+
+    const [filelist, setFilelist] = useState([])
+    const [percent, setPercent] = useState(0)
+    const [infor_title, setInfor_title] = useState('文件传输')
+    const [fileName, setFileName] = useState('')
+    const [expire, setExpire] = useState('7天')
+    const [text, setText] = useState('')
+    const [isResult, setIsResult] = useState(false)
+    const [shareCode,setShareCode]=useState('')
+    const [sharefid,setSharefid]=useState([])
+
+    // 接受文件
+    const [receiveCode,setReceiveCode] = useState()
+    const [isReceive,setIsReceive] = useState(false)
+    const [receive_title,setReceive_title]=useState('')
+    const [describe,setDescribe]=useState('')
+    const [refileName,setRefileName] = useState('')
+    const [fileSize,setFileSize] = useState('')
+    const [expire_time,setExpire_time]=useState(0)
+    const [create_time,setCreate_time]=useState(0)
+    const [receive_url,setReceive_url]=useState('')
+
     // 检测登录信息
     const checkLogin = () => {
         setIsLoading(true)
@@ -88,8 +116,10 @@ const Login1 = (props) => {
                         cookie.remove('token')
                     }
                     // sessionStorage.setItem("token",token1)
-                    cookie.save("token", token1, { expires: cookieTime,path:'/' })
-                    cookie.save("user_id", res.data.data.id,  { expires: cookieTime,path:'/' })
+                    var tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate() + 7);
+                    cookie.save("token", token1, { expires: tomorrow, path: '/' })
+                    cookie.save("user_id", res.data.data.id, { expires: tomorrow, path: '/' })
                     axios.defaults.headers.common['Authorization'] = token1;
                     // sessionStorage.setItem("login_statu", "登陆成功")
                     props.history.push('/index')
@@ -99,7 +129,9 @@ const Login1 = (props) => {
                     console.log(res)
                 }
             }
-        )
+        ).catch(error => {
+
+        })
 
         setTimeout(() => {
             setIsLoading(false)
@@ -146,7 +178,6 @@ const Login1 = (props) => {
                 }, 1000)
             }
             console.log(res.data)
-
         })
 
 
@@ -277,27 +308,67 @@ const Login1 = (props) => {
     function enterDown(e) {
         var evt = window.event || e;
         if (evt.keyCode == 13) {
-            console.log('www')
+            let dataprops={
+                'get_code':receiveCode
+            }
+            axios({
+                method: 'get',
+                url:
+                    '/banana/transfer/code-download',
+                params:dataprops,
+                header: { 'Access-Control-Allow-Origin': '*', },
+            }).then(
+                res => {
+                    if(res.data.msg=='ok'){
+                        setIsReceive(true)
+                        setReceive_title(res.data.data.title)
+                        setDescribe(res.data.data.describe)
+                        setExpire_time(res.data.data.expire_time)
+                        setCreate_time(res.data.data.create_time)
+                        setRefileName(res.data.data.file_name)
+                        setFileSize(res.data.data.file_size)
+                        setReceive_url(res.data.data.download_str)
+                    }
+                    console.log(res)
+                }
+            )
         }
     }
     // antd上传组件所需信息
     const propss = {
         name: 'file',
-        action: '/banana/tf/upload-static',
+        action: '/banana/tf/guest-upload',
+        // data:{
+        //     'expire_time':1000
+        // },
         header: { 'Access-Control-Allow-Origin': '*' },
+        showUploadList: false,
+        headers: { "Authorization": sessionStorage.getItem('guest_token') },
 
 
         onChange(info) {
+            setFileName(info.file.name)
             if (info.file.status !== 'uploading') {
                 console.log(info.file, info.fileList);
             }
             if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
+
+                setIsUpInforShow(true)
+                setSharefid(info.file.response.data.fids)
+                message.success(`${info.file.name} 上传成功`);
             } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
+                message.error(`${info.file.name} 上传失败`);
+            }
+            const event = info.event
+            if (event) { // 必定要加判断，否则会报错
+                let percent = Math.floor((event.loaded / event.total) * 100)
+                setPercent(percent)
+                console.log(percent) // percent就是进度条的数值
             }
         },
     };
+
+
     // 设置忘记密码处的视图逻辑
     const forgotPass = () => {
         setIsLoginshow(true)
@@ -344,9 +415,63 @@ const Login1 = (props) => {
             setIsForgetshow(true)
         }
 
-
-
     }
+    const { Option } = Select;
+
+    // Select框更改回调函数
+    const handleChange = value => {
+        console.log(`selected ${value}`);
+        setExpire(value)
+    }
+    // 判断日期
+    const getTime = (time)=>{
+        if(time=='1天'){
+            return 60*60*24
+        }
+        if(time='3天'){
+            return 60*60*24*3
+        }
+        else{
+            return 60*60*24*7
+        }
+            
+    }
+    // 获取分享码
+    const share = () => {
+        setIsResult(true)
+        setIsUpInforShow(false)
+        console.log(sharefid)
+        console.log(text)
+        console.log(infor_title)
+        console.log(expire)
+        let dataprops={
+            'expire_time':getTime(expire),
+            'fid':sharefid[0],
+            'describe':text,
+            'title':infor_title
+        }
+        axios({
+            method: 'post',
+            url:
+                '/banana/transfer/share',
+            data:dataprops,
+            headers: { "Authorization": sessionStorage.getItem('guest_token') },
+        }).then(res => {
+            console.log(res)
+            setShareCode(res.data.data.get_code)
+        })
+    }
+    useEffect(() => {
+        axios({
+            method: 'get',
+            url:
+                '/banana/account-center/common/guest',
+
+            // header: { 'Access-Control-Allow-Origin': '*' },
+        }).then(res => {
+            sessionStorage.setItem("guest_token", res.data.data.token)
+        })
+    }, [])
     return (
         <div className='main_index'>
             {/* <div className='box animated fadeInDown'>ss</div> */}
@@ -354,6 +479,7 @@ const Login1 = (props) => {
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
             </head>
             <div className='loginToptip'>
+
                 <Row type="flex" justify="center">
                     <Col xs={6} sm={6} md={12} lg={12} xl={12}>
                         <Image
@@ -384,15 +510,180 @@ const Login1 = (props) => {
                     </Col>
                 </Row>
             </div>
-            {/* 接受文件测试 */}
+            {/* 接受文件 */}
             <div className='uploadFiles animated animate__bounceInLeft'
                 hidden={isReshow}
                 id='upload_div'>
                 <div className='receive_div'>
-                    <input onKeyDown={enterDown} bordered='false' placeholder='请输入接受文件口令' className='receive_input'></input>
+                    <input 
+                     onKeyDown={enterDown} 
+                     bordered='false' 
+                     placeholder='请输入接受文件口令' 
+                     className='receive_input'
+                     onChange={(e)=>setReceiveCode(e.target.value)}
+                     ></input>
                     <CloseCircleOutlined onClick={toUpload} className='closeBtn' style={{ fontSize: '1.7rem', marginLeft: '1rem' }} />
                 </div>
             </div>
+            {/* 接受文件页 */}
+            <Modal
+                visible={isReceive}
+                width='fit-content'
+                footer={
+                    null
+                }
+                onCancel={() =>
+                    setIsReceive(false)
+                }
+                bodyStyle={{ borderRadius: '160px' }}
+            >
+                <div className='receive_infor_div'>
+                <div className='infor_title'>
+                   
+                    <span  style={{ width: '5vw', fontSize: '1.1rem', fontWeight: 'bold' }}
+>
+                    {receive_title}
+                    </span>
+                </div>
+                <div className='file_infor'>
+                    <Image
+                        width={'1.8rem'}
+                        src="http://47.107.95.82:9000/peach-static/文件图片.png"
+                        preview={false}></Image>
+                    <span style={{ fontSize: '0.8rem',overflow:'hidden',whiteSpace:'nowrap' }}>{refileName}</span>
+                </div>
+                <div className='infor_detailed'>
+                    <Row className='row'>
+                        <Col span={8}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>过期时间</span> </Col>
+                        <Col span={6}></Col>
+                        <Col span={10} style={{whiteSpace:'nowrap'}}>
+                        {moment((create_time+expire_time) * 1000).format("YYYY-MM-DD HH:mm")}
+                        </Col>
+                    </Row>
+                    <Row className='row'>
+                        <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>文件描述</span> </Col>
+                    </Row>
+                    <Row style={{marginLeft:'1vw'}}>
+                        {describe}
+                    </Row>
+                    <Row className='row1'>
+                        <Button onClick={()=>{
+                            window.open(receive_url)
+                            console.log(receive_url)
+                        }} className='Infor_button'>确认</Button>
+                    </Row>
+
+                </div>
+                </div>
+            </Modal>
+            {/* 上传完成后结果页 */}
+            <Modal
+                visible={isResult}
+                width='fit-content'
+                footer={
+                    null
+                }
+                onCancel={() =>
+                    setIsResult(false)
+                }
+                bodyStyle={{ borderRadius: '160px' }}
+            >
+                <div className='result_div'>
+                    <Result
+                        status="success"
+                        title={
+                            <h4 style={{whiteSpace:'nowrap'}}>上传成功!</h4>
+                        }
+                        subTitle={
+                            <div>
+                            您的分享码是:
+                            <p id="sharecode" style={{fontSize:'1.2rem',fontWeight:'bold',color:'black'}}>
+                            <Tooltip title="一键复制">
+                            <span onClick={(e)=>{copy(e.target.innerText)
+                            message.success('复制成功！')}}>{shareCode}</span>
+                            </Tooltip>
+                            </p>
+                            
+                            </div>
+                        }
+                        extra={[
+                            <Button 
+                            onClick={()=>setIsResult(false)}
+                            id="result_button" className='Infor_button'>确认</Button>
+                            ,
+                        ]}
+                    />
+                </div>
+
+
+            </Modal>
+
+            {/* 上传后确认信息界面 */}
+            <Modal
+                visible={isUpInforShow}
+                className='uploadInfor_div'
+                width='fit-content'
+                footer={
+                    null
+                }
+                onCancel={() =>
+                    setIsUpInforShow(false)
+                }
+                bodyStyle={{ borderRadius: '160px' }}
+            >
+                <div className='infor_title'>
+                    <Input
+                        bordered={false}
+                        defaultValue={infor_title}
+                        value={infor_title}
+                        style={{ width: '5vw', fontSize: '1.1rem', fontWeight: 'bold' }}
+                        onChange={(e) => setInfor_title(e.target.value)}
+                    >
+
+                    </Input><EditOutlined style={{ fontSize: '1.1rem' }} />
+                </div>
+                <div className='file_infor'>
+                    <Image
+                        width={'1.8rem'}
+                        src="http://47.107.95.82:9000/peach-static/文件图片.png"
+                        preview={false}></Image>
+                    <span style={{ fontSize: '0.8rem',overflow:'hidden',whiteSpace:'nowrap' }}>{fileName}</span>
+                </div>
+                <div className='infor_detailed'>
+                    <Row className='row'>
+                        <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>有效期</span> </Col>
+                        <Col span={6}></Col>
+                        <Col span={6}>
+                            <Select
+                                defaultValue={['7天']}
+                                style={{ width: 80 }}
+                                bordered={false}
+                                onChange={handleChange}
+                            >
+                                <Option value="1天">1天</Option>
+                                <Option value="7天">7天</Option>
+                                <Option value="30天">30天</Option>
+                            </Select>
+                        </Col>
+                    </Row>
+                    <Row className='row'>
+                        <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>补充描述</span> </Col>
+                    </Row>
+                    <Row>
+                        <Input.TextArea rows={4}
+                            autoSize={{ minRows: 3, maxRows: 3 }}
+                            style={{ width: '18vw' }}
+                            onChange={(e) => { setText(e.target.value); }}
+                        />
+                    </Row>
+                    <Row className='row1'>
+                        <Button onClick={share} className='Infor_button'>确认</Button>
+                    </Row>
+
+                </div>
+                {/* <Progress style={{width:'160px'}} percent={percent} /> */}
+            </Modal>
+
             <div hidden={isForgetshow} className='forget_div animated animate__fadeInUp'>
                 <h2 className='forgetTitle'>
                     <Row>
@@ -526,7 +817,7 @@ const Login1 = (props) => {
                                 <input id='password' type="password" onChange={(e) => { setPassword(e.target.value) }
                                 } placeholder="Password" className="input" />
                                 <p onClick={forgotPass}>Forgot your password?</p>
-                                <button onClick={()=>checkLogin()} className="btn">Sign In</button>
+                                <button onClick={() => checkLogin()} className="btn">Sign In</button>
                             </div>
 
                         </form>

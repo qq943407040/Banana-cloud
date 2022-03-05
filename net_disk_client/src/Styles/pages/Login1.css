@@ -370,12 +370,14 @@ body {
 	width: 14rem;
 	height: 3rem;
 	line-height: 4rem;
+	padding-left: 1vw;
 	border-style: none;
 	border-radius: 4rem;
 	/* margin-bottom: 2; */
 	position: relative;
 	bottom: 0.4rem;
-	font-size: 1rem;
+	font-size: 1.2rem;
+	font-weight: bold;
 
 }
 
@@ -472,4 +474,70 @@ body {
 /* 修改页 */
 .form2{
 	margin-top: 8vh;
+}
+.infor_title{
+	width: 16vw;
+	
+}
+.file_infor{
+	margin-left: 1vw;
+	margin-top: 2vh;
+	display: flex;
+	align-items: center;
+	width: 16vw;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.infor_detailed{
+	margin-top: 4vh;
+}
+.row{
+	display: flex;
+	align-items: center;
+	margin-bottom: 1vh;
+}
+.uploadInfor_div{
+	/* border-radius: 100px; */
+}
+.Infor_button{
+	width: 6vw;
+	height: 4vh;
+	text-align: center;
+	margin-top: 2vh;
+	border-style: none;
+	border-radius: 4vh;
+	background-color: rgb(247, 209, 85);
+	color:black;
+}
+.Infor_button:hover{
+	background-color: rgb(247, 225, 156);
+	color:black;
+}
+.ant-modal-content{
+	border-radius: 10px;
+}
+.ant-modal-body{
+	padding: 1vw;
+}
+.row1{
+	display: flex;
+	justify-content: center;
+}
+.result_div{
+	/* overflow: hidden; */
+	width: 12vw;
+	position: relative;
+	bottom: 3vh;
+	height: 34vh;
+	/* margin-left: 1vw; */
+}
+#sharecode{
+	cursor: pointer;
+}
+#result_button{
+	position: relative;
+	bottom: 2vh;
+}
+.receive_infor_div{
+	width: 18vw;
 }
