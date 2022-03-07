@@ -1,5 +1,5 @@
 # Banana-cloud
-香蕉网盘的前端部分，使用了react框架
+香蕉网盘的前端部分，使用了react框架，网盘可以在主页实现免登录上传并转存文件
 主页
 ![image](https://user-images.githubusercontent.com/58356486/155509802-d0a31f10-f7fe-4a13-8a77-2ef52ec412f1.png)
 登录页
@@ -8,3 +8,14 @@
 ![image](https://user-images.githubusercontent.com/58356486/155510366-0f410024-fd67-4ccd-a78c-3e93bb659b74.png)
 文件页
 ![image](https://user-images.githubusercontent.com/58356486/155510480-8d805cfe-9bce-4546-b613-93828646a53e.png)
+预览文件效果
+pdf:
+![image](https://user-images.githubusercontent.com/58356486/156961428-ca6c0cef-8bed-4013-a331-b26f3b773bc5.png)
+图片:
+![image](https://user-images.githubusercontent.com/58356486/156961392-84a50ab3-573c-469e-8d27-80aef4b4d657.png)
+音频:
+![image](https://user-images.githubusercontent.com/58356486/156961359-f030d176-aaeb-4e11-bae8-281da5b4a330.png)
+免登录上传文件
+![image](https://user-images.githubusercontent.com/58356486/156961498-246c5a46-997d-46f7-850d-c1e3a60d6b92.png)
+![image](https://user-images.githubusercontent.com/58356486/156961526-a20b4c94-276c-49b5-9262-d1a7ad5bb88a.png)
+![image](https://user-images.githubusercontent.com/58356486/156961618-1f039842-7eff-4907-98d9-2eea4577be52.png)
