@@ -271,22 +271,24 @@ const Recycle_bin = () => {
                                 <Popconfirm
                                     title="确定恢复所选文件？"
                                     onConfirm={() => {
-
+                                        withdrawDir(selectDid)
                                         withdrawFile(selectId)
                                     }}
                                     okText="确认"
                                     cancelText="取消"
                                 >
-                                    <a hidden={buttonVisible} style={{ color: 'black', marginRight: '1vw' }}><RedoOutlined
+                                    <a href='' hidden={buttonVisible} style={{ color: 'black', marginRight: '1vw' }}><RedoOutlined
                                         style={{ fontSize: '1.8rem' }} /></a>
                                 </Popconfirm>
                                 <Popconfirm
                                     title="确定永久删除所选文件?"
-                                    onConfirm={() => deletefile(selectId)}
+                                    onConfirm={() => {
+                                        deletefile(selectId)
+                                    deleteDir(selectDid)}}
                                     okText="确认"
                                     cancelText="取消"
                                 >
-                                    <a hidden={buttonVisible} style={{ color: 'black', marginRight: '1vw' }}><DeleteOutlined
+                                    <a href='' hidden={buttonVisible} style={{ color: 'black', marginRight: '1vw' }}><DeleteOutlined
                                         style={{ fontSize: '1.8rem' }} /></a>
                                 </Popconfirm>
                                 <Popconfirm
@@ -303,6 +305,10 @@ const Recycle_bin = () => {
                                 <Popconfirm
                                     title="确定永久删除所有文件？"
                                     okText="确认"
+                                    onConfirm={() => {
+                                        deletefile(fileId)
+                                        deleteDir(dirId)
+                                    }}
                                     cancelText="取消">
                                     <Button type='primary' danger>全部清空</Button>
                                 </Popconfirm>
@@ -367,7 +373,7 @@ const Recycle_bin = () => {
                                            
                                             preview={false}>
                                             </Image>
-                                                <a > {
+                                                <a  > {
                                                     'file_name' in item ?
                                                         item.file_name : item.dir_name
                                                 }</a>
@@ -395,7 +401,7 @@ const Recycle_bin = () => {
                                                         okText="确认"
                                                         cancelText="取消"
                                                     >
-                                                        <a style={{ color: 'black' }}><RedoOutlined
+                                                        <a href='' style={{ color: 'black' }}><RedoOutlined
                                                             style={{ fontSize: '2.4vh' }} /></a>
                                                     </Popconfirm>
                                                     : <Popconfirm
@@ -404,7 +410,7 @@ const Recycle_bin = () => {
                                                         okText="确认"
                                                         cancelText="取消"
                                                     >
-                                                        <a style={{ color: 'black' }}><RedoOutlined
+                                                        <a href='' style={{ color: 'black' }}><RedoOutlined
                                                             style={{ fontSize: '2.4vh' }} /></a>
                                                     </Popconfirm>}
 
@@ -415,7 +421,7 @@ const Recycle_bin = () => {
                                                         okText="确认"
                                                         cancelText="取消"
                                                     >
-                                                        <a style={{ color: 'black' }}><DeleteOutlined
+                                                        <a href='' style={{ color: 'black' }}><DeleteOutlined
                                                             style={{ fontSize: '2.4vh' }} />{item.fid}</a>
                                                     </Popconfirm>
                                                     : <Popconfirm
@@ -424,7 +430,7 @@ const Recycle_bin = () => {
                                                         okText="确认"
                                                         cancelText="取消"
                                                     >
-                                                        <a style={{ color: 'black' }}><DeleteOutlined
+                                                        <a href='' style={{ color: 'black' }}><DeleteOutlined
                                                             style={{ fontSize: '2.4vh' }} />{item.did}</a>
                                                     </Popconfirm>}
 

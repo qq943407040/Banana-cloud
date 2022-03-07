@@ -6,6 +6,7 @@ import { Route } from "react-router-dom";
 import AddArticle from './AddArticle'
 import ArticleList from './Articlelist';
 import '../Styles/animate.min.css'
+import GoEasy from 'goeasy'
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -27,12 +28,55 @@ function AdminIndex(props) {
         
     };
     const [view, setView] = useState(false) //选择的文章类别
+    
+    // 测试websocket
+    const send = () =>{
+        var goeasy = new GoEasy({
+            host: 'hangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
+            appkey: "BC-3a285b6a743a4b46a98ca45ede3cce13", //替换为您的应用appkey
+            modules: ['pubsub'],
+            onConnected: function () {
+                console.log('连接成功！')
+            },
+            onDisconnected: function () {
+                console.log('连接断开！')
+            },
+            onConnectFailed: function (error) {
+                console.log('连接失败或错误！')
+            }
+        });
+        var pubsub = goeasy.pubsub;
+        goeasy.connect({
+            id: "003", //pubsub选填，im必填，最大长度60字符
+            data: { "avatar": "/www/xxx.png", "nickname": "Neo" }, //必须是一个对象，pubsub选填，im必填，最大长度300字符，用于上下线提醒和查询在线用户列表时，扩展更多的属性
+            onSuccess: function () {  //连接成功
+                console.log("GoEasy connect successfully.") //连接成功
+            },
+            onFailed: function (error) { //连接失败
+                console.log("Failed to connect GoEasy, code:" + error.code + ",error:" + error.content);
+            },
+            onProgress: function (attempts) { //连接或自动重连中
+                console.log("GoEasy is connecting", attempts);
+            }
+        })
+       
+        pubsub.publish({
+            channel: "my_channel",//替换为您自己的channel
+            message: "您有一条新通知!",//替换为您想要发送的消息内容
+            onSuccess:function(){
+                console.log("消息发布成功。");
+            },
+            onFailed: function (error) {
+                console.log("消息发送失败，错误编码："+error.code+" 错误信息："+error.content);
+            }
+        });
+    }
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Sider collapsible collapsed={collapsed} onCollapse={onCollapse} collapsedWidth='4rem'>
                 <div className="logo">
                     <svg t="1638092253544" class="icon" viewBox="0 0 1294 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3658" width="30" height="30"><path d="M701.276807 562.77303 701.276807 988.765895C701.276807 1004.335589 688.655074 1016.957321 673.085381 1016.957321 657.515682 1016.957321 644.893949 1004.335589 644.893949 988.765895L644.893949 562.432528 538.194282 669.132196C526.529781 680.796699 507.617887 680.796699 495.953386 669.132196 484.288884 657.467699 484.288884 638.555804 495.953385 626.891302L651.79468 471.050004C663.459177 459.385502 682.371072 459.385502 694.035575 471.050003L777.324145 554.338573 845.665264 622.679692C857.329766 634.344195 857.329766 653.256084 845.665264 664.920587 834.000761 676.585089 815.088866 676.585089 803.424369 664.920587L735.083251 596.579474 701.276807 562.77303ZM976.093567 937.169591C1136.495147 937.169591 1266.526316 807.138423 1266.526316 646.736842 1266.526316 509.331607 1170.376073 391.552616 1037.75266 362.86828L1032.056088 389.20665 1057.987212 396.537227C1065.210821 370.984499 1068.912279 344.414904 1068.912279 317.380117 1068.912279 156.978539 938.88111 26.947368 778.47953 26.947368 633.383041 26.947368 511.105662 133.971632 490.934254 276.291356L528.619575 255.474941C483.271995 235.187393 433.984627 224.561404 383.251462 224.561404 186.470145 224.561404 26.947368 384.08418 26.947368 580.865498 26.947368 777.646813 186.470145 937.169591 383.251462 937.169591L449.219298 937.169591C464.101919 937.169591 476.166667 925.104845 476.166667 910.222223 476.166667 895.339601 464.101919 883.274854 449.219298 883.274854L383.251462 883.274854C216.235386 883.274854 80.842105 747.881574 80.842105 580.865498 80.842105 413.849421 216.235386 278.456141 383.251462 278.456141 426.362113 278.456141 468.153463 287.466044 506.610367 304.670849 522.968873 311.989299 541.78083 301.598051 544.295688 283.854434 560.71292 168.022373 660.318133 80.842105 778.47953 80.842105 909.115866 80.842105 1015.017542 186.743781 1015.017542 317.380117 1015.017542 339.445456 1012.003306 361.082056 1006.124964 381.876074 1001.896286 396.834556 1011.166116 412.258929 1026.359517 415.54502 1134.30659 438.892256 1212.631579 534.836251 1212.631579 646.736842 1212.631579 777.373179 1106.729903 883.274854 976.093567 883.274854L897.276314 883.274854C882.393697 883.274854 870.328945 895.339601 870.328945 910.222223 870.328945 925.104845 882.393697 937.169591 897.276314 937.169591L976.093567 937.169591Z" p-id="3659"></path></svg>
-                    <span className='animated fadeInDown' hidden={view}>Bpan</span>
+                    <span onClick={send} className='animated fadeInDown' hidden={view}>Bpan</span>
                 </div>
                 <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
                     <Menu.Item key="1">

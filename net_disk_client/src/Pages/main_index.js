@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/main_index.css'
 import { BrowserRouter as Router, Link, Route, Redirect } from 'react-router-dom'
-import { Layout, Menu, Avatar, Row, Col, Button, Affix, message } from 'antd';
+import { Layout, Menu, Avatar, Row, Col, Button, Affix, message,notification } from 'antd';
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -23,6 +23,7 @@ import cookie from "react-cookies";
 import Individual_infor from './components/Individual_infor';
 import Test from './Test'
 import axios from 'axios';
+import GoEasy from 'goeasy';
 
 
 // 整体布局
@@ -31,6 +32,9 @@ const Main_index = (props) => {
   // 头像
   const [avatar,setAvatar] = useState("https://octodex.github.com/images/minion.png")
   const [username, setusername] = useState('请先登录')
+
+
+
   // 读取cookie查找用户是否存在
   useEffect(() => {
     // todo:后端改完返回值后修改此处
@@ -124,24 +128,24 @@ const Main_index = (props) => {
               <span >香蕉快传</span>
             </div>
             <div className='logo'>
-              <Avatar size={150} src={avatar} /></div>
+              <Avatar  size={150} src={avatar} /></div>
             {/* <span className='span1'> 预览</span> */}
             <Menu defaultSelectedKeys={['1']} mode="inline" className='sider_menu' onClick={handclick}>
               <Menu.Item key="usage" style={{ height: '7vh' }}>
-                <div><PieChartOutlined style={{ fontSize: '3vh' }} />
+                <div><PieChartOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
                   <span className='span2'>使用情况
                   </span>
                 </div>
               </Menu.Item>
               {/* <span className='span1'>所有文件</span> */}
               <Menu.Item key="all" style={{ height: '7vh' }}>
-                <div><DesktopOutlined style={{ fontSize: '3vh' }} />
+                <div><DesktopOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
                   <span className='span2'>
                     全部文件
                   </span></div>
               </Menu.Item>
               <Menu.Item key="recycle_bin" style={{ height: '7vh' }}>
-                <div><CloudUploadOutlined style={{ fontSize: '3vh' }} />
+                <div><CloudUploadOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
                   <span className='span2'>回收站</span>
                 </div>
               </Menu.Item>
@@ -154,7 +158,7 @@ const Main_index = (props) => {
                   <span className='span2'>我的视频</span></div>
               </Menu.Item> */}
               <Menu.Item key="aboutus" style={{ height: '7vh' }}>
-                <div><QuestionCircleOutlined style={{ fontSize: '3vh' }} />
+                <div><QuestionCircleOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
                   <span className='span2'>关于我们</span></div>
               </Menu.Item>
             </Menu>
@@ -198,8 +202,6 @@ const Main_index = (props) => {
               <Route path="/index/detailed/:id" component={Detailed} />
               <Route path="/index/individual" component={Individual_infor} />
               <Route path="/index/test" component={Test} />
-
-
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Bpan ©2021 Created by Bnuzer</Footer>

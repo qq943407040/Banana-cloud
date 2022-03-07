@@ -109,7 +109,7 @@ const Individual_infor = (props) => {
     };
   const get = ()=>{
     goeasy.connect({
-        id: "001", //pubsub选填，im必填，最大长度60字符
+        id: "002", //pubsub选填，im必填，最大长度60字符
         data: { "avatar": "/www/xxx.png", "nickname": "Neo" }, //必须是一个对象，pubsub选填，im必填，最大长度300字符，用于上下线提醒和查询在线用户列表时，扩展更多的属性
         onSuccess: function () {  //连接成功
             console.log("GoEasy connect successfully.") //连接成功
@@ -124,7 +124,7 @@ const Individual_infor = (props) => {
    
     pubsub.publish({
         channel: "my_channel",//替换为您自己的channel
-        message: "Hello GoEasy!",//替换为您想要发送的消息内容
+        message: "您有一条新通知!",//替换为您想要发送的消息内容
         onSuccess:function(){
             console.log("消息发布成功。");
         },

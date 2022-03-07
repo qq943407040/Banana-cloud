@@ -32,6 +32,11 @@ const All_files = () => {
     const [did, setDid] = useState(0)
 
     const [aimDid, setAimDid] = useState(0)
+
+    const [bread,setBread]=useState(    [     
+        {text: <Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item>},
+    ]
+    )
     // 获取全部文件信息
     const getAllfiles = (did) => {
         let dataprops = {
@@ -86,7 +91,7 @@ const All_files = () => {
             }
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`);
-                getAllfiles()
+                getAllfiles(did)
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} file upload failed.`);
             }
@@ -315,6 +320,12 @@ const All_files = () => {
         else 
         return 'http://47.107.95.82:9000/peach-static/文件图片.png'
     }
+    const add = ()=>{
+        var bread = document.getElementById('bread1')
+        bread.append("<Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item>")
+    }
+
+    
     return (
         <div id="main">
             {/* 展示图片预览 */}
@@ -327,7 +338,7 @@ const All_files = () => {
                     },
                 }}
                 width={200}
-                hidden="true"
+                hidden={true}
                 src={imgSrc}
                 onCancel={() => {
                     setPreviewImg(false)
@@ -389,20 +400,24 @@ const All_files = () => {
                     id="iframe1"
                     className='iframe1'
                     scrolling='no'
-                    allowfullscreen="true"
+                    allowFullscreen="true"
                 >
                 </iframe>
             </Modal>
             <div className='d1'>
                 <DesktopOutlined style={{ fontSize: '3vh' }} />
-                <span className='s1'>全部文件</span>
+                <span onClick={add} className='s1'>全部文件</span>
             </div>
 
             <div className='all_files'>
 
                 <div className='bread'>
-                    <Breadcrumb >
-                        <Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item>
+                    <Breadcrumb id='bread1'>
+                        {
+                            bread.map((ele,index)=>{
+                                return ele.text
+                            })
+                        }
                     </Breadcrumb>
                 </div>
                 <div>
@@ -474,14 +489,14 @@ const All_files = () => {
                                             preview={false}>
                                             </Image>
                                             {'file_name' in item ?
-                                                <a
+                                                <a 
                                                     style={{ marginLeft: '1vw' }}
                                                     id="a1"
                                                     onClick={() => preview(item)}>
                                                     {item.file_name}
                                                 </a>
                                                 :
-                                                <a
+                                                <a 
                                                     style={{ marginLeft: '1vw' }}
                                                     id="a1"
                                                     onClick={() => getAllfiles(item.did)}>
@@ -501,10 +516,10 @@ const All_files = () => {
                                         <Col span={3}>
                                             <Space size="middle">
                                                 {'file_type' in item
-                                                    ? <a style={{ color: 'black' }}>
+                                                    ? 
                                                         <DownloadOutlined
                                                             onClick={'file_type' in item ? () => getfiles(item) : (get)}
-                                                            style={{ fontSize: '2.4vh' }} /></a>
+                                                            style={{ fontSize: '2.4vh' }} />
                                                     : <DownloadOutlined
                                                         style={{ fontSize: '2.4vh', color: 'rgb(201, 197, 197)' }} />}
                                                 {'file_type' in item ?
@@ -513,7 +528,7 @@ const All_files = () => {
                                                         onConfirm={() => deletefile([item.fid])}
                                                         okText="确认"
                                                         cancelText="取消">
-                                                        <a style={{ color: 'black' }}><DeleteOutlined
+                                                        <a href='' style={{ color: 'black' }}><DeleteOutlined
                                                             style={{ fontSize: '2.4vh' }} />{item.fid}</a>
                                                     </Popconfirm>
                                                     : <Popconfirm
@@ -521,7 +536,7 @@ const All_files = () => {
                                                         onConfirm={() => deleteDir([item.did])}
                                                         okText="确认"
                                                         cancelText="取消">
-                                                        <a style={{ color: 'black' }}><DeleteOutlined
+                                                        <a href='' style={{ color: 'black' }}><DeleteOutlined
                                                             style={{ fontSize: '2.4vh' }} />{item.did}</a>
                                                     </Popconfirm>}
                                             </Space>
@@ -541,12 +556,5 @@ const All_files = () => {
 
 
     )
-    const divs = () => {
-        return (
-            <div>
-                sss
-            </div>
-        )
-    }
-}
+                                        }
 export default All_files

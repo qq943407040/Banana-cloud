@@ -63,6 +63,8 @@
     text-align: center;
     margin-top: 3vh;
 }
-.pre_div p{
-    
+.vip p{
+    font-size: 1rem;
+    margin-bottom: 3vh;
+    letter-spacing: 1px;
 }

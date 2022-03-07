@@ -1,16 +1,17 @@
 import React, { Component, useState, useEffect } from 'react'
-import { Badge, Popover, Popconfirm, message, List, Row, Col } from 'antd';
+import { Badge, Popover, Popconfirm, message, List,notification } from 'antd';
 import '../../Styles/pages/infor.css'
 import axios from 'axios'
 import g from '../../global'
 import GoEasy from 'goeasy';
 import {
-    BellOutlined,
+    BellOutlined,SmileOutlined
 } from '@ant-design/icons';
 // 通知页
 const Infor = () => {
     const [show, setshow] = useState(true)
     const [list, setList] = useState([])
+    const [mess,setMess] = useState('')
     var goeasy = new GoEasy({
         host: 'hangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
         appkey: "BC-3a285b6a743a4b46a98ca45ede3cce13", //替换为您的应用appkey
@@ -27,7 +28,18 @@ const Infor = () => {
     });
     var pubsub = goeasy.pubsub;
     //建立连接
-
+    const openNotification = () => {
+        if(mess!=''){
+          notification.open({
+          message:mess,
+          onClick: () => {
+            console.log('Notification Clicked!');
+          },
+          icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+        });  
+        }
+        
+      };
     useEffect(() => {
         goeasy.connect({
             id: "001", //pubsub选填，im必填，最大长度60字符
@@ -41,14 +53,17 @@ const Infor = () => {
             onProgress: function (attempts) { //连接或自动重连中
                 console.log("GoEasy is connecting", attempts);
             }
-        },[])
+        })
        
         pubsub.subscribe({
             channel: "my_channel",//替换为您自己的channel
             onMessage: function (message) {
                 console.log("Channel:" + message.channel + " content:" + message.content);
                 console.log(message)
-                // list.push(message.content)
+                list.push(message.content)
+                setMess(message.content)
+                console.log(list)
+                console.log(mess)
             },
             onSuccess: function () {
                 console.log("Channel订阅成功。");
@@ -59,6 +74,10 @@ const Infor = () => {
         });
         ;
     }, [])
+    useEffect(()=>{
+        openNotification()
+
+    },[mess])
     // 获取通知列表
     const getList = () => {
 
@@ -86,7 +105,7 @@ const Infor = () => {
                         </List.Item>
                     )}
                 />} trigger="click">
-                <div  className='infor1'>
+                <div   className='infor1'>
                     <Badge dot={show}>
                         <BellOutlined style={{ color: 'rgba(0, 0, 0, 0.863)', fontSize: '2.6vh' }} />
                     </Badge>

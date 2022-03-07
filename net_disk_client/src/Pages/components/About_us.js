@@ -38,9 +38,9 @@ const About_us = (props) => {
             </div>
             <div id="list_div" >
             <div className='bread'>
-                <Breadcrumb separator=">">
+            <Breadcrumb separator=">">
                 <Breadcrumb.Item ><Link to='/index/aboutus'>关于我们</Link></Breadcrumb.Item>
-              </Breadcrumb>
+            </Breadcrumb>
                 </div>
                 <List
                     dataSource={list}
