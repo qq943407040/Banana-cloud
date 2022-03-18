@@ -8,8 +8,10 @@ import cookie from "react-cookies";
 import 'animate.css'
 import { PlusOutlined, EditOutlined, CloseCircleOutlined, CloseOutlined, LeftCircleTwoTone } from '@ant-design/icons'
 import copy from 'copy-to-clipboard';
+import Register from './Register';
 import moment from 'moment';
-// import { Animated } from "react-animated-css";
+import 'animate.css';
+// import { animate__animated } from "react-animate__animated-css";
 
 
 // import ReactCSSTransitionGroup from "react-addons-css-transition-group";
@@ -474,9 +476,9 @@ const Login1 = (props) => {
     }, [])
     return (
         <div className='main_index'>
-            {/* <div className='box animated fadeInDown'>ss</div> */}
+            {/* <div className='box animate__animated fadeInDown'>ss</div> */}
             <head>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+                {/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" /> */}
             </head>
             <div className='loginToptip'>
 
@@ -496,7 +498,7 @@ const Login1 = (props) => {
                     </Col>
                 </Row>
             </div>
-            <div className='uploadFiles animated animate__bounceInLeft'
+            <div className='uploadFiles animate__animated animate__bounceInLeft'
                 hidden={isUpshow}
                 id='upload_div'>
                 <Row type="flex" justify="center"  >
@@ -511,7 +513,7 @@ const Login1 = (props) => {
                 </Row>
             </div>
             {/* 接受文件 */}
-            <div className='uploadFiles animated animate__bounceInLeft'
+            <div className='uploadFiles animate__animated animate__bounceInLeft'
                 hidden={isReshow}
                 id='upload_div'>
                 <div className='receive_div'>
@@ -684,7 +686,7 @@ const Login1 = (props) => {
                 {/* <Progress style={{width:'160px'}} percent={percent} /> */}
             </Modal>
 
-            <div hidden={isForgetshow} className='forget_div animated animate__fadeInUp'>
+            <div hidden={isForgetshow} className='forget_div animate__animated animate__fadeInUp'>
                 <h2 className='forgetTitle'>
                     <Row>
                         <Col span="3">
@@ -785,7 +787,7 @@ const Login1 = (props) => {
 
 
             <Spin tip="Loading..." spinning={isLoading}>
-                <div hidden={isLoginshow} className="container right-panel-active animated animate__fadeInDown">
+                <div hidden={isLoginshow} className="container right-panel-active animate__animated animate__fadeInDown">
                     <div className="container__form container--signup">
                         <form action="#" className="form" id="form1">
                             <h2 className="form_title">

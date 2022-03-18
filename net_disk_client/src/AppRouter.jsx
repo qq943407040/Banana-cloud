@@ -4,6 +4,7 @@ import Login from './Pages/Login'
 import index from './Pages/main_index'
 import Register from './Pages/Register';
 import Login1 from './Pages/Login1'
+
 //动态传值四个步骤：设置规则 传递值 接收值 显示内容
 
 function AppRouter() {

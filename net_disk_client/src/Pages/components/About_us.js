@@ -48,6 +48,7 @@ const About_us = (props) => {
                         <List.Item>
                             <Row className='list'>
                                 <Col span={24}>
+                                    {/* 跳到对应的文章详细页 */}
                                     <div className="list_title"><Link to={`detailed/${item.id}`}>
                                         <a>{item.title}</a>
                                     </Link>

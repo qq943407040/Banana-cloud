@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import '../Styles/Login.css';
-import 'antd/dist/antd.css';
+// import '../Styles/Login.css';
+// import 'antd/dist/antd.css';
 import { Card, Input, Icon, Button, Spin, message } from 'antd';
 import servicePath from '../config/apiUrl';
 import axios from 'axios'

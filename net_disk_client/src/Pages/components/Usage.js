@@ -15,13 +15,14 @@ import {
 
 
 const Usage = (props) => {
-
+    // 定义数据源hooks
     const [list, setList] = useState([])
     const [list1, setList1] = useState([])
     const [list2,setList2] = useState([])
     useEffect(()=>{
         getList();
     },[])
+    // 初始化调用方法
     const getList = () => {
         axios.defaults.headers.common['Authorization'] = cookie.load("token");
 
@@ -43,9 +44,7 @@ const Usage = (props) => {
        
         getchart();
     }, [list1,list2])
-    const aaa = () => {
-        console.log(list, list1)
-    }
+    // 初始化echarts可视化图表方法
     const getchart = () => {
         
         var option = {
@@ -129,7 +128,7 @@ const Usage = (props) => {
         <div >
             <div className='d1'>
                 <PieChartOutlined style={{ fontSize: '3vh' }} />
-                <span className='s1' onClick={aaa}>使用情况</span>
+                <span className='s1' >使用情况</span>
             </div>
 
             <div id="d1" >

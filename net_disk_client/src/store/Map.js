@@ -1,4 +1,4 @@
-
+// 判断类型返回对应图片url
 const map = new Map(
     [
         ["jpeg", "img"],

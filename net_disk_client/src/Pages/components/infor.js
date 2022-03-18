@@ -7,6 +7,7 @@ import GoEasy from 'goeasy';
 import {
     BellOutlined,SmileOutlined
 } from '@ant-design/icons';
+import cookie from "react-cookies";
 // 通知页
 const Infor = () => {
     const [show, setshow] = useState(true)
@@ -40,7 +41,10 @@ const Infor = () => {
         }
         
       };
+    //   初始化goeasy连接并订阅
     useEffect(() => {
+        axios.defaults.headers.common['Authorization'] = cookie.load("token");
+        getList()
         goeasy.connect({
             id: "001", //pubsub选填，im必填，最大长度60字符
             data: { "avatar": "/www/xxx.png", "nickname": "Neo" }, //必须是一个对象，pubsub选填，im必填，最大长度300字符，用于上下线提醒和查询在线用户列表时，扩展更多的属性
@@ -83,10 +87,11 @@ const Infor = () => {
 
         axios({
             method: 'get',
-            url: 'http://rap2api.taobao.org/app/mock/296818/infor',
+            url: '/banana/common/notify-list',
         }).then(
             res => {
-                setList(res.data.list)
+                console.log(res)
+                setList(res.data.notify_objects)
             }
         )
     }

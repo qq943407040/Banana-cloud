@@ -19,12 +19,12 @@ import recycle_bin from './components/recycle_bin';
 import About_us from './components/About_us';
 import Detailed from './components/Detailed';
 import Infor from './components/infor';
+import Slider  from './components/Slider';
 import cookie from "react-cookies";
 import Individual_infor from './components/Individual_infor';
-import Test from './Test'
 import axios from 'axios';
 import GoEasy from 'goeasy';
-
+ 
 
 // 整体布局
 const Main_index = (props) => {
@@ -123,7 +123,8 @@ const Main_index = (props) => {
     <div className='main_index'>
       <Layout style={{ minHeight: '100vh' }}>
         <Affix>
-          <Sider width={'18vw'} className='sider'>
+        <>
+         <Sider width={'18vw'} className='sider'>
             <div className='logo'>
               <span >香蕉快传</span>
             </div>
@@ -149,14 +150,6 @@ const Main_index = (props) => {
                   <span className='span2'>回收站</span>
                 </div>
               </Menu.Item>
-              {/* <Menu.Item key="4" style={{ height: '7vh' }}>
-                <div><FileImageOutlined style={{ fontSize: '3vh' }} />
-                  <span className='span2'>我的图片</span></div>
-              </Menu.Item>
-              <Menu.Item key="5" style={{ height: '7vh' }}>
-                <div><VideoCameraOutlined style={{ fontSize: '3vh' }} />
-                  <span className='span2'>我的视频</span></div>
-              </Menu.Item> */}
               <Menu.Item key="aboutus" style={{ height: '7vh' }}>
                 <div><QuestionCircleOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
                   <span className='span2'>关于我们</span></div>
@@ -176,6 +169,7 @@ const Main_index = (props) => {
             </div>
 
           </Sider>
+        </>
         </Affix>
 
         <Layout className="site_layout">
@@ -201,7 +195,6 @@ const Main_index = (props) => {
               <Route path="/index/aboutus" component={About_us} />
               <Route path="/index/detailed/:id" component={Detailed} />
               <Route path="/index/individual" component={Individual_infor} />
-              <Route path="/index/test" component={Test} />
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Bpan ©2021 Created by Bnuzer</Footer>

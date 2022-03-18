@@ -20,21 +20,22 @@ import {
 import { Model } from 'echarts';
 // 全部文件页面
 const All_files = () => {
-    const [selectedRowKeys, setSelectRowKeys] = useState([])
-    const [data, setData] = useState([])
+    // 设置数据源
     const [data2, setData2] = useState([])
+    //
     const [previewDiv, setPreviewDiv] = useState(false)
     const [previewImg, setPreviewImg] = useState(false)
     const [imgSrc, setImgSrc] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [newDirModalVis, setNewDirModalVis] = useState(false)
     const [dirName, setDirName] = useState('')
+    // 当前文件夹id
     const [did, setDid] = useState(0)
 
-    const [aimDid, setAimDid] = useState(0)
 
-    const [bread,setBread]=useState(    [     
-        {text: <Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item>},
+    // 面包屑导航内容
+    const [bread, setBread] = useState([
+        { text: <Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item> },
     ]
     )
     // 获取全部文件信息
@@ -71,7 +72,7 @@ const All_files = () => {
             }
         )
     }
-    
+    // 初始化执行
     useEffect(() => {
         axios.defaults.headers.common['Authorization'] = cookie.load("token");
         getAllfiles(did)
@@ -79,11 +80,11 @@ const All_files = () => {
     // 上传组件的属性
     const props = {
         name: 'file',
-        action: '/banana/tf/upload?did='+did,
+        action: '/banana/tf/upload?did=' + did,
         headers: { "Authorization": cookie.load('token') },
         maxCount: 1,
-  
-        
+
+
 
         onChange(info) {
             if (info.file.status !== 'uploading') {
@@ -128,11 +129,11 @@ const All_files = () => {
                 }, 500);
             }
         )
-        .catch(error=>{
-            setTimeout(() => {
-                setIsLoading(false)
-            }, 500);
-        })
+            .catch(error => {
+                setTimeout(() => {
+                    setIsLoading(false)
+                }, 500);
+            })
     }
     // 删除文件夹
     const deleteDir = (did) => {
@@ -161,7 +162,7 @@ const All_files = () => {
                     setIsLoading(false)
                 }, 500);
             }
-        ).catch(error=>{
+        ).catch(error => {
             setTimeout(() => {
                 setIsLoading(false)
             }, 500);
@@ -209,30 +210,7 @@ const All_files = () => {
 
 
     }
-    // 多选框变化时回调函数
-    const onchange = (e) => {
-        console.log(map.get('jpg'))
-        console.log(e);
-    }
-
-    // 选择项更换时执行
-    const onSelectChange = Keys => {
-        console.log('selectedRowKeys changed: ', Keys);
-        setSelectRowKeys(Keys);
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].key == Keys[Keys.length - 1])
-                console.log(data[i].file_name)
-
-        }
-
-    };
-    // 表格行是否可以选择
-    const rowSelection = {
-        selectedRowKeys,
-        onChange: onSelectChange,
-    };
-
-    const hasSelected = selectedRowKeys.length > 0;
+    
     // 文件预览
     const preview = (item) => {
         if ('file_type' in item) {
@@ -276,7 +254,7 @@ const All_files = () => {
         }
 
     }
-
+    //无用方法
     const get = () => {
     }
     // 新建文件夹
@@ -312,20 +290,22 @@ const All_files = () => {
         }
 
     }
-    const judgeSrc = (type)=>{
-        if(map.get(type)=='img')
-        return 'http://47.107.95.82:9000/peach-static/图片.png'
-        else if(map.get(type)=='video')
-        return 'http://47.107.95.82:9000/peach-static/视频.png'
-        else 
-        return 'http://47.107.95.82:9000/peach-static/文件图片.png'
+    // 判断文件类型返回对应图片
+    const judgeSrc = (type) => {
+        if (map.get(type) == 'img')
+            return 'http://47.107.95.82:9000/peach-static/图片.png'
+        else if (map.get(type) == 'video')
+            return 'http://47.107.95.82:9000/peach-static/视频.png'
+        else
+            return 'http://47.107.95.82:9000/peach-static/文件图片.png'
     }
-    const add = ()=>{
+
+    const add = () => {
         var bread = document.getElementById('bread1')
         bread.append("<Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item>")
     }
 
-    
+
     return (
         <div id="main">
             {/* 展示图片预览 */}
@@ -346,6 +326,7 @@ const All_files = () => {
                 }}
             >
             </Image>
+            {/* 新建文件夹对话框 */}
             <Modal
 
                 className='newDir_div'
@@ -379,6 +360,7 @@ const All_files = () => {
 
                 </Form>
             </Modal>
+            {/* 预览图片和pdf文档对话框 */}
             <Modal
                 id="modal1"
                 className='iframe_div'
@@ -410,11 +392,10 @@ const All_files = () => {
             </div>
 
             <div className='all_files'>
-
                 <div className='bread'>
                     <Breadcrumb id='bread1'>
                         {
-                            bread.map((ele,index)=>{
+                            bread.map((ele, index) => {
                                 return ele.text
                             })
                         }
@@ -474,29 +455,29 @@ const All_files = () => {
                                     key={item.key}>
 
                                     <Row className="list-div">
-                                        <Col span={12} style={{display:'flex',alignContent:'center',alignSelf:'center'}}>
-                                            <Image 
-                                            width={'1.6rem'}
-                                            style={{position:'relative',top:'5px'}}
-                                            src=
-                                            {
-                                                'file_name' in item ?
-                                                judgeSrc(item.file_type)
-                                            :'http://47.107.95.82:9000/peach-static/文件夹.png'  
-                                            }
-                                           
+                                        <Col span={12} style={{ display: 'flex', alignContent: 'center', alignSelf: 'center' }}>
+                                            <Image
+                                                width={'1.6rem'}
+                                                style={{ position: 'relative', top: '5px' }}
+                                                src=
+                                                {
+                                                    'file_name' in item ?
+                                                        judgeSrc(item.file_type)
+                                                        : 'http://47.107.95.82:9000/peach-static/文件夹.png'
+                                                }
 
-                                            preview={false}>
+
+                                                preview={false}>
                                             </Image>
                                             {'file_name' in item ?
-                                                <a 
+                                                <a
                                                     style={{ marginLeft: '1vw' }}
                                                     id="a1"
                                                     onClick={() => preview(item)}>
                                                     {item.file_name}
                                                 </a>
                                                 :
-                                                <a 
+                                                <a
                                                     style={{ marginLeft: '1vw' }}
                                                     id="a1"
                                                     onClick={() => getAllfiles(item.did)}>
@@ -516,10 +497,10 @@ const All_files = () => {
                                         <Col span={3}>
                                             <Space size="middle">
                                                 {'file_type' in item
-                                                    ? 
-                                                        <DownloadOutlined
-                                                            onClick={'file_type' in item ? () => getfiles(item) : (get)}
-                                                            style={{ fontSize: '2.4vh' }} />
+                                                    ?
+                                                    <DownloadOutlined
+                                                        onClick={'file_type' in item ? () => getfiles(item) : (get)}
+                                                        style={{ fontSize: '2.4vh' }} />
                                                     : <DownloadOutlined
                                                         style={{ fontSize: '2.4vh', color: 'rgb(201, 197, 197)' }} />}
                                                 {'file_type' in item ?
@@ -556,5 +537,5 @@ const All_files = () => {
 
 
     )
-                                        }
+}
 export default All_files

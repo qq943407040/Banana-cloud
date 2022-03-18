@@ -225,6 +225,7 @@ const Recycle_bin = () => {
         console.log(selectId)
         console.log(bool)
     }
+    // 文件夹多选框回调函数
     const onchange1 = (id, bool) => {
         if (bool) {
             selectDid.push(id)
@@ -241,6 +242,7 @@ const Recycle_bin = () => {
         console.log(selectDid)
         console.log(bool)
     }
+    // 判断文件类型返回对应图片url
     const judgeSrc = (type)=>{
         if(map.get(type)=='img')
         return 'http://47.107.95.82:9000/peach-static/图片.png'
