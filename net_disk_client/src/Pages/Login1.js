@@ -634,7 +634,6 @@ const Login1 = (props) => {
                         onCancel={() =>
                             setIsResult(false)
                         }
-                        bodyStyle={{ borderRadius: '160px' }}
                     >
                         <div className='result_div'>
                             <Result
@@ -651,7 +650,7 @@ const Login1 = (props) => {
                                                     copy(e.target.innerText)
                                                     message.success('复制成功！')
                                                 }}
-                                                    style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>{shareCode}</span>
+                                                    style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>{shareCode}XXXXXX</span>
                                             </Tooltip>
                                         </p>
                                     </div>

@@ -509,7 +509,9 @@ const All_files = () => {
                                                         okText="确认"
                                                         cancelText="取消">
                                                         <a href='' style={{ color: 'black' }}><DeleteOutlined
-                                                            style={{ fontSize: '2.4vh' }} />{item.fid}</a>
+                                                            style={{ fontSize: '2.4vh' }} />
+                                                            {/* {item.fid} */}
+                                                            </a>
                                                     </Popconfirm>
                                                     : <Popconfirm
                                                         title="确定删除文件夹?"
@@ -517,7 +519,9 @@ const All_files = () => {
                                                         okText="确认"
                                                         cancelText="取消">
                                                         <a href='' style={{ color: 'black' }}><DeleteOutlined
-                                                            style={{ fontSize: '2.4vh' }} />{item.did}</a>
+                                                            style={{ fontSize: '2.4vh' }} />
+                                                            {/* {item.did} */}
+                                                            </a>
                                                     </Popconfirm>}
                                             </Space>
                                         </Col>

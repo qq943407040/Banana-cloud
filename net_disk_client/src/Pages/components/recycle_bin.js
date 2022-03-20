@@ -424,7 +424,9 @@ const Recycle_bin = () => {
                                                         cancelText="取消"
                                                     >
                                                         <a href='' style={{ color: 'black' }}><DeleteOutlined
-                                                            style={{ fontSize: '2.4vh' }} />{item.fid}</a>
+                                                            style={{ fontSize: '2.4vh' }} />
+                                                            {/* {item.fid} */}
+                                                            </a>
                                                     </Popconfirm>
                                                     : <Popconfirm
                                                         title="确定永久删除文件夹?"
@@ -433,7 +435,9 @@ const Recycle_bin = () => {
                                                         cancelText="取消"
                                                     >
                                                         <a href='' style={{ color: 'black' }}><DeleteOutlined
-                                                            style={{ fontSize: '2.4vh' }} />{item.did}</a>
+                                                            style={{ fontSize: '2.4vh' }} />
+                                                            {/* {item.did} */}
+                                                            </a>
                                                     </Popconfirm>}
 
                                             </Space>

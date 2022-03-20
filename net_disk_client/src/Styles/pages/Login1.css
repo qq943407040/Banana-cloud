@@ -514,6 +514,7 @@ body {
 	border-radius: 4vh;
 	background-color: rgb(247, 209, 85);
 	color:black;
+	font-size: 0.9rem
 }
 .Infor_button:hover{
 	background-color: rgb(247, 225, 156);
@@ -523,7 +524,7 @@ body {
 	border-radius: 10px;
 }
 .ant-modal-body{
-	padding: 1vw;
+	/* padding-top: 5vh; */
 }
 .row1{
 	display: flex;
@@ -531,12 +532,15 @@ body {
 }
 .result_div{
 	/* overflow: hidden; */
-	width: 18vw;
+	width: 12vw;
 	position: relative;
 	bottom: 3vh;
-	height: 34vh;
+	height: fit-content;
 	/* margin-left: 1vw; */
-	margin-bottom: 3vh;
+	margin-bottom: -7vh;
+}
+.ant-result-success{
+
 }
 #sharecode{
 	cursor: pointer;
