@@ -11,7 +11,7 @@ import cookie from "react-cookies";
 // 通知页
 const Infor = () => {
     const [show, setshow] = useState(true)
-    const [list, setList] = useState([])
+    const [list, setList] = useState()
     const [mess,setMess] = useState('')
     var goeasy = new GoEasy({
         host: 'hangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
@@ -91,21 +91,21 @@ const Infor = () => {
         }).then(
             res => {
                 console.log(res)
-                setList(res.data.notify_objects)
+                setList(res.data.data.notify_objects)
             }
         )
     }
 
     return (
         <>
-            <Popover placement="bottomRight" title={'通知'}
+            <Popover  placement="bottomRight" title={'通知'}
                 content={<List
                     size="small"
                     dataSource={list}
                     renderItem={item => (
                         <List.Item>
                             <div className='list_infor'>
-                                {item}
+                                {item.title}
                             </div>
                         </List.Item>
                     )}

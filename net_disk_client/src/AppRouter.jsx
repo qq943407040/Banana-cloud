@@ -15,7 +15,7 @@ function AppRouter() {
             </Route>
             <Route path="/index"  component={index}>
             </Route>
-            <Route path="/login"  component={Login1}>
+            <Route path="/login"  exact component={Login1}>
             </Route>
             <Route path="/register"  component={Register}>
             </Route>

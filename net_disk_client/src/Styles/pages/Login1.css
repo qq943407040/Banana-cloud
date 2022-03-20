@@ -28,7 +28,7 @@ body {
 	background-repeat: no-repeat;
 	background-size: cover;
 	height: 100vh;
-
+	transition:background-image 2s linear;
 }
 
 
@@ -191,6 +191,7 @@ body {
 	height: 100%;
 	text-align: center;
 	/* margin-bottom: 10vh; */
+
 }
 .form1 {
 	background-color: var(--white);
@@ -203,6 +204,7 @@ body {
 	text-align: center;
 	/* margin-top: 10vh;	 */
 	/* margin-bottom: 10vh; */
+	padding-top: 5vh;
 }
 
 .input {
@@ -363,7 +365,8 @@ body {
 	position: relative;
 	/* margin-top: 1rem; */
 	top: 0.5rem;
-	line-height: 4rem;
+	line-height: 3rem;
+
 }
 
 .receive_input {
@@ -374,8 +377,6 @@ body {
 	border-style: none;
 	border-radius: 4rem;
 	/* margin-bottom: 2; */
-	position: relative;
-	bottom: 0.4rem;
 	font-size: 1.2rem;
 	font-weight: bold;
 
@@ -496,6 +497,10 @@ body {
 	align-items: center;
 	margin-bottom: 1vh;
 }
+.receive_infor_div{
+	padding-right: 1vw;
+	padding-left: 1vw;
+}
 .uploadInfor_div{
 	/* border-radius: 100px; */
 }
@@ -525,11 +530,12 @@ body {
 }
 .result_div{
 	/* overflow: hidden; */
-	width: 12vw;
+	width: 18vw;
 	position: relative;
 	bottom: 3vh;
 	height: 34vh;
 	/* margin-left: 1vw; */
+	margin-bottom: 3vh;
 }
 #sharecode{
 	cursor: pointer;
@@ -537,7 +543,4 @@ body {
 #result_button{
 	position: relative;
 	bottom: 2vh;
-}
-.receive_infor_div{
-	width: 18vw;
 }

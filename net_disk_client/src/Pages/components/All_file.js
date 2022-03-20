@@ -19,7 +19,7 @@ import {
 } from '@ant-design/icons';
 import { Model } from 'echarts';
 // 全部文件页面
-const All_files = () => {
+const All_files = () => {   
     // 设置数据源
     const [data2, setData2] = useState([])
     //
@@ -35,9 +35,10 @@ const All_files = () => {
 
     // 面包屑导航内容
     const [bread, setBread] = useState([
-        { text: <Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item> },
+       
     ]
     )
+
     // 获取全部文件信息
     const getAllfiles = (did) => {
         let dataprops = {
@@ -65,6 +66,7 @@ const All_files = () => {
                         setData2(res.data.data.file_object)
                     else if (res.data.data.dir_object != null)
                         setData2(res.data.data.dir_object)
+                    setBread(res.data.data.dir_name_id)
                 }
                 else {
                     message.error('获取列表失败')
@@ -300,10 +302,7 @@ const All_files = () => {
             return 'http://47.107.95.82:9000/peach-static/文件图片.png'
     }
 
-    const add = () => {
-        var bread = document.getElementById('bread1')
-        bread.append("<Breadcrumb.Item ><Link to='/index/allfiles'>全部文件</Link></Breadcrumb.Item>")
-    }
+
 
 
     return (
@@ -388,15 +387,15 @@ const All_files = () => {
             </Modal>
             <div className='d1'>
                 <DesktopOutlined style={{ fontSize: '3vh' }} />
-                <span onClick={add} className='s1'>全部文件</span>
+                <span  className='s1'>全部文件</span>
             </div>
 
             <div className='all_files'>
                 <div className='bread'>
-                    <Breadcrumb id='bread1'>
+                    <Breadcrumb id='bread1' separator=">">
                         {
                             bread.map((ele, index) => {
-                                return ele.text
+                                return   <Breadcrumb.Item onClick={()=>getAllfiles(ele.did)} ><a>{ele.name}</a></Breadcrumb.Item>
                             })
                         }
                     </Breadcrumb>
