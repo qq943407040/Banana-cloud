@@ -33,6 +33,7 @@ const Login1 = (props) => {
     const [isReshow, setIsReshow] = useState(true)
     const [isForgetshow, setIsForgetshow] = useState(true)
     const [isUpInforShow, setIsUpInforShow] = useState(false)
+    const [blur, setIsBlur] = useState(true)
 
     // 找回密码逻辑
     const [emailOfforget, setEmailOfforget] = useState('')
@@ -297,17 +298,14 @@ const Login1 = (props) => {
     })
     // 接受文件
     const receiveFiles = () => {
-        if (!isReshow) {
-            setIsLoginshow(false)
-            setIsUpshow(true)
-            setIsReshow(!isReshow)
-        }
-        else {
-            setIsReshow(!isReshow)
-            setIsUpshow(!isUpshow)
-        }
-
+        setIsReshow(!isReshow)
+        setIsUpshow(!isUpshow)
     }
+    useEffect(()=>{
+        document.getElementById('input1').focus()
+
+    })
+
     // 从接受文件组件转到上传组件
     const toUpload = () => {
         setIsUpshow(!isUpshow)
@@ -407,28 +405,23 @@ const Login1 = (props) => {
 
     }
     const showLogin = () => {
-
-        if (!isForgetshow) {
-            setIsUpshow(true)
-            setIsLoginshow(false)
+        if (!isLoginshow) {
+            setIsUpshow(false)
+            setIsLoginshow(!isLoginshow)
             setIsReshow(true)
             setIsForgetshow(true)
-        }
-        else if (!isReshow) {
-            setIsLoginshow(false)
-            setIsUpshow(true)
-            setIsReshow(!isReshow)
+            console.log('4')
         }
         else {
+            setIsUpshow(true)
             setIsLoginshow(!isLoginshow)
-            setIsUpshow(!isUpshow)
             setIsReshow(true)
             setIsForgetshow(true)
+            console.log('4')
         }
 
-
-
     }
+    
     const { Option } = Select;
 
     // Select框更改回调函数
@@ -487,400 +480,390 @@ const Login1 = (props) => {
     }, [])
     useEffect(() => {
         var i = 1
-        clearInterval(a)
-        var a = setInterval(() => {
+        clearInterval()
+        setInterval(() => {
             $('body').css('backgroundImage', 'url(' + urlArray[i] + ')');
             $('.overlay').css('backgroundImage', 'url(' + urlArray[i] + ')');
             i++
             if (i == 3)
                 i = 0
-            console.log('ss')
+            // console.log('ss')
         }, 7000);
     }, [])
-    //控制点击input以外的区域会触发input的blur事件
-    $(document).mouseup(function (e) {
-        var con = $("#c1");   // 设置目标区域
-        if (!con.is(e.target) && con.has(e.target).length === 0) {
+    // 控制点击input以外的区域会触发input的blur事件
+    const a = new Promise(function(resolve, reject){
             if (!isLoginshow) {
-                if (!isForgetshow) {
-                    setIsUpshow(true)
-                    setIsLoginshow(false)
-                    setIsReshow(true)
-                    setIsForgetshow(true)
+                $(document).mouseup(function (e) {
+                    var con = $("#c1");   // 设置目标区域
+                    if (!con.is(e.target) && con.has(e.target).length === 0) {
+                        console.log(isLoginshow)
+                        showLogin()
+                    }
+                    else {
+                        console.log('11')
+                    }
                 }
-                else if (!isReshow) {
-                    setIsLoginshow(false)
-                    setIsUpshow(true)
-                    setIsReshow(!isReshow)
-                }
-                else {
-                    setIsLoginshow(!isLoginshow)
-                    setIsUpshow(!isUpshow)
-                    setIsReshow(true)
-                    setIsForgetshow(true)
-                }
+                );
             }
-        }
-    }
-    );
+            resolve()
+    })
     return (
-        <body>
-            <div className='main_index'>
-                <div>
-                    <div className='loginToptip'>
+        <div className='main_index'>
+            <div>
+                <div className='loginToptip'>
 
-                        <Row type="flex" justify="center">
-                            <Col xs={6} sm={6} md={12} lg={12} xl={12}>
-                                <Image
-                                    className='loginLogo'
-                                    width={250}
-                                    preview={false}
-                                    src="http://47.107.95.82:8000/peach-static/香蕉_画板 1.png"
-                                />
-                            </Col>
-                            <Col offset={0} className='person_data' xs={8} sm={8} md={12} lg={12} xl={12}>
-                                <div className='loginButton'>
-                                    <Button onClick={showLogin}>注册/登录</Button>
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                    <div className='uploadFiles animate__animated animate__bounceInLeft'
-                        hidden={isUpshow}
-                        id='upload_div'>
-                        <Row type="flex" justify="center"  >
-                            <Col offset={0} xs={16} sm={16} md={16} lg={16} xl={16}>
-                                <Upload {...propss}>
-                                    <Button className='bt1' icon={<PlusOutlined style={{ fontSize: '1.7rem', marginLeft: '1.3vw' }} />}>上传文件</Button>
-                                </Upload>
-                            </Col>
-                            <Col offset={0} xs={8} sm={8} md={8} lg={8} xl={8}>
-                                <Button onClick={receiveFiles} className='bt2'>接受文件</Button>
-                            </Col>
-                        </Row>
-                    </div>
-                    {/* 接受文件 */}
-                    <div className='uploadFiles animate__animated animate__bounceInLeft'
-                        hidden={isReshow}
-                        id='upload_div'>
-                        <div className='receive_div'>
-                            <input
-                                onKeyDown={enterDown}
-                                bordered='false'
-                                placeholder='请输入接受文件口令'
-                                className='receive_input'
-                                onChange={(e) => setReceiveCode(e.target.value)}
-                            ></input>
-                            <CloseCircleOutlined onClick={toUpload} className='closeBtn' style={{ fontSize: '1.8rem', marginLeft: '1rem',marginTop:'0.6rem' }} />
-                        </div>
-                    </div>
-                    {/* 接受文件页 */}
-                    <Modal
-                        visible={isReceive}
-                        width='fit-content'
-                        footer={
-                            null
-                        }
-                        onCancel={() =>
-                            setIsReceive(false)
-                        }
-                        bodyStyle={{ borderRadius: '160px' }}
-                    >
-                        <div className='receive_infor_div'>
-                            <div className='infor_title'>
-                                <span style={{ width: '5vw', fontSize: '1.1rem', fontWeight: 'bold' }}
-                                >
-                                    {receive_title}
-                                </span>
-                            </div>
-                            <div className='file_infor'>
-                                <Image
-                                    width={'1.8rem'}
-                                    src="http://47.107.95.82:9000/peach-static/文件图片.png"
-                                    preview={false}></Image>
-                                <span style={{ fontSize: '0.8rem', overflow: 'hidden', whiteSpace: 'nowrap' }}>{refileName}</span>
-                            </div>
-                            <div className='infor_detailed'>
-                                <Row className='row'>
-                                    <Col span={8}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>过期时间</span> </Col>
-                                    <Col span={5}></Col>
-                                    <Col span={11} style={{ whiteSpace: 'nowrap', fontSize: '0.9rem' }}>
-                                        {moment((create_time + expire_time) * 1000).format("YYYY-MM-DD HH:mm")}
-                                    </Col>
-                                </Row>
-                                <Row className='row'>
-                                    <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>文件描述</span> </Col>
-                                </Row>
-                                <Row style={{ marginLeft: '1vw' }}>
-                                    {describe}
-                                </Row>
-                                <Row className='row1'>
-                                    <Button onClick={() => {
-                                        window.open(receive_url)
-                                        console.log(receive_url)
-                                    }} className='Infor_button'>确认</Button>
-                                </Row>
-
-                            </div>
-                        </div>
-                    </Modal>
-                    {/* 上传完成后结果页 */}
-                    <Modal
-                        visible={isResult}
-                        width='fit-content'
-                        footer={
-                            null
-                        }
-                        onCancel={() =>
-                            setIsResult(false)
-                        }
-                    >
-                        <div className='result_div'>
-                            <Result
-                                status="success"
-                                title={
-                                    <h4 style={{ whiteSpace: 'nowrap' }}>上传成功!</h4>
-                                }
-                                subTitle={
-                                    <div>
-                                        您的分享码是:
-                                        <p id="sharecode" style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'black' }}>
-                                            <Tooltip title="一键复制">
-                                                <span onClick={(e) => {
-                                                    copy(e.target.innerText)
-                                                    message.success('复制成功！')
-                                                }}
-                                                    style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>{shareCode}XXXXXX</span>
-                                            </Tooltip>
-                                        </p>
-                                    </div>
-                                }
-                                extra={[
-                                    <Button
-                                        onClick={() => setIsResult(false)}
-                                        id="result_button" className='Infor_button'>确认</Button>,
-                                ]}
+                    <Row type="flex" justify="center">
+                        <Col xs={6} sm={6} md={12} lg={12} xl={12}>
+                            <Image
+                                className='loginLogo'
+                                width={250}
+                                preview={false}
+                                src="http://47.107.95.82:8000/peach-static/香蕉_画板 1.png"
                             />
-                        </div>
-                    </Modal>
-                    {/* 上传后确认信息界面 */}
-                    <Modal
-                        visible={isUpInforShow}
-                        className='uploadInfor_div'
-                        width='fit-content'
-                        footer={
-                            null
-                        }
-                        onCancel={() =>
-                            setIsUpInforShow(false)
-                        }
-                        bodyStyle={{ borderRadius: '160px' }}>
+                        </Col>
+                        <Col offset={0} className='person_data' xs={8} sm={8} md={12} lg={12} xl={12}>
+                            <div id='login1' className='loginButton'>
+                                <Button onClick={showLogin}>注册/登录</Button>
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+                <div className='uploadFiles animate__animated animate__bounceInLeft'
+                    hidden={isUpshow}
+                    id='upload_div'>
+                    <Row type="flex" justify="center"  >
+                        <Col offset={0} xs={16} sm={16} md={16} lg={16} xl={16}>
+                            <Upload {...propss}>
+                                <Button className='bt1' icon={<PlusOutlined style={{ fontSize: '1.7rem', marginLeft: '1.3vw' }} />}>上传文件</Button>
+                            </Upload>
+                        </Col>
+                        <Col offset={0} xs={8} sm={8} md={8} lg={8} xl={8}>
+                            <Button onClick={() => receiveFiles()} className='bt2'>接受文件</Button>
+                        </Col>
+                    </Row>
+                </div>
+                {/* 接受文件 */}
+                <div className='uploadFiles animate__animated animate__bounceInLeft'
+                    hidden={isReshow}
+                    id='upload_div'>
+                    <div className='receive_div'>
+                        <input
+                            id='input1'
+                            onKeyDown={enterDown}
+                            bordered='false'
+                            placeholder='请输入接受文件口令'
+                            className='receive_input'
+                            onChange={(e) => setReceiveCode(e.target.value)}
+                        ></input>
+                        <CloseCircleOutlined onClick={toUpload} className='closeBtn' style={{ fontSize: '1.8rem', marginLeft: '1rem', marginTop: '0.6rem' }} />
+                    </div>
+                </div>
+                {/* 接受文件页 */}
+                <Modal
+                    visible={isReceive}
+                    width='fit-content'
+                    footer={
+                        null
+                    }
+                    onCancel={() =>
+                        setIsReceive(false)
+                    }
+                    bodyStyle={{ borderRadius: '160px' }}
+                >
+                    <div className='receive_infor_div'>
                         <div className='infor_title'>
-                            <Input
-                                bordered={false}
-                                defaultValue={infor_title}
-                                value={infor_title}
-                                style={{ width: '5vw', fontSize: '1.1rem', fontWeight: 'bold' }}
-                                onChange={(e) => setInfor_title(e.target.value)}
+                            <span style={{ width: '5vw', fontSize: '1.1rem', fontWeight: 'bold' }}
                             >
-                            </Input><EditOutlined style={{ fontSize: '1.1rem' }} />
+                                {receive_title}
+                            </span>
                         </div>
                         <div className='file_infor'>
                             <Image
                                 width={'1.8rem'}
                                 src="http://47.107.95.82:9000/peach-static/文件图片.png"
                                 preview={false}></Image>
-                            <span style={{ fontSize: '0.8rem', overflow: 'hidden', whiteSpace: 'nowrap' }}>{fileName}</span>
+                            <span style={{ fontSize: '0.8rem', overflow: 'hidden', whiteSpace: 'nowrap' }}>{refileName}</span>
                         </div>
                         <div className='infor_detailed'>
                             <Row className='row'>
-                                <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>有效期</span> </Col>
-                                <Col span={6}></Col>
-                                <Col span={6}>
-                                    <Select
-                                        defaultValue={['7天']}
-                                        style={{ width: 80 }}
-                                        bordered={false}
-                                        onChange={handleChange}
-                                    >
-                                        <Option value="1天">1天</Option>
-                                        <Option value="7天">7天</Option>
-                                        <Option value="30天">30天</Option>
-                                    </Select>
+                                <Col span={8}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>过期时间</span> </Col>
+                                <Col span={5}></Col>
+                                <Col span={11} style={{ whiteSpace: 'nowrap', fontSize: '0.9rem' }}>
+                                    {moment((create_time + expire_time) * 1000).format("YYYY-MM-DD HH:mm")}
                                 </Col>
                             </Row>
                             <Row className='row'>
-                                <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>补充描述</span> </Col>
+                                <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>文件描述</span> </Col>
                             </Row>
-                            <Row>
-                                <Input.TextArea rows={4}
-                                    autoSize={{ minRows: 3, maxRows: 3 }}
-                                    style={{ width: '18vw' }}
-                                    onChange={(e) => { setText(e.target.value); }}
-                                />
+                            <Row style={{ marginLeft: '1vw' }}>
+                                {describe}
                             </Row>
                             <Row className='row1'>
-                                <Button onClick={share} className='Infor_button'>确认</Button>
+                                <Button onClick={() => {
+                                    window.open(receive_url)
+                                    console.log(receive_url)
+                                }} className='Infor_button'>确认</Button>
                             </Row>
 
                         </div>
-                        {/* <Progress style={{width:'160px'}} percent={percent} /> */}
-                    </Modal>
-
-                    <div hidden={isForgetshow} className='forget_div animate__animated animate__fadeInUp'>
-                        <h2 className='forgetTitle'>
-                            <Row>
-                                <Col span="3">
-                                    <LeftCircleTwoTone onClick={showLogin} className='returntoLogin' />
-                                </Col>
-                                <Col id='title' span="18">
-                                    Forgot password
-                                </Col>
-                            </Row>
-                        </h2>
-                        <div className='form2'
+                    </div>
+                </Modal>
+                {/* 上传完成后结果页 */}
+                <Modal
+                    visible={isResult}
+                    width='fit-content'
+                    footer={
+                        null
+                    }
+                    onCancel={() =>
+                        setIsResult(false)
+                    }
+                >
+                    <div className='result_div'>
+                        <Result
+                            status="success"
+                            title={
+                                <h4 style={{ whiteSpace: 'nowrap' }}>上传成功!</h4>
+                            }
+                            subTitle={
+                                <div>
+                                    您的分享码是:
+                                    <p id="sharecode" style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'black' }}>
+                                        <Tooltip title="一键复制">
+                                            <span onClick={(e) => {
+                                                copy(e.target.innerText)
+                                                message.success('复制成功！')
+                                            }}
+                                                style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>{shareCode}XXXXXX</span>
+                                        </Tooltip>
+                                    </p>
+                                </div>
+                            }
+                            extra={[
+                                <Button
+                                    onClick={() => setIsResult(false)}
+                                    id="result_button" className='Infor_button'>确认</Button>,
+                            ]}
+                        />
+                    </div>
+                </Modal>
+                {/* 上传后确认信息界面 */}
+                <Modal
+                    visible={isUpInforShow}
+                    className='uploadInfor_div'
+                    width='fit-content'
+                    footer={
+                        null
+                    }
+                    onCancel={() =>
+                        setIsUpInforShow(false)
+                    }
+                    bodyStyle={{ borderRadius: '160px' }}>
+                    <div className='infor_title'>
+                        <Input
+                            bordered={false}
+                            defaultValue={infor_title}
+                            value={infor_title}
+                            style={{ width: '5vw', fontSize: '1.1rem', fontWeight: 'bold' }}
+                            onChange={(e) => setInfor_title(e.target.value)}
                         >
-                            <Form
-                                name="basic"
-                                labelCol={{
-                                    span: 5,
-                                }}
-                                wrapperCol={{
-                                    span: 16,
-                                }}
-                                initialValues={{
-                                    remember: true,
-                                }}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
-                                autoComplete="off"
-                                layout='horizontal'
-                            >
-
-                                <Form.Item
-                                    label="邮箱"
-                                    name="email"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please input your email!',
-                                        },
-                                    ]}>
-                                    <Search
-                                        enterButton="发送"
-                                        placeholder="input email text"
-                                        allowClear
-                                        onSearch={onSearch}
-                                    />
-                                </Form.Item>
-
-                                <Form.Item
-                                    label="验证码"
-                                    name="password"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please input your !',
-                                        },
-                                    ]}
+                        </Input><EditOutlined style={{ fontSize: '1.1rem' }} />
+                    </div>
+                    <div className='file_infor'>
+                        <Image
+                            width={'1.8rem'}
+                            src="http://47.107.95.82:9000/peach-static/文件图片.png"
+                            preview={false}></Image>
+                        <span style={{ fontSize: '0.8rem', overflow: 'hidden', whiteSpace: 'nowrap' }}>{fileName}</span>
+                    </div>
+                    <div className='infor_detailed'>
+                        <Row className='row'>
+                            <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>有效期</span> </Col>
+                            <Col span={6}></Col>
+                            <Col span={6}>
+                                <Select
+                                    defaultValue={['7天']}
+                                    style={{ width: 80 }}
+                                    bordered={false}
+                                    onChange={handleChange}
                                 >
-                                    <Input
-                                        allowClear />
-                                </Form.Item>
-                                <Form.Item
-                                    label="密码"
-                                    name="password"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please input your password!',
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password
-                                        allowClear />
-                                </Form.Item>
-                                <Form.Item
-                                    label="确认密码"
-                                    name="password"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please input your repassword !',
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password
-                                        allowClear />
-                                </Form.Item>
-                                <Form.Item
-                                    wrapperCol={{
-                                        offset: 7,
-                                        span: 10,
-                                    }}
-                                >
-                                    <button className='btn1' onClick={checkChange}>修改</button>
-                                </Form.Item>
-                            </Form>
-                        </div>
+                                    <Option value="1天">1天</Option>
+                                    <Option value="7天">7天</Option>
+                                    <Option value="30天">30天</Option>
+                                </Select>
+                            </Col>
+                        </Row>
+                        <Row className='row'>
+                            <Col span={12}> <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>补充描述</span> </Col>
+                        </Row>
+                        <Row>
+                            <Input.TextArea rows={4}
+                                autoSize={{ minRows: 3, maxRows: 3 }}
+                                style={{ width: '18vw' }}
+                                onChange={(e) => { setText(e.target.value); }}
+                            />
+                        </Row>
+                        <Row className='row1'>
+                            <Button onClick={share} className='Infor_button'>确认</Button>
+                        </Row>
 
                     </div>
+                    {/* <Progress style={{width:'160px'}} percent={percent} /> */}
+                </Modal>
+
+                <div hidden={isForgetshow} className='forget_div animate__animated animate__fadeInUp'>
+                    <h2 className='forgetTitle'>
+                        <Row>
+                            <Col span="3">
+                                <LeftCircleTwoTone onClick={showLogin} className='returntoLogin' />
+                            </Col>
+                            <Col id='title' span="18">
+                                Forgot password
+                            </Col>
+                        </Row>
+                    </h2>
+                    <div className='form2'
+                    >
+                        <Form
+                            name="basic"
+                            labelCol={{
+                                span: 5,
+                            }}
+                            wrapperCol={{
+                                span: 16,
+                            }}
+                            initialValues={{
+                                remember: true,
+                            }}
+                            onFinish={onFinish}
+                            onFinishFailed={onFinishFailed}
+                            autoComplete="off"
+                            layout='horizontal'
+                        >
+
+                            <Form.Item
+                                label="邮箱"
+                                name="email"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your email!',
+                                    },
+                                ]}>
+                                <Search
+                                    enterButton="发送"
+                                    placeholder="input email text"
+                                    allowClear
+                                    onSearch={onSearch}
+                                />
+                            </Form.Item>
+
+                            <Form.Item
+                                label="验证码"
+                                name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your !',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    allowClear />
+                            </Form.Item>
+                            <Form.Item
+                                label="密码"
+                                name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your password!',
+                                    },
+                                ]}
+                            >
+                                <Input.Password
+                                    allowClear />
+                            </Form.Item>
+                            <Form.Item
+                                label="确认密码"
+                                name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your repassword !',
+                                    },
+                                ]}
+                            >
+                                <Input.Password
+                                    allowClear />
+                            </Form.Item>
+                            <Form.Item
+                                wrapperCol={{
+                                    offset: 7,
+                                    span: 10,
+                                }}
+                            >
+                                <button className='btn1' onClick={checkChange}>修改</button>
+                            </Form.Item>
+                        </Form>
+                    </div>
+
                 </div>
+            </div>
 
-                <Spin tip="Loading..." spinning={isLoading}>
-                    <div hidden={isLoginshow} className="container right-panel-active animate__animated animate__fadeInDown" id='c1'>
-                        <div className="container__form container--signup">
-                            <form action="#" className="form" id="form1">
-                                <h2 className="form_title">
-                                    {/* <CloseOutlined onClick={showLogin} className='closeSignUp' /> */}
-                                    Sign Up</h2>
-                                <input type="text" onChange={(e) => { setUserNameRegister(e.target.value) }} placeholder="输入用户名" className="input" />
-                                <input type="password" onChange={(e) => { setPasswordRegister(e.target.value) }} placeholder="输入密码" className="input" />
-                                <input onChange={(e) => { setRegisterEmail(e.target.value) }} placeholder="请输入邮箱" className="input" />
-                                <Input.Group compact>
+            <Spin tip="Loading..." spinning={isLoading}>
+                <div hidden={isLoginshow} className="container right-panel-active animate__animated animate__fadeInDown" id='c1'>
+                    <div className="container__form container--signup">
+                        <form action="#" className="form" id="form1">
+                            <h2 className="form_title">
+                                {/* <CloseOutlined onClick={showLogin} className='closeSignUp' /> */}
+                                Sign Up</h2>
+                            <input type="text" onChange={(e) => { setUserNameRegister(e.target.value) }} placeholder="输入用户名" className="input" />
+                            <input type="password" onChange={(e) => { setPasswordRegister(e.target.value) }} placeholder="输入密码" className="input" />
+                            <input onChange={(e) => { setRegisterEmail(e.target.value) }} placeholder="请输入邮箱" className="input" />
+                            <Input.Group compact>
 
-                                    <input onChange={(e) => { setEmailCode(e.target.value) }} placeholder="请输入验证码" className="input1" />
-                                    <Button onClick={sendcode} disabled={btndisable} className='bt_sendcode' type="primary">{content}</Button>
+                                <input onChange={(e) => { setEmailCode(e.target.value) }} placeholder="请输入验证码" className="input1" />
+                                <Button onClick={sendcode} disabled={btndisable} className='bt_sendcode' type="primary">{content}</Button>
 
-                                </Input.Group>
+                            </Input.Group>
 
-                                <button onClick={checkRegister} className="btn">Sign Up</button>
-                            </form>
-                        </div>
-
-
-                        <div className="container__form container--signin ">
-                            {/* <CloseOutlined onClick={showLogin} className='closeSignIn' /> */}
-
-                            <form action="#" className="form1" id="form2">
-                                <h2 className="form_title">
-                                    Sign In</h2>
-                                <div className='input2'>
-                                    <input id='userName' onChange={(e) => { setUserName(e.target.value) }} placeholder="Username" className="input" />
-                                    <input id='password' type="password" onChange={(e) => { setPassword(e.target.value) }
-                                    } placeholder="Password" className="input" />
-                                    <p onClick={forgotPass}>Forgot your password?</p>
-                                    <button onClick={() => checkLogin()} className="btn">Sign In</button>
-                                </div>
-
-                            </form>
-                        </div>
+                            <button onClick={checkRegister} className="btn">Sign Up</button>
+                        </form>
+                    </div>
 
 
-                        <div className="container__overlay">
-                            <div className="overlay">
-                                <div className="overlay__panel overlay--left">
-                                    <button className="btn" id="signIn">Sign In</button>
-                                </div>
-                                <div className="overlay__panel overlay--right">
-                                    <button className="btn" id="signUp">Sign Up</button>
-                                </div>
+                    <div className="container__form container--signin ">
+                        {/* <CloseOutlined onClick={showLogin} className='closeSignIn' /> */}
+
+                        <form action="#" className="form1" id="form2">
+                            <h2 className="form_title">
+                                Sign In</h2>
+                            <div className='input2'>
+                                <input id='userName' onChange={(e) => { setUserName(e.target.value) }} placeholder="Username" className="input" />
+                                <input id='password' type="password" onChange={(e) => { setPassword(e.target.value) }
+                                } placeholder="Password" className="input" />
+                                <p onClick={forgotPass}>Forgot your password?</p>
+                                <button onClick={() => checkLogin()} className="btn">Sign In</button>
+                            </div>
+
+                        </form>
+                    </div>
+
+
+                    <div className="container__overlay">
+                        <div className="overlay">
+                            <div className="overlay__panel overlay--left">
+                                <button className="btn" id="signIn">Sign In</button>
+                            </div>
+                            <div className="overlay__panel overlay--right">
+                                <button className="btn" id="signUp">Sign Up</button>
                             </div>
                         </div>
                     </div>
-                </Spin>
-            </div>
-        </body>
+                </div>
+            </Spin>
+        </div>
     )
 }
 export default Login1;

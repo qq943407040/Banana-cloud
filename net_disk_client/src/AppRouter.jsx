@@ -4,6 +4,7 @@ import Login from './Pages/Login'
 import index from './Pages/main_index'
 import Register from './Pages/Register';
 import Login1 from './Pages/Login1'
+import App from './Pages/components/test';
 
 //动态传值四个步骤：设置规则 传递值 接收值 显示内容
 
@@ -17,7 +18,7 @@ function AppRouter() {
             </Route>
             <Route path="/login"  exact component={Login1}>
             </Route>
-            <Route path="/register"  component={Register}>
+            <Route path="/register"  component={App}>
             </Route>
         </Router>
     )

@@ -222,7 +222,8 @@ const All_files = () => {
                 || item.file_type == 'pdf'
                 || item.file_type == 'mp4'
                 || item.file_type == 'mp3'
-                || item.file_type == 'doc') {
+                || item.file_type == 'doc'
+                || item.file_type == 'wav') {
 
                 axios({
                     method: 'get',
@@ -327,7 +328,6 @@ const All_files = () => {
             </Image>
             {/* 新建文件夹对话框 */}
             <Modal
-
                 className='newDir_div'
                 width='fit-content'
                 visible={newDirModalVis}

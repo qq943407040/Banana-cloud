@@ -75,6 +75,7 @@ const Main_index = (props) => {
   }
   // 登出功能
   const Login_out = () => {
+    clearInterval()
     cookie.remove("user_id",{path:'/'});
     cookie.remove("token",{path:'/'})
     cookie.remove("telephone",{path:'/'});
@@ -188,7 +189,7 @@ const Main_index = (props) => {
           </Header>
           <Content style={{ margin: '0 16px' }}>
             <div>
-              {/* <Redirect path="/index/" to="/index/usage" /> */}
+              <Redirect path="/index/" to="/index/usage" />
               <Route path="/index/usage" component={Usage} />
               <Route path="/index/allfiles" component={All_file} />
               <Route path="/index/recycle_bin" component={recycle_bin} />
