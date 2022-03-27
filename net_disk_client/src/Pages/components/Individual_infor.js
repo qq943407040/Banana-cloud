@@ -101,34 +101,6 @@ const Individual_infor = () => {
 
 
     };
-    const get = () => {
-        goeasy.connect({
-            id: "002", //pubsub选填，im必填，最大长度60字符
-            data: { "avatar": "/www/xxx.png", "nickname": "Neo" }, //必须是一个对象，pubsub选填，im必填，最大长度300字符，用于上下线提醒和查询在线用户列表时，扩展更多的属性
-            onSuccess: function () {  //连接成功
-                console.log("GoEasy connect successfully.") //连接成功
-            },
-            onFailed: function (error) { //连接失败
-                console.log("Failed to connect GoEasy, code:" + error.code + ",error:" + error.content);
-            },
-            onProgress: function (attempts) { //连接或自动重连中
-                console.log("GoEasy is connecting", attempts);
-            }
-        })
-
-        pubsub.publish({
-            channel: "my_channel",//替换为您自己的channel
-            message: "您有一条新通知!",//替换为您想要发送的消息内容
-            onSuccess: function () {
-                console.log("消息发布成功。");
-            },
-            onFailed: function (error) {
-                console.log("消息发送失败，错误编码：" + error.code + " 错误信息：" + error.content);
-            }
-        });
-
-
-    }
     //   提交按钮
     const submit = () => {
         const dataProps = {
@@ -156,7 +128,7 @@ const Individual_infor = () => {
         <div >
             <div className='d1'>
                 <UserOutlined style={{ fontSize: '3vh' }} />
-                <span className='s1' onClick={get} >个人信息</span>
+                <span className='s1' >个人信息</span>
             </div>
             <div id="changeInfor_div" >
                 <div className='changeInfor'>
@@ -199,8 +171,9 @@ const Individual_infor = () => {
                                         message: 'Please input your username!',
                                     },
                                 ]}
+                                initialValue={cookie.load('user_name')  }
                             >
-                                <Input value={cookie.load('user_name')} defaultValue={cookie.load('user_name')} onChange={(e) => { setUsername(e.target.value) }} />
+                                <Input value={cookie.load('user_name')}  onChange={(e) => { setUsername(e.target.value) }} />
                             </Form.Item>
                             <Form.Item
                                 label="email"
@@ -218,8 +191,9 @@ const Individual_infor = () => {
                                         message: 'Please input your phone!',
                                     },
                                 ]}
+                                initialValue={cookie.load('telephone')}
                             >
-                                <Input value={cookie.load('telephone')} defaultValue={cookie.load('telephone')} onChange={(e) => { setPhone(e.target.value) }} />
+                                <Input value={cookie.load('telephone')} onChange={(e) => { setPhone(e.target.value) }} />
                             </Form.Item>
                             <Form.Item
                                 label="sign"
@@ -227,11 +201,12 @@ const Individual_infor = () => {
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Please re input your sign!',
+                                       
                                     },
                                 ]}
+                                initialValue={cookie.load('signature')}
                             >
-                                <Input value={cookie.load('signature')} defaultValue={cookie.load('signature')} onChange={(e) => { setSign(e.target.value) }} />
+                                <Input value={cookie.load('signature')}  onChange={(e) => { setSign(e.target.value) }} />
                             </Form.Item>
                             <Form.Item
                                 wrapperCol={{
