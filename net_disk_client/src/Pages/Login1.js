@@ -634,7 +634,7 @@ const Login1 = (props) => {
                                                 copy(e.target.innerText)
                                                 message.success('复制成功！')
                                             }}
-                                                style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>{shareCode}XXXXXX</span>
+                                                style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>{shareCode}</span>
                                         </Tooltip>
                                     </p>
                                 </div>
