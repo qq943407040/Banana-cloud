@@ -381,7 +381,7 @@ const All_files = () => {
                     id="iframe1"
                     className='iframe1'
                     scrolling='no'
-                    allowFullscreen="true"
+                    allowFullScreen="true"
                 >
                 </iframe>
             </Modal>

@@ -17,7 +17,7 @@
 		Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
-* {}
+
 
 body {
 	align-items: center;
@@ -29,8 +29,8 @@ body {
 	background-size: cover;
 	height: 100vh;
 	transition:background-image 2s linear;
+	
 }
-
 
 
 .link {
@@ -429,9 +429,7 @@ body {
 	/* margin-right: 3vw; */
 	text-align: center;
 }
-.forget_div input{
-	/* margin-top: 3vh; */
-}
+
 
 .forget_div .btn1{
 	background-color: var(--blue);
@@ -532,7 +530,7 @@ body {
 }
 .result_div{
 	/* overflow: hidden; */
-	width: 12vw;
+	width: fit-content;
 	position: relative;
 	bottom: 3vh;
 	height: fit-content;
@@ -549,3 +547,14 @@ body {
 	position: relative;
 	bottom: 2vh;
 }
+.upload_progress{
+	position: relative;
+	float: right;
+	background-color: rgb(255, 255, 255);
+	width: 4rem;
+	height: 4rem;
+	border-radius: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}	

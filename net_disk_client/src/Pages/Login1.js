@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import { Menu, Tooltip, Dropdown, Form, Checkbox, Result, Card, Input, Icon, Select, Button, Image, Row, Col, Modal, Spin, Progress, message, Upload } from 'antd';
+import { Popover, Tooltip, Form, Checkbox, Result, Input, Icon, Select, Button, Image, Row, Col, Modal, Spin, Progress, message, Upload } from 'antd';
 import '../Styles/pages/Login1.css'
 import servicePath from '../config/apiUrl';
 import Path from '../config/api'
@@ -16,6 +16,28 @@ import $ from 'jquery'
 
 
 // import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+// 防范xss攻击语句,React 在渲染 HTML 内容和渲染 DOM 属性时都会将 "'&<> 这几个字符进行转义，转义部分源码如下：
+// for (index = match.index; index < str.length; index++) {
+//     switch (str.charCodeAt(index)) {
+//       case 34: // "
+//         escape = '&quot;';
+//         break;
+//       case 38: // &
+//         escape = '&amp;';
+//         break;
+//       case 39: // '
+//         escape = '&#x27;';
+//         break;
+//       case 60: // <
+//         escape = '&lt;';
+//         break;
+//       case 62: // >
+//         escape = '&gt;';
+//         break;
+//       default:
+//         continue;
+//       }
+//     }
 
 const Login1 = (props) => {
     const onSearch = value => console.log(value);
@@ -69,9 +91,11 @@ const Login1 = (props) => {
     const [isResult, setIsResult] = useState(false)
     const [shareCode, setShareCode] = useState('')
     const [sharefid, setSharefid] = useState([])
+    const [isProshow, setIsProshow] = useState(true)
+    const [isProdivshow,setIsProdivshow]=useState(false)
 
     // 接受文件
-    const [receiveCode, setReceiveCode] = useState()
+    const [receiveCode, setReceiveCode] = useState('')
     const [isReceive, setIsReceive] = useState(false)
     const [receive_title, setReceive_title] = useState('')
     const [describe, setDescribe] = useState('')
@@ -298,14 +322,45 @@ const Login1 = (props) => {
     })
     // 接受文件
     const receiveFiles = () => {
-        setIsReshow(!isReshow)
-        setIsUpshow(!isUpshow)
+        let dataprops = {
+            'get_code': receiveCode
+        }
+        axios({
+            method: 'get',
+            url:
+                '/banana/transfer/code-download',
+            params: dataprops,
+            header: { 'Access-Control-Allow-Origin': '*', },
+        }).then(
+            res => {
+                if (res.data.msg == 'ok') {
+                    setIsReceive(true)
+                    setReceive_title(res.data.data.title)
+                    setDescribe(res.data.data.describe)
+                    setExpire_time(res.data.data.expire_time)
+                    setCreate_time(res.data.data.create_time)
+                    setRefileName(res.data.data.file_name)
+                    setFileSize(res.data.data.file_size)
+                    setReceive_url(res.data.data.download_str)
+                }
+                console.log(res)
+            }
+        )
     }
-    useEffect(()=>{
+    // 使接受文件框获取焦点
+    useEffect(() => {
         document.getElementById('input1').focus()
-
+  
     })
-
+    // 如果url有参数即是分享链接
+    useEffect(()=>{
+        console.log(props)
+        var code = props.location.search
+       if(code!=""){
+            setReceiveCode(code.slice(6))
+            receiveFiles()
+       }
+    },[receiveCode])
     // 从接受文件组件转到上传组件
     const toUpload = () => {
         setIsUpshow(!isUpshow)
@@ -316,30 +371,7 @@ const Login1 = (props) => {
     function enterDown(e) {
         var evt = window.event || e;
         if (evt.keyCode == 13) {
-            let dataprops = {
-                'get_code': receiveCode
-            }
-            axios({
-                method: 'get',
-                url:
-                    '/banana/transfer/code-download',
-                params: dataprops,
-                header: { 'Access-Control-Allow-Origin': '*', },
-            }).then(
-                res => {
-                    if (res.data.msg == 'ok') {
-                        setIsReceive(true)
-                        setReceive_title(res.data.data.title)
-                        setDescribe(res.data.data.describe)
-                        setExpire_time(res.data.data.expire_time)
-                        setCreate_time(res.data.data.create_time)
-                        setRefileName(res.data.data.file_name)
-                        setFileSize(res.data.data.file_size)
-                        setReceive_url(res.data.data.download_str)
-                    }
-                    console.log(res)
-                }
-            )
+            receiveFiles()
         }
     }
     // antd上传组件所需信息
@@ -356,16 +388,20 @@ const Login1 = (props) => {
 
         onChange(info) {
             setFileName(info.file.name)
+            setIsProshow(false)
             if (info.file.status !== 'uploading') {
                 console.log(info.file, info.fileList);
+                
             }
             if (info.file.status === 'done') {
-
+                setIsProshow(true)
                 setIsUpInforShow(true)
                 setSharefid(info.file.response.data.fids)
                 message.success(`${info.file.name} 上传成功`);
             } else if (info.file.status === 'error') {
                 message.error(`${info.file.name} 上传失败`);
+                setIsProshow(true)
+
             }
             const event = info.event
             if (event) { // 必定要加判断，否则会报错
@@ -400,9 +436,7 @@ const Login1 = (props) => {
             message.error('验证码错误')
         }
         else {
-
         }
-
     }
     const showLogin = () => {
         if (!isLoginshow) {
@@ -410,6 +444,7 @@ const Login1 = (props) => {
             setIsLoginshow(!isLoginshow)
             setIsReshow(true)
             setIsForgetshow(true)
+            setIsProdivshow(!isProdivshow)
             console.log('4')
         }
         else {
@@ -417,11 +452,13 @@ const Login1 = (props) => {
             setIsLoginshow(!isLoginshow)
             setIsReshow(true)
             setIsForgetshow(true)
+            setIsProdivshow(!isProdivshow)
+
             console.log('4')
         }
 
     }
-    
+
     const { Option } = Select;
 
     // Select框更改回调函数
@@ -491,30 +528,34 @@ const Login1 = (props) => {
         }, 7000);
     }, [])
     // 控制点击input以外的区域会触发input的blur事件
-    const a = new Promise(function(resolve, reject){
-            if (!isLoginshow) {
-                $(document).mouseup(function (e) {
-                    var con = $("#c1");   // 设置目标区域
-                    if (!con.is(e.target) && con.has(e.target).length === 0) {
-                        console.log(isLoginshow)
-                        showLogin()
-                    }
-                    else {
-                        console.log('11')
-                    }
+    const a = new Promise(function (resolve, reject) {
+        if (!isLoginshow) {
+            $(document).mouseup(function (e) {
+                var con = $("#c1");   // 设置目标区域
+                if (!con.is(e.target) && con.has(e.target).length === 0) {
+                    console.log(isLoginshow)
+                    showLogin()
                 }
-                );
+                else {
+                    console.log('11')
+                }
             }
-            resolve()
+            );
+        }
+        resolve()
     })
+    const tran = () => {
+        var a = document.getElementById('upload_div')
+        a.setAttribute('class', 'sss animate__animated animate__bounceInLeft')
+    }
     return (
         <div className='main_index'>
             <div>
                 <div className='loginToptip'>
-
                     <Row type="flex" justify="center">
                         <Col xs={6} sm={6} md={12} lg={12} xl={12}>
                             <Image
+                                // onClick={()=>tran()}
                                 className='loginLogo'
                                 width={250}
                                 preview={false}
@@ -523,7 +564,7 @@ const Login1 = (props) => {
                         </Col>
                         <Col offset={0} className='person_data' xs={8} sm={8} md={12} lg={12} xl={12}>
                             <div id='login1' className='loginButton'>
-                                <Button onClick={showLogin}>注册/登录</Button>
+                                <Button onClick={()=>showLogin()}>注册/登录</Button>
                             </div>
                         </Col>
                     </Row>
@@ -538,7 +579,10 @@ const Login1 = (props) => {
                             </Upload>
                         </Col>
                         <Col offset={0} xs={8} sm={8} md={8} lg={8} xl={8}>
-                            <Button onClick={() => receiveFiles()} className='bt2'>接受文件</Button>
+                            <Button onClick={() => {
+                                 setIsReshow(!isReshow)
+                                 setIsUpshow(!isUpshow)
+                            }} className='bt2'>接受文件</Button>
                         </Col>
                     </Row>
                 </div>
@@ -557,6 +601,35 @@ const Login1 = (props) => {
                         ></input>
                         <CloseCircleOutlined onClick={toUpload} className='closeBtn' style={{ fontSize: '1.8rem', marginLeft: '1rem', marginTop: '0.6rem' }} />
                     </div>
+                </div>
+                {/* 上传进度条 */}
+                <div className='upload_progress' hidden={isProdivshow}>
+                    <Popover 
+                    placement="topRight" 
+                    title="上传进度" 
+                    width='fit-content'
+                    content={
+                        isProshow?'暂无上传任务':
+                        <div style={{width:'17vw',overflow:'hidden'}}>
+                        <p>{fileName}</p>
+                        <Progress
+                        hidden={isProshow}
+                        strokeColor={{
+                            '0%': '#108ee9',
+                            '100%': '#87d068',
+                        }}
+                        percent={percent} 
+                        style={{width:'16vw',height:'5vh'}}
+                        /> 
+                        </div>
+                        }>
+                       <Image
+                       src="http://47.107.95.82:8000/peach-static/进度条.png"
+                       width={'3rem'}
+                       preview={false}
+                       >
+                       </Image>
+                    </Popover>
                 </div>
                 {/* 接受文件页 */}
                 <Modal
@@ -600,7 +673,7 @@ const Login1 = (props) => {
                             </Row>
                             <Row className='row1'>
                                 <Button onClick={() => {
-                                    window.open(receive_url)
+                                    window.open(receive_url,'_parent')
                                     console.log(receive_url)
                                 }} className='Infor_button'>确认</Button>
                             </Row>
@@ -634,7 +707,21 @@ const Login1 = (props) => {
                                                 copy(e.target.innerText)
                                                 message.success('复制成功！')
                                             }}
-                                                style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>{shareCode}</span>
+                                                style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                                                    {shareCode}
+                                                    </span>
+                                        </Tooltip>
+                                    </p>
+                                    您的分享链接是:
+                                    <p id="sharecode" style={{ fontSize: '1rem', fontWeight: 'bold', color: 'black' }}>
+                                        <Tooltip title="一键复制">
+                                            <span onClick={(e) => {
+                                                copy(e.target.innerText)
+                                                message.success('复制成功！')
+                                            }}
+                                                style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
+                                                   http://175.178.183.25/?code={shareCode}
+                                                    </span>
                                         </Tooltip>
                                     </p>
                                 </div>
@@ -708,9 +795,7 @@ const Login1 = (props) => {
                         </Row>
 
                     </div>
-                    {/* <Progress style={{width:'160px'}} percent={percent} /> */}
                 </Modal>
-
                 <div hidden={isForgetshow} className='forget_div animate__animated animate__fadeInUp'>
                     <h2 className='forgetTitle'>
                         <Row>
