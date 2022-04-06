@@ -11,7 +11,7 @@ import cookie from "react-cookies";
 // 通知页
 const Infor = () => {
     const [show, setshow] = useState(true)
-    const [list, setList] = useState()
+    const [list, setList] = useState([])
     const [mess,setMess] = useState('')
     var goeasy = new GoEasy({
         host: 'hangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
@@ -64,7 +64,10 @@ const Infor = () => {
             onMessage: function (message) {
                 console.log("Channel:" + message.channel + " content:" + message.content);
                 console.log(message)
-                list.push(message.content)
+                console.log(list)
+                // var list1 = list.concat([{'title':message.content}])
+                // console.log(`list1${list1}`)
+                // setList(list1)
                 setMess(message.content)
                 console.log(list)
                 console.log(mess)

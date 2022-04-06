@@ -189,6 +189,7 @@ const Login1 = (props) => {
             // header: { 'Access-Control-Allow-Origin': '*' },
         }).then(res => {
             setIsLoading(false)
+            console.log(res)
             if (res.data.msg == '该邮箱已注册绑定') {
                 message.error('该邮箱已注册绑定')
             }
@@ -253,7 +254,7 @@ const Login1 = (props) => {
             }, 500)
             return false
         } else if (passwordRegister.length < 6) {
-            message.error('密码不能为空')
+            message.error('密码不能小于6位')
             setTimeout(() => {
                 setIsLoading(false)
             }, 500)
@@ -445,7 +446,7 @@ const Login1 = (props) => {
             setIsReshow(true)
             setIsForgetshow(true)
             setIsProdivshow(!isProdivshow)
-            console.log('4')
+            // console.log('4')
         }
         else {
             setIsUpshow(true)
@@ -533,11 +534,11 @@ const Login1 = (props) => {
             $(document).mouseup(function (e) {
                 var con = $("#c1");   // 设置目标区域
                 if (!con.is(e.target) && con.has(e.target).length === 0) {
-                    console.log(isLoginshow)
+                    // console.log(isLoginshow)
                     showLogin()
                 }
                 else {
-                    console.log('11')
+                    // console.log('11')
                 }
             }
             );

@@ -422,8 +422,9 @@ const All_files = () => {
                                 onChange: page => {
                                     console.log(page);
                                 },
-                                pageSize: 6,
-
+                                // pageSize: 6,
+                                defaultPageSize:6,
+                                pageSizeOptions:[6,10,20,50]
                             }
 
                             }

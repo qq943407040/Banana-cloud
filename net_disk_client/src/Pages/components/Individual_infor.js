@@ -124,11 +124,48 @@ const Individual_infor = () => {
             console.log(res)
         })
     }
+    const send = () =>{
+        goeasy.connect({
+            id: "002", //pubsub选填，im必填，最大长度60字符
+            data: { "avatar": "/www/xxx.png", "nickname": "Neo" }, //必须是一个对象，pubsub选填，im必填，最大长度300字符，用于上下线提醒和查询在线用户列表时，扩展更多的属性
+            onSuccess: function () {  //连接成功
+                console.log("GoEasy connect successfully.") //连接成功
+            },
+            onFailed: function (error) { //连接失败
+                console.log("Failed to connect GoEasy, code:" + error.code + ",error:" + error.content);
+            },
+            onProgress: function (attempts) { //连接或自动重连中
+                console.log("GoEasy is connecting", attempts);
+            }
+        })
+       
+        pubsub.subscribe({
+            channel: "my_channel",//替换为您自己的channel
+            onSuccess: function () {
+                console.log("Channel订阅成功。");
+            },
+            onFailed: function (error) {
+                console.log("Channel订阅失败, 错误编码：" + error.code + " 错误信息：" + error.content)
+            }
+        });
+        ;
+        pubsub.publish({
+            channel: "my_channel",//替换为您自己的channel
+            message: "你好，测试通知!",//替换为您想要发送的消息内容
+            onSuccess:function(){
+                console.log("消息发布成功。");
+            },
+            onFailed: function (error) {
+                console.log("消息发送失败，错误编码："+error.code+" 错误信息："+error.content);
+            }
+        });
+        
+    }
     return (
         <div >
             <div className='d1'>
                 <UserOutlined style={{ fontSize: '3vh' }} />
-                <span className='s1' >个人信息</span>
+                <span className='s1' onClick={()=>send()}>个人信息</span>
             </div>
             <div id="changeInfor_div" >
                 <div className='changeInfor'>
