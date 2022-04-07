@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import '../Styles/main_index.css'
 import { BrowserRouter as Router, Link, Route, Redirect } from 'react-router-dom'
-import { Layout, Menu, Avatar, Row, Col, Button, Affix, message,notification } from 'antd';
+import { Layout, Menu, Avatar, Row, Col, Button, Affix, message, notification } from 'antd';
 import {
   DesktopOutlined,
   PieChartOutlined,
@@ -13,24 +13,32 @@ import {
   CloudUploadOutlined,
   QuestionCircleOutlined
 } from '@ant-design/icons';
-import Usage from './components/Usage';
-import All_file from './components/All_file';
-import recycle_bin from './components/recycle_bin';
-import About_us from './components/About_us';
+// import Usage from './components/Usage';
+
+
+// import All_file from './components/All_file';
+// import recycle_bin from './components/recycle_bin';
+// import About_us from './components/About_us';
 import Detailed from './components/Detailed';
 import Infor from './components/infor';
-import Slider  from './components/Slider';
+import Slider from './components/Slider';
 import cookie from "react-cookies";
-import Individual_infor from './components/Individual_infor';
+// import Individual_infor from './components/Individual_infor';
 import axios from 'axios';
 import GoEasy from 'goeasy';
- 
+
+const Usage = React.lazy(() => import('./components/Usage'));
+const All_file = React.lazy(() => import('./components/All_file'));
+const recycle_bin = React.lazy(() => import('./components/recycle_bin'));
+const About_us = React.lazy(() => import('./components/About_us'));
+// const Detailed = React.lazy(() => import('./components/Detailed'));
+const Individual_infor = React.lazy(() => import('./components/Individual_infor'));
 
 // 整体布局
 const Main_index = (props) => {
   const { Header, Footer, Sider, Content } = Layout;
   // 头像
-  const [avatar,setAvatar] = useState("https://octodex.github.com/images/minion.png")
+  const [avatar, setAvatar] = useState("https://octodex.github.com/images/minion.png")
   const [username, setusername] = useState('请先登录')
 
 
@@ -43,7 +51,7 @@ const Main_index = (props) => {
       // sessionStorage.getItem("token")
     ) {
       axios.defaults.headers.common['Authorization'] = cookie.load("token")
-      ;
+        ;
       axios({
         method: 'get',
         url: '/banana/account-center/account/info/' + cookie.load("user_id"),
@@ -51,12 +59,12 @@ const Main_index = (props) => {
       }).then(
         res => {
           console.log(res)
-          let cookieTime = new Date(new Date().getTime + 3600*24*7);
+          let cookieTime = new Date(new Date().getTime + 3600 * 24 * 7);
           setusername("你好，" + res.data.data.name)
-          cookie.save("email", res.data.data.email, { expires: cookieTime,path:'/' })
-          cookie.save("user_name", res.data.data.name, { expires: cookieTime,path:'/' })
-          cookie.save("telephone",res.data.data.telephone,{ expires: cookieTime,path:'/' })
-          cookie.save("signature",res.data.data.signature,{ expires: cookieTime,path:'/' })
+          cookie.save("email", res.data.data.email, { expires: cookieTime, path: '/' })
+          cookie.save("user_name", res.data.data.name, { expires: cookieTime, path: '/' })
+          cookie.save("telephone", res.data.data.telephone, { expires: cookieTime, path: '/' })
+          cookie.save("signature", res.data.data.signature, { expires: cookieTime, path: '/' })
           setAvatar(res.data.data.avatar)
         }
       )
@@ -76,12 +84,12 @@ const Main_index = (props) => {
   // 登出功能
   const Login_out = () => {
     clearInterval()
-    cookie.remove("user_id",{path:'/'});
-    cookie.remove("token",{path:'/'})
-    cookie.remove("telephone",{path:'/'});
-    cookie.remove("email",{path:'/'});
-    cookie.remove("user_name",{path:'/'});
-    cookie.remove("signature",{path:'/'});
+    cookie.remove("user_id", { path: '/' });
+    cookie.remove("token", { path: '/' })
+    cookie.remove("telephone", { path: '/' });
+    cookie.remove("email", { path: '/' });
+    cookie.remove("user_name", { path: '/' });
+    cookie.remove("signature", { path: '/' });
     // sessionStorage.removeItem("token")
     props.history.push('/login')
     axios({
@@ -124,53 +132,53 @@ const Main_index = (props) => {
     <div className='main_index'>
       <Layout style={{ minHeight: '100vh' }}>
         <Affix>
-        <>
-         <Sider width={'18vw'} className='sider'>
-            <div className='logo'>
-              <span >香蕉快传</span>
-            </div>
-            <div className='logo'>
-              <Avatar  size={150} src={avatar} /></div>
-            {/* <span className='span1'> 预览</span> */}
-            <Menu defaultSelectedKeys={['1']} mode="inline" className='sider_menu' onClick={handclick}>
-              <Menu.Item key="usage" style={{ height: '7vh' }}>
-                <div><PieChartOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
-                  <span className='span2'>使用情况
-                  </span>
-                </div>
-              </Menu.Item>
-              {/* <span className='span1'>所有文件</span> */}
-              <Menu.Item key="all" style={{ height: '7vh' }}>
-                <div><DesktopOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
-                  <span className='span2'>
-                    全部文件
-                  </span></div>
-              </Menu.Item>
-              <Menu.Item key="recycle_bin" style={{ height: '7vh' }}>
-                <div><CloudUploadOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
-                  <span className='span2'>回收站</span>
-                </div>
-              </Menu.Item>
-              <Menu.Item key="aboutus" style={{ height: '7vh' }}>
-                <div><QuestionCircleOutlined style={{ fontSize: '3vh',color: '#108ee9' }} />
-                  <span className='span2'>关于我们</span></div>
-              </Menu.Item>
-            </Menu>
-            <div className='button'>
-              <Button id='bt' className='button_out'
-                type="primary" shape="round" icon={<LogoutOutlined />} danger
-                onClick={()=>Login_out()}>
-                <span>退出登录</span>
-              </Button>
-              <Button id='bt1' className='button_out'
-                type="primary" shape="round" icon={<LoginOutlined />}
-                onClick={toLogin}>
-                <span>请先登录</span>
-              </Button>
-            </div>
+          <>
+            <Sider width={'18vw'} className='sider'>
+              <div className='logo'>
+                <span >香蕉快传</span>
+              </div>
+              <div className='logo'>
+                <Avatar size={150} src={avatar} /></div>
+              {/* <span className='span1'> 预览</span> */}
+              <Menu defaultSelectedKeys={['1']} mode="inline" className='sider_menu' onClick={handclick}>
+                <Menu.Item key="usage" style={{ height: '7vh' }}>
+                  <div><PieChartOutlined style={{ fontSize: '3vh', color: '#108ee9' }} />
+                    <span className='span2'>使用情况
+                    </span>
+                  </div>
+                </Menu.Item>
+                {/* <span className='span1'>所有文件</span> */}
+                <Menu.Item key="all" style={{ height: '7vh' }}>
+                  <div><DesktopOutlined style={{ fontSize: '3vh', color: '#108ee9' }} />
+                    <span className='span2'>
+                      全部文件
+                    </span></div>
+                </Menu.Item>
+                <Menu.Item key="recycle_bin" style={{ height: '7vh' }}>
+                  <div><CloudUploadOutlined style={{ fontSize: '3vh', color: '#108ee9' }} />
+                    <span className='span2'>回收站</span>
+                  </div>
+                </Menu.Item>
+                <Menu.Item key="aboutus" style={{ height: '7vh' }}>
+                  <div><QuestionCircleOutlined style={{ fontSize: '3vh', color: '#108ee9' }} />
+                    <span className='span2'>关于我们</span></div>
+                </Menu.Item>
+              </Menu>
+              <div className='button'>
+                <Button id='bt' className='button_out'
+                  type="primary" shape="round" icon={<LogoutOutlined />} danger
+                  onClick={() => Login_out()}>
+                  <span>退出登录</span>
+                </Button>
+                <Button id='bt1' className='button_out'
+                  type="primary" shape="round" icon={<LoginOutlined />}
+                  onClick={toLogin}>
+                  <span>请先登录</span>
+                </Button>
+              </div>
 
-          </Sider>
-        </>
+            </Sider>
+          </>
         </Affix>
 
         <Layout className="site_layout">
@@ -189,13 +197,16 @@ const Main_index = (props) => {
           </Header>
           <Content style={{ margin: '0 16px' }}>
             <div>
-              <Redirect path="/index/" to="/index/usage" />
-              <Route path="/index/usage" component={Usage} />
-              <Route path="/index/allfiles" component={All_file} />
-              <Route path="/index/recycle_bin" component={recycle_bin} />
-              <Route path="/index/aboutus" component={About_us} />
-              <Route path="/index/detailed/:id" component={Detailed} />
-              <Route path="/index/individual" component={Individual_infor} />
+                <Suspense fallback={<div>Loading...</div>}>              
+                <Redirect path="/index/" to="/index/usage" />
+                <Route path="/index/usage" component={Usage} />
+                <Route path="/index/allfiles" component={All_file} /> 
+                <Route path="/index/recycle_bin" component={recycle_bin} />
+                <Route path="/index/aboutus" component={About_us} />
+                <Route path="/index/individual" component={Individual_infor} />
+                </Suspense>
+                <Route path="/index/detailed/:id" component={Detailed} />
+
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Bpan ©2021 Created by Bnuzer</Footer>

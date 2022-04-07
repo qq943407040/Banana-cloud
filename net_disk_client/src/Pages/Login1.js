@@ -12,10 +12,7 @@ import Register from './Register';
 import moment from 'moment';
 import 'animate.css';
 import $ from 'jquery'
-// import { animate__animated } from "react-animate__animated-css";
 
-
-// import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 // 防范xss攻击语句,React 在渲染 HTML 内容和渲染 DOM 属性时都会将 "'&<> 这几个字符进行转义，转义部分源码如下：
 // for (index = match.index; index < str.length; index++) {
 //     switch (str.charCodeAt(index)) {
@@ -92,7 +89,7 @@ const Login1 = (props) => {
     const [shareCode, setShareCode] = useState('')
     const [sharefid, setSharefid] = useState([])
     const [isProshow, setIsProshow] = useState(true)
-    const [isProdivshow,setIsProdivshow]=useState(false)
+    const [isProdivshow, setIsProdivshow] = useState(false)
 
     // 接受文件
     const [receiveCode, setReceiveCode] = useState('')
@@ -112,7 +109,7 @@ const Login1 = (props) => {
     ])
 
     // 检测登录信息
-    const checkLogin = () => {
+     const checkLogin = () => {
         setIsLoading(true)
         console.log(userName)
         if (!userName) {
@@ -144,24 +141,22 @@ const Login1 = (props) => {
                 if (res.data.msg != '登录密码错误') {
                     var token = res.data.data.set_cookie.split(";")
                     var token1 = token[0].replace(/p-token=/i, "")
-                    var expire = token[2].replace(/_expires=/i, "")
-                    let cookieTime = new Date(new Date().getTime + expire);
                     if (cookie.load('token') != null) {
                         cookie.remove('token')
                     }
-                    // sessionStorage.setItem("token",token1)
-                    var tomorrow = new Date();
-                    tomorrow.setDate(tomorrow.getDate() + 7);
-                    cookie.save("token", token1, { expires: tomorrow, path: '/' })
-                    cookie.save("user_id", res.data.data.id, { expires: tomorrow, path: '/' })
+                    var expire = new Date();
+                    expire.setDate(expire.getDate() + 7);
+                    // 存储token保存到cookie中，并设置过期时间为七天
+                    cookie.save("token", token1, { expires: expire, path: '/' })
+                    cookie.save("user_id", res.data.data.id, { expires: expire, path: '/' })
+                    // 将axios请求头中放入token，每次请求接口必须带上token才能请求成功
                     axios.defaults.headers.common['Authorization'] = token1;
-                    // sessionStorage.setItem("login_statu", "登陆成功")
                     props.history.push('/index')
-                    console.log(res)
                     clearInterval()
+                    return '登陆成功'
                 } else {
                     message.error('用户名密码错误')
-                    console.log(res)
+                    return '用户名密码错误'
                 }
             }
         ).catch(error => {
@@ -174,7 +169,7 @@ const Login1 = (props) => {
     }
     // 发送验证码
     const sendcode = () => {
-        let time = 60
+       
 
         setIsLoading(true)
         let dataProps = {
@@ -189,7 +184,7 @@ const Login1 = (props) => {
             // header: { 'Access-Control-Allow-Origin': '*' },
         }).then(res => {
             setIsLoading(false)
-            console.log(res)
+            // console.log(res)
             if (res.data.msg == '该邮箱已注册绑定') {
                 message.error('该邮箱已注册绑定')
             }
@@ -198,29 +193,30 @@ const Login1 = (props) => {
             }
             else {
                 message.success('验证码发送成功')
+                var time = 60
                 setInterval(() => {
                     if (time > 0) {
                         --time
                         setContent(time)
                         setBtndisable(true)
-                        console.log(time)
+                        // console.log(time)
                     }
                     else {
                         setContent('发送')
                         setBtndisable(false)
-                        console.log(time)
+                        // console.log(time)
 
                     }
                 }, 1000)
+               
             }
-            console.log(res.data)
+            clearInterval()
+            // console.log(res.data)
         })
-
 
         setTimeout(() => {
             setIsLoading(false)
         }, 1000)
-
 
     }
     // 注册按钮
@@ -267,6 +263,13 @@ const Login1 = (props) => {
             }, 500)
             return false
         }
+        else if (emailCode == '') {
+            message.error('验证码不能为空')
+            setTimeout(() => {
+                setIsLoading(false)
+            }, 500)
+            return false
+        }
         else {
             let dataProps = {
                 'username': userNameRegister,
@@ -285,14 +288,17 @@ const Login1 = (props) => {
 
             }).then(
                 res => {
+                    // console.log(res)
                     setIsLoading(false)
-                    if (res.data.isSuccess) {
-                        console.log(res.data)
+                    if (res.data.msg=='ok') {
                         message.success('注册成功')
+                        document.getElementById('signIn').click()
 
-                    } else {
-                        console.log(res.data)
-                        message.error('注册失败')
+                    } else if(res.data.msg=='该验证码不符'){
+                        message.error('验证码错误')
+                    }
+                    else if(res.data.msg=='邮箱格式不符'){
+                        message.error('邮箱格式不符')
                     }
                 }
             )
@@ -344,24 +350,24 @@ const Login1 = (props) => {
                     setFileSize(res.data.data.file_size)
                     setReceive_url(res.data.data.download_str)
                 }
-                console.log(res)
+                // console.log(res)
             }
         )
     }
     // 使接受文件框获取焦点
     useEffect(() => {
         document.getElementById('input1').focus()
-  
+
     })
     // 如果url有参数即是分享链接
-    useEffect(()=>{
-        console.log(props)
+    useEffect(() => {
+        // console.log(props)
         var code = props.location.search
-       if(code!=""){
+        if (code != "") {
             setReceiveCode(code.slice(6))
             receiveFiles()
-       }
-    },[receiveCode])
+        }
+    }, [receiveCode])
     // 从接受文件组件转到上传组件
     const toUpload = () => {
         setIsUpshow(!isUpshow)
@@ -391,8 +397,8 @@ const Login1 = (props) => {
             setFileName(info.file.name)
             setIsProshow(false)
             if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-                
+                // console.log(info.file, info.fileList);
+
             }
             if (info.file.status === 'done') {
                 setIsProshow(true)
@@ -408,7 +414,7 @@ const Login1 = (props) => {
             if (event) { // 必定要加判断，否则会报错
                 let percent = Math.floor((event.loaded / event.total) * 100)
                 setPercent(percent)
-                console.log(percent) // percent就是进度条的数值
+                // console.log(percent) // percent就是进度条的数值
             }
         },
     };
@@ -422,11 +428,11 @@ const Login1 = (props) => {
     }
     // 上传成功
     const onFinish = (values) => {
-        console.log('Success:', values);
+        // console.log('Success:', values);
     };
     // 上传失败
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
+        // console.log('Failed:', errorInfo);
     };
     // 修改密码方法
     const checkChange = () => {
@@ -455,7 +461,7 @@ const Login1 = (props) => {
             setIsForgetshow(true)
             setIsProdivshow(!isProdivshow)
 
-            console.log('4')
+            // console.log('4')
         }
 
     }
@@ -464,7 +470,7 @@ const Login1 = (props) => {
 
     // Select框更改回调函数
     const handleChange = value => {
-        console.log(`selected ${value}`);
+        // console.log(`selected ${value}`);
         setExpire(value)
     }
     // 判断日期
@@ -484,10 +490,10 @@ const Login1 = (props) => {
     const share = () => {
         setIsResult(true)
         setIsUpInforShow(false)
-        console.log(sharefid)
-        console.log(text)
-        console.log(infor_title)
-        console.log(expire)
+        // console.log(sharefid)
+        // console.log(text)
+        // console.log(infor_title)
+        // console.log(expire)
         let dataprops = {
             'expire_time': getTime(expire),
             'fid': sharefid[0],
@@ -501,7 +507,7 @@ const Login1 = (props) => {
             data: dataprops,
             headers: { "Authorization": sessionStorage.getItem('guest_token') },
         }).then(res => {
-            console.log(res)
+            // console.log(res)
             setShareCode(res.data.data.get_code)
         })
     }
@@ -525,7 +531,6 @@ const Login1 = (props) => {
             i++
             if (i == 3)
                 i = 0
-            // console.log('ss')
         }, 7000);
     }, [])
     // 控制点击input以外的区域会触发input的blur事件
@@ -565,7 +570,7 @@ const Login1 = (props) => {
                         </Col>
                         <Col offset={0} className='person_data' xs={8} sm={8} md={12} lg={12} xl={12}>
                             <div id='login1' className='loginButton'>
-                                <Button onClick={()=>showLogin()}>注册/登录</Button>
+                                <Button onClick={() => showLogin()}>注册/登录</Button>
                             </div>
                         </Col>
                     </Row>
@@ -581,8 +586,8 @@ const Login1 = (props) => {
                         </Col>
                         <Col offset={0} xs={8} sm={8} md={8} lg={8} xl={8}>
                             <Button onClick={() => {
-                                 setIsReshow(!isReshow)
-                                 setIsUpshow(!isUpshow)
+                                setIsReshow(!isReshow)
+                                setIsUpshow(!isUpshow)
                             }} className='bt2'>接受文件</Button>
                         </Col>
                     </Row>
@@ -605,31 +610,31 @@ const Login1 = (props) => {
                 </div>
                 {/* 上传进度条 */}
                 <div className='upload_progress' hidden={isProdivshow}>
-                    <Popover 
-                    placement="topRight" 
-                    title="上传进度" 
-                    width='fit-content'
-                    content={
-                        isProshow?'暂无上传任务':
-                        <div style={{width:'17vw',overflow:'hidden'}}>
-                        <p>{fileName}</p>
-                        <Progress
-                        hidden={isProshow}
-                        strokeColor={{
-                            '0%': '#108ee9',
-                            '100%': '#87d068',
-                        }}
-                        percent={percent} 
-                        style={{width:'16vw',height:'5vh'}}
-                        /> 
-                        </div>
+                    <Popover
+                        placement="topRight"
+                        title="上传进度"
+                        width='fit-content'
+                        content={
+                            isProshow ? '暂无上传任务' :
+                                <div style={{ width: '17vw', overflow: 'hidden' }}>
+                                    <p>{fileName}</p>
+                                    <Progress
+                                        hidden={isProshow}
+                                        strokeColor={{
+                                            '0%': '#108ee9',
+                                            '100%': '#87d068',
+                                        }}
+                                        percent={percent}
+                                        style={{ width: '16vw', height: '5vh' }}
+                                    />
+                                </div>
                         }>
-                       <Image
-                       src="http://47.107.95.82:8000/peach-static/进度条.png"
-                       width={'3rem'}
-                       preview={false}
-                       >
-                       </Image>
+                        <Image
+                            src="http://47.107.95.82:8000/peach-static/进度条.png"
+                            width={'3rem'}
+                            preview={false}
+                        >
+                        </Image>
                     </Popover>
                 </div>
                 {/* 接受文件页 */}
@@ -674,8 +679,8 @@ const Login1 = (props) => {
                             </Row>
                             <Row className='row1'>
                                 <Button onClick={() => {
-                                    window.open(receive_url,'_parent')
-                                    console.log(receive_url)
+                                    window.open(receive_url, '_parent')
+                                    // console.log(receive_url)
                                 }} className='Infor_button'>确认</Button>
                             </Row>
 
@@ -709,8 +714,8 @@ const Login1 = (props) => {
                                                 message.success('复制成功！')
                                             }}
                                                 style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                                                    {shareCode}
-                                                    </span>
+                                                {shareCode}
+                                            </span>
                                         </Tooltip>
                                     </p>
                                     您的分享链接是:
@@ -721,8 +726,8 @@ const Login1 = (props) => {
                                                 message.success('复制成功！')
                                             }}
                                                 style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-                                                   http://175.178.183.25/?code={shareCode}
-                                                    </span>
+                                                http://175.178.183.25/?code={shareCode}
+                                            </span>
                                         </Tooltip>
                                     </p>
                                 </div>
@@ -923,7 +928,7 @@ const Login1 = (props) => {
                         {/* <CloseOutlined onClick={showLogin} className='closeSignIn' /> */}
 
                         <form action="#" className="form1" id="form2">
-                            <h2 className="form_title">
+                            <h2  className="form_title">
                                 Sign In</h2>
                             <div className='input2'>
                                 <input id='userName' onChange={(e) => { setUserName(e.target.value) }} placeholder="Username" className="input" />

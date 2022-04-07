@@ -1,5 +1,5 @@
-let ipUrl = 'http://127.0.0.1:7001/user/' 
-let ipUrl1 = 'http://127.0.0.1:7001/admin/' 
+let ipUrl = 'http://175.178.183.25:7001/user/' 
+let ipUrl1 = 'http://175.178.183.25:7001/admin/' 
 let ipUrl2 = 'http://127.0.0.1:4523/mock/546121/'
 let Url = 'http://47.107.95.82/banana/'
 

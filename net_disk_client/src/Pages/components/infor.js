@@ -13,6 +13,7 @@ const Infor = () => {
     const [show, setshow] = useState(true)
     const [list, setList] = useState([])
     const [mess,setMess] = useState('')
+    // 登陆建立连接
     var goeasy = new GoEasy({
         host: 'hangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
         appkey: "BC-3a285b6a743a4b46a98ca45ede3cce13", //替换为您的应用appkey
@@ -27,20 +28,7 @@ const Infor = () => {
             console.log('连接失败或错误！')
         }
     });
-    var pubsub = goeasy.pubsub;
-    //建立连接
-    const openNotification = () => {
-        if(mess!=''){
-          notification.open({
-          message:mess,
-          onClick: () => {
-            console.log('Notification Clicked!');
-          },
-          icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-        });  
-        }
-        
-      };
+    var pubsub = goeasy.pubsub
     //   初始化goeasy连接并订阅
     useEffect(() => {
         axios.defaults.headers.common['Authorization'] = cookie.load("token");
@@ -58,7 +46,7 @@ const Infor = () => {
                 console.log("GoEasy is connecting", attempts);
             }
         })
-       
+    //    订阅通道
         pubsub.subscribe({
             channel: "my_channel",//替换为您自己的channel
             onMessage: function (message) {
@@ -83,8 +71,20 @@ const Infor = () => {
     }, [])
     useEffect(()=>{
         openNotification()
-
     },[mess])
+    // 显示通知
+    const openNotification = () => {
+        if(mess!=''){
+          notification.open({
+          message:mess,
+          onClick: () => {
+            console.log('Notification Clicked!');
+          },
+          icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+        });  
+        }
+        
+      };
     // 获取通知列表
     const getList = () => {
 

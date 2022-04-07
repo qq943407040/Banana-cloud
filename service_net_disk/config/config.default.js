@@ -22,6 +22,13 @@ module.exports = appInfo => {
   const userConfig = {
     // myAppName: 'egg',
   };
+//   config.cluster = {
+//     listen: {
+//       path: '',
+//       port: 8000,
+//       hostname: 'localhost',
+//     }
+// };
 config.mysql = {
     // database configuration
     client: {

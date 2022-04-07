@@ -10,18 +10,14 @@ import {
     PieChartOutlined
 } from '@ant-design/icons';
 // 使用情况页面
-
-
-
-
 const Usage = (props) => {
     // 定义数据源hooks
     const [list, setList] = useState([])
     const [list1, setList1] = useState([])
-    const [list2,setList2] = useState([])
-    useEffect(()=>{
+    const [list2, setList2] = useState([])
+    useEffect(() => {
         getList();
-    },[])
+    }, [])
     // 初始化调用方法
     const getList = () => {
         axios.defaults.headers.common['Authorization'] = cookie.load("token");
@@ -29,7 +25,7 @@ const Usage = (props) => {
         axios({
             method: 'get',
             url:
-            '/banana/transfer/census/'
+                '/banana/transfer/census/'
         }).then(
             res => {
                 console.log(res)
@@ -41,17 +37,15 @@ const Usage = (props) => {
         )
     }
     useEffect(() => {
-       
         getchart();
-    }, [list1,list2])
+    }, [list1, list2])
     // 初始化echarts可视化图表方法
     const getchart = () => {
-        
+        // 饼状图
         var option = {
             title: {
                 text: '文件使用情况',
                 left: 'center',
-
             },
             tooltip: {
                 trigger: 'item'
@@ -64,14 +58,7 @@ const Usage = (props) => {
                     type: 'pie',
                     radius: '60%',
                     data:
-                        // [
-                        //     { name: 'img', value: 1 },
-                        //     { name: 'audio', value: 1 },
-                        //     { name: 'video', value: 1 },
-                        //     { name: 'doc', value: 4 },
-                        //     { name: 'other', value: 10 }
-                        // ]
-                    list
+                        list
                     ,
                     emphasis: {
                         itemStyle: {
@@ -85,6 +72,7 @@ const Usage = (props) => {
         }
         var mychart = echarts.init(document.getElementById('d1'))
         option && mychart.setOption(option)
+        // 图表自适应窗口
         window.onresize = function () {
             mychart.resize();
         };
@@ -109,13 +97,12 @@ const Usage = (props) => {
                     data: list2,
                     itemStyle: {
                         borderType: 'solid',
-
                     }
                 }
             ]
         };
         var mychart1 = echarts.init(document.getElementById('d2'))
-
+        // 当窗口变化图表自适应
         option1 && mychart1.setOption(option1)
         window.onresize = function () {
             mychart1.resize();

@@ -56,7 +56,7 @@ const All_files = () => {
             header: { 'Access-Control-Allow-Origin': '*' }
         }).then(
             res => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.msg == "ok") {
                     message.success('获取列表成功')
                     setDid(res.data.data.loc_id)
@@ -90,7 +90,7 @@ const All_files = () => {
 
         onChange(info) {
             if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
+                // console.log(info.file, info.fileList);
             }
             if (info.file.status === 'done') {
                 message.success(`${info.file.name} file uploaded successfully`);
@@ -159,7 +159,7 @@ const All_files = () => {
                 else {
                     message.error('删除失败')
                 }
-                console.log(res)
+                // console.log(res)
                 setTimeout(() => {
                     setIsLoading(false)
                 }, 500);
@@ -172,7 +172,7 @@ const All_files = () => {
     }
     // 下载文件
     const getfiles = (item) => {
-        console.log(item)
+        // console.log(item)
         setIsLoading(true)
         axios({
             method: 'get',
@@ -186,7 +186,7 @@ const All_files = () => {
             },
         })
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 // 创建下载的链接
                 const url = window.URL.createObjectURL(new Blob([res.data]
                     // 设置该文件的mime类型，这里对应的mime类型对应为.xlsx格式                          
@@ -205,7 +205,7 @@ const All_files = () => {
                 setTimeout(() => {
                     setIsLoading(false)
                 }, 500);
-                console.log(error)
+                // console.log(error)
                 alert('文件下载失败');
 
             });
@@ -216,6 +216,7 @@ const All_files = () => {
     // 文件预览
     const preview = (item) => {
         if ('file_type' in item) {
+            // 允许的文件类型
             if (item.file_type == 'gif'
                 || item.file_type == 'jpeg'
                 || item.file_type == 'png'
@@ -223,8 +224,9 @@ const All_files = () => {
                 || item.file_type == 'mp4'
                 || item.file_type == 'mp3'
                 || item.file_type == 'doc'
-                || item.file_type == 'wav') {
-
+                || item.file_type == 'wav'
+                || item.file_type=='jpg') {
+                // 调用接口
                 axios({
                     method: 'get',
                     url: '/banana/transfer/preview/',
@@ -232,17 +234,16 @@ const All_files = () => {
                         fid: item.fid
                     },
                 }).then(res => {
-                    console.log(res)
                     if (item.file_type == 'gif'
                         || item.file_type == 'jpeg'
                         || item.file_type == 'png') {
-                        // var text = "<Image id='img1' preview={{visible: previewImg,onVisibleChange: value => {setPreviewImg(value);}, }} width={200} src={imgSrc} style={{display:'none'}} onCancel={() => {setPreviewImg(false)}}></Image>"  
-                        // $('#main').append(text)
+                // 如果是图片格式的话将Image的src设为获取对应文件的url，并且设置Image为可见
                         setImgSrc(res.data.data.file_str)
                         setTimeout(() => {
                             setPreviewImg(true)
                         }, 500)
                     } else {
+                // 如果是音视频及文档格式的预览将iframe框架的src设为获取到的文件url，并且设iframe为可见
                         setPreviewDiv(true)
                         var iframe = document.getElementById('iframe1')
                         iframe.src = res.data.data.file_str
@@ -252,17 +253,13 @@ const All_files = () => {
             else
                 message.error("暂不支持预览此格式文件")
         }
-        else {
-
-        }
-
     }
     //无用方法
     const get = () => {
     }
     // 新建文件夹
     const newDir = () => {
-        console.log(did)
+        // console.log(did)
         let dataprops = {
             'loc_did': did,
             'dir_name': dirName
@@ -279,7 +276,7 @@ const All_files = () => {
                 withCredentials: true,
                 header: { 'Access-Control-Allow-Origin': '*' }
             }).then(res => {
-                console.log(res)
+                // console.log(res)
                 if (res.data.msg == 'ok') {
                     message.success('添加成功！')
                     getAllfiles()
@@ -359,7 +356,7 @@ const All_files = () => {
 
                 </Form>
             </Modal>
-            {/* 预览图片和pdf文档对话框 */}
+            {/* 预览音视频及文档对话框 */}
             <Modal
                 id="modal1"
                 className='iframe_div'
@@ -420,7 +417,7 @@ const All_files = () => {
                             dataSource={data2}
                             pagination={{
                                 onChange: page => {
-                                    console.log(page);
+                                    // console.log(page);
                                 },
                                 // pageSize: 6,
                                 defaultPageSize:6,
