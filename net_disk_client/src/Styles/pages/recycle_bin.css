@@ -1,12 +1,12 @@
-.upload_div{
-    background-color: rgb(255, 255, 255);
-    height: 55vh;
-    width: 77vw;
-    margin-left: 1.5vw;
-    margin-top: 9vh;
-    border-radius: 0.5rem;
-    padding-bottom: 3vh;
-    padding-right: 1.5vw;
+.upload_div {
+  background-color: rgb(255, 255, 255);
+  height: 55vh;
+  width: 77vw;
+  margin-left: 1.5vw;
+  margin-top: 9vh;
+  border-radius: 0.5rem;
+  padding-bottom: 3vh;
+  padding-right: 1.5vw;
 
-    float: left;
+  float: left;
 }

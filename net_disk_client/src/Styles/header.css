@@ -1,16 +1,16 @@
-.d1{
-    background-color: rgb(255, 255, 255);
-    height: 10vh;
-    width: 77vw;
-    margin-left: 1.5vw;
-    padding-left: 2vw;
-    position: absolute;
-    top:9vh;
-    border-radius: 0.5rem;
-    line-height: 10vh;
+.d1 {
+  background-color: rgb(255, 255, 255);
+  height: 10vh;
+  width: 77vw;
+  margin-left: 1.5vw;
+  padding-left: 2vw;
+  position: absolute;
+  top: 9vh;
+  border-radius: 0.5rem;
+  line-height: 10vh;
 }
-.s1{
-    font-weight: bold;
-    font-size: 2.9vh;
-    margin-left: 1vw;
+.s1 {
+  font-weight: bold;
+  font-size: 2.9vh;
+  margin-left: 1vw;
 }

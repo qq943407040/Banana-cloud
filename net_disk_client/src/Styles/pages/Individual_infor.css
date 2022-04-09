@@ -1,70 +1,68 @@
-#changeInfor_div{
-    background-color: rgb(255, 255, 255);
-    height: 70vh;
-    width: 50vw;
-    margin-left: 1.5vw;
-    margin-top: 9vh;
-    border-radius: 0.5rem;
-    padding-bottom: 3vh;
-    padding-top: 1vh;
-    float: left;
+#changeInfor_div {
+  background-color: rgb(255, 255, 255);
+  height: 70vh;
+  width: 50vw;
+  margin-left: 1.5vw;
+  margin-top: 9vh;
+  border-radius: 0.5rem;
+  padding-bottom: 3vh;
+  padding-top: 1vh;
+  float: left;
 }
-#preInfor_div{
-    background-color: rgb(255, 255, 255);
-    height: 35vh;
-    width: 25vw;
-    margin-top: 9vh;
-    margin-left: 2vw;
-    border-radius: 0.5rem;
-    padding-top: 1vh;
-    float: left;
+#preInfor_div {
+  background-color: rgb(255, 255, 255);
+  height: 35vh;
+  width: 25vw;
+  margin-top: 9vh;
+  margin-left: 2vw;
+  border-radius: 0.5rem;
+  padding-top: 1vh;
+  float: left;
 }
-#vip_div{
-    background-color: rgb(255, 255, 255);
-    height: 32vh;
-    width: 25vw;
-    margin-left: 2vw;
-    margin-top: 3vh;
-    border-radius: 0.5rem;
-    padding-top: 1vh;
-    float: left;
-    overflow: hidden;
-
+#vip_div {
+  background-color: rgb(255, 255, 255);
+  height: 32vh;
+  width: 25vw;
+  margin-left: 2vw;
+  margin-top: 3vh;
+  border-radius: 0.5rem;
+  padding-top: 1vh;
+  float: left;
+  overflow: hidden;
 }
-.avatar1{
-    background-color: rgb(247, 247, 247);
-    margin-top: 2vh;
-
+.avatar1 {
+  background-color: rgb(247, 247, 247);
+  margin-top: 2vh;
 }
-.changeInfor{
-    margin-left: 1vw;
-    font-size: 1rem;
-    padding: 0.3vw;
-    border-bottom:1px solid #eee;
-    background-color: #e1f0ff;
-    width: 48vw;
-    height: 5vh;
+.changeInfor {
+  margin-left: 1vw;
+  font-size: 1rem;
+  padding: 0.3vw;
+  border-bottom: 1px solid #eee;
+  background-color: #e1f0ff;
+  width: 48vw;
+  height: 5vh;
 }
-.preInfor{
-    margin-left: 1vw;
-    font-size: 1rem;
-    padding: 0.3vw;
-    border-bottom:1px solid #eee;
-    background-color: #e1f0ff;
-    width: 23vw;
-    height: 5vh;
+.preInfor {
+  margin-left: 1vw;
+  font-size: 1rem;
+  padding: 0.3vw;
+  border-bottom: 1px solid #eee;
+  background-color: #e1f0ff;
+  width: 23vw;
+  height: 5vh;
 }
 /* 修改信息表格 */
-.form11{
+.form11 {
   margin-left: 1vw;
   margin-top: 5vh;
 }
-.pre_div{
-    text-align: center;
-    margin-top: 3vh;
+.pre_div {
+  text-align: center;
+  margin-top: 3vh;
 }
-.vip p{
-    font-size: 1rem;
-    margin-bottom: 3vh;
-    letter-spacing: 1px;
+.vip p {
+  font-size: 1rem;
+  margin-bottom: 3vh;
+  letter-spacing: 1px;
 }

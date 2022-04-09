@@ -1,13 +1,12 @@
-.infor1:hover{
-    cursor: pointer;
+.infor1:hover {
+  cursor: pointer;
 }
-.infor1{
-    height: 5vh;
-    color: white;
-    
+.infor1 {
+  height: 5vh;
+  color: white;
 }
-.list_infor{
-    height: 2vh;
-    width: 15vw;
-    font-size: 1.8vh;
+.list_infor {
+  height: 2vh;
+  width: 15vw;
+  font-size: 1.8vh;
 }

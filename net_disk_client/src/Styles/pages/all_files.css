@@ -1,120 +1,119 @@
 .all_files {
-    background-color: rgb(255, 255, 255);
-    height: fit-content;
-    width: 77vw;
-    margin-left: 1.5vw;
-    margin-top: 9vh;
-    border-radius: 0.5rem;
-    padding-bottom: 3vh;
-    float: left;
-    padding-right: 1.5vw;
+  background-color: rgb(255, 255, 255);
+  height: fit-content;
+  width: 77vw;
+  margin-left: 1.5vw;
+  margin-top: 9vh;
+  border-radius: 0.5rem;
+  padding-bottom: 3vh;
+  float: left;
+  padding-right: 1.5vw;
 }
 
 .all_files .ant-table-cell {
-    background-color: white;
+  background-color: white;
 }
 
 .new_dir {
-    height: 5vh;
-    width: fit-content;
-    color: rgb(137, 209, 151);
-    border-color: rgb(137, 209, 151);
-    margin-top: 2vh;
-    margin-left: 1vw;
-    font-size: 2.2vh;
+  height: 5vh;
+  width: fit-content;
+  color: rgb(137, 209, 151);
+  border-color: rgb(137, 209, 151);
+  margin-top: 2vh;
+  margin-left: 1vw;
+  font-size: 2.2vh;
 }
 
 .up button {
-    margin-top: 2vh;
-    width: fit-content;
-    height: 5vh;
-    font-size: 2.3vh;
+  margin-top: 2vh;
+  width: fit-content;
+  height: 5vh;
+  font-size: 2.3vh;
 }
 
 .file_up {
-    text-align: right;
-    overflow: hidden;
-    height: 7vh;
-    line-height: 7vh;
+  text-align: right;
+  overflow: hidden;
+  height: 7vh;
+  line-height: 7vh;
 }
 
 .file_down {
-    text-align: right;
+  text-align: right;
 }
 
 .file_up button {
-    width: fit-content;
-    height: 5vh;
-    font-size: 2.3vh;
-    margin-top: 2vh;
+  width: fit-content;
+  height: 5vh;
+  font-size: 2.3vh;
+  margin-top: 2vh;
 }
 
 .file_del button {
-    position: absolute;
-    right: 1vw;
-    width: fit-content;
-    height: 5vh;
-    font-size: 2.3vh;
-    margin-top: 2vh;
+  position: absolute;
+  right: 1vw;
+  width: fit-content;
+  height: 5vh;
+  font-size: 2.3vh;
+  margin-top: 2vh;
 }
 
 .table1 {
-    margin-left: 1vw;
+  margin-left: 1vw;
 }
 
 .table .cc1 {
-    background-color: aqua;
-    width: 100;
+  background-color: aqua;
+  width: 100;
 }
 
 .list-div {
-    margin-left: 2vw;
-    line-height: 2vw;
-
+  margin-left: 2vw;
+  line-height: 2vw;
 }
 
 .filesBox {
-    width: 40%;
-    height: 86%;
-    display: flex;
-    left: 25%;
-    background: #fff;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    border: 1px solid #eee;
-    border-radius: 12px;
+  width: 40%;
+  height: 86%;
+  display: flex;
+  left: 25%;
+  background: #fff;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border: 1px solid #eee;
+  border-radius: 12px;
 }
 
 .fileTop {
-    color: #333;
-    background-color: #f8f8f8;
-    border: 1px solid #eee;
-    height: 42px;
-    line-height: 42px;
-    padding: 0 80px 0 20px;
+  color: #333;
+  background-color: #f8f8f8;
+  border: 1px solid #eee;
+  height: 42px;
+  line-height: 42px;
+  padding: 0 80px 0 20px;
 }
 
 .x {
-    position: absolute;
-    cursor: pointer;
-    top: 16px;
-    right: 20px;
-    z-index: 2;
+  position: absolute;
+  cursor: pointer;
+  top: 16px;
+  right: 20px;
+  z-index: 2;
 }
 
 .flieContent {
-    width: 100%;
-    height: calc(100% - 42px);
-    z-index: 1;
+  width: 100%;
+  height: calc(100% - 42px);
+  z-index: 1;
 }
-.iframe_div{
-    /* height: fit-content; */
+.iframe_div {
+  /* height: fit-content; */
 }
 
-.iframe1{
-    margin: auto;
-    height: 800px;
-    width: 700px;
-    border-style: none;
+.iframe1 {
+  margin: auto;
+  height: 800px;
+  width: 700px;
+  border-style: none;
 }
