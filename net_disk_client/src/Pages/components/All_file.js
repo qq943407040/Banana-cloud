@@ -505,7 +505,7 @@ const All_files = () => {
                             onClick={
                               "file_type" in item ? () => getfiles(item) : get
                             }
-                            style={{ fontSize: "2.4vh" }}
+                            style={{ fontSize:"2.4vh" }}
                           />
                         ) : (
                           <DownloadOutlined
@@ -532,7 +532,7 @@ const All_files = () => {
                             title="确定删除文件夹?"
                             onConfirm={() => deleteDir([item.did])}
                             okText="确认"
-                            cancelText="取消 "
+                            cancelText="取消"
                           >
                             <a href="" style={{ color: "black" }}>
                               <DeleteOutlined style={{ fontSize: "2.4vh" }} />
