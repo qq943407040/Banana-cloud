@@ -50,7 +50,7 @@ const All_files = () => {
   const [did, setDid] = useState(0);
 
   // 面包屑导航内容
-  const [bread, setBread] = useState([]);
+  const [bread, setBread] = useState(['根目录']);
 
   // 获取全部文件信息
   const getAllfiles = (did) => {
